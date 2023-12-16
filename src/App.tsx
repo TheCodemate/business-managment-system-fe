@@ -4,11 +4,9 @@ import "./App.css";
 
 function App() {
   return (
-    <>
-      <div>
-        <LoginForm />
-      </div>
-    </>
+    <div className="flex justify-center items-center h-screen">
+      <LoginForm />
+    </div>
   );
 }
 
