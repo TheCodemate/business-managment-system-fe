@@ -15,9 +15,9 @@ export const Sidebar = ({ children }: Props) => {
   return (
     <SidebarContext.Provider value={{ isExpanded }}>
       <aside
-        className={`bg-bgPrimary top-0 left-0 h-screen p-4 ${
+        className={`flex flex-col rounded-tr-lg rounded-br-lg drop-shadow-xl transition-all bg-bgPrimary sm:flex-col sm:top-0 sm:left-0 sm:w-screen m:h-screen m:p-4 ${
           isExpanded ? "max-w-[240px]" : "max-w-[80px]"
-        } flex flex-col rounded-tr-lg rounded-br-lg drop-shadow-xl transition-all`}
+        } `}
       >
         <div className={`flex justify-center mb-52`}>
           <Logo />

@@ -6,6 +6,7 @@ export default {
     colors: {
       primary: "#6225AF",
       bgPrimary: "#FBFBFB",
+      fontPrimary: "#5A5A5A",
     },
     extend: {},
   },

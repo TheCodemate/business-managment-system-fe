@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -7,7 +8,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div className=" w-screen h-screen">
+    <div className="flex flex-col w-screen h-screen sm:flex-row">
       <Sidebar>
         <Sidebar.Nav grow={"2"}>
           <Sidebar.MenuItem
@@ -33,6 +34,7 @@ function App() {
           />
         </Sidebar.Nav>
       </Sidebar>
+      <Outlet />
     </div>
   );
 }
