@@ -4,7 +4,8 @@ type Props = {
   basis?: string;
 };
 
-export const SidebarNav = ({ children, basis = "6/12" }: Props) => {
+export const SidebarNav = ({ children, basis }: Props) => {
+  console.log(`basis-${basis}`);
   return (
     <nav className={`flex flex-col justify-start basis-${basis} gap-4`}>
       {children}

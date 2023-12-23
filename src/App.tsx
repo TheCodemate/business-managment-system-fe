@@ -19,7 +19,7 @@ function App() {
           <Sidebar.NavLink to="dashboard" text="Dashboard" />
           <Sidebar.NavLink to="customers-list" text="Customer list" />
         </Sidebar.Nav>
-        <Sidebar.Nav basis={"1/12"}>
+        <Sidebar.Nav basis={"2/12"}>
           <Sidebar.NavLink to="settings" text="Settings" />
         </Sidebar.Nav>
       </Sidebar>

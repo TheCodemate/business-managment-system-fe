@@ -16,7 +16,7 @@ export const Sidebar = ({ children }: Props) => {
     <SidebarContext.Provider value={{ isExpanded }}>
       <aside
         className={`hidden items-stretch bg-bgPrimary top-0 left-0 h-screen py-4 rounded-tr-lg rounded-br-lg drop-shadow-xl transition-all ${
-          isExpanded ? "max-w-[320px]" : "max-w-[80px]"
+          isExpanded ? "w-[320px]" : "w-[80px]"
         } sm:flex sm:flex-col`}
       >
         <div className={`flex basis-2/12 justify-center`}>
