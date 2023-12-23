@@ -3,7 +3,7 @@ import { SidebarContext } from "./context";
 
 import { Logo } from "../Logo/Logo";
 import { ExpandArrow } from "../ExpandArrow/ExpandArrow";
-import { SidebarMenuItem } from "./SidebarMenuItem/SidebarMenuItem";
+import { SidebarNavLink } from "./SidebarMenuItem/SidebarMenuItem";
 import { SidebarNav } from "./SidebarNav/SidebarNav";
 
 type Props = {
@@ -15,11 +15,11 @@ export const Sidebar = ({ children }: Props) => {
   return (
     <SidebarContext.Provider value={{ isExpanded }}>
       <aside
-        className={`bg-bgPrimary top-0 left-0 h-screen p-4 ${
-          isExpanded ? "max-w-[240px]" : "max-w-[80px]"
-        } flex flex-col rounded-tr-lg rounded-br-lg drop-shadow-xl transition-all`}
+        className={`hidden items-stretch bg-bgPrimary top-0 left-0 h-screen py-4 rounded-tr-lg rounded-br-lg drop-shadow-xl transition-all ${
+          isExpanded ? "max-w-[320px]" : "max-w-[80px]"
+        } sm:flex sm:flex-col`}
       >
-        <div className={`flex justify-center mb-52`}>
+        <div className={`flex basis-2/12 justify-center`}>
           <Logo />
           <ExpandArrow
             left={isExpanded}
@@ -32,6 +32,6 @@ export const Sidebar = ({ children }: Props) => {
   );
 };
 
-Sidebar.MenuItem = SidebarMenuItem;
+Sidebar.NavLink = SidebarNavLink;
 Sidebar.Nav = SidebarNav;
 export default Sidebar;

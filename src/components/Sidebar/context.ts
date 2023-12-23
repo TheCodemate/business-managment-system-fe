@@ -4,6 +4,10 @@ type SidebarContextType = {
   isExpanded: boolean;
 };
 
+export const SidebarContext = createContext<SidebarContextType>({
+  isExpanded: false,
+});
+
 export const useSidebarContext = () => {
   const context = useContext(SidebarContext);
 
@@ -13,7 +17,3 @@ export const useSidebarContext = () => {
 
   return context;
 };
-
-export const SidebarContext = createContext<SidebarContextType>({
-  isExpanded: false,
-});

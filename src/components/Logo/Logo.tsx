@@ -1,6 +1,6 @@
 export const Logo = () => {
   return (
-    <div className="rounded-full w-10 h-10 bg-primary flex justify-center items-center text-xs">
+    <div className="rounded-full text-xl font-bold w-16 h-16 bg-primary flex justify-center items-center sm:text-xs sm:w-10 sm:h-10">
       CR
     </div>
   );
