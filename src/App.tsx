@@ -1,36 +1,25 @@
 import { Sidebar } from "./components/Sidebar/Sidebar";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import SettingsIcon from "@mui/icons-material/Settings";
-import GroupsIcon from "@mui/icons-material/Groups";
 
 import "./App.css";
+import { MobileMenu } from "./components/MobileMenu/MobileMenu";
 
 function App() {
   return (
     <div className=" w-screen h-screen">
+      <MobileMenu>
+        <MobileMenu.Nav>
+          <MobileMenu.NavLink to="dashboard" text="Dashboard" />
+          <MobileMenu.NavLink to="customers-list" text="Customer list" />
+          <MobileMenu.NavLink to="settings" text="Settings" />
+        </MobileMenu.Nav>
+      </MobileMenu>
       <Sidebar>
-        <Sidebar.Nav grow={"2"}>
-          <Sidebar.MenuItem
-            text="Dashboard"
-            icon={
-              <DashboardIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />
-            }
-          />
-          <Sidebar.MenuItem
-            text="Customer list"
-            icon={
-              <GroupsIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />
-            }
-          />
+        <Sidebar.Nav basis={"full"}>
+          <Sidebar.NavLink to="dashboard" text="Dashboard" />
+          <Sidebar.NavLink to="customers-list" text="Customer list" />
         </Sidebar.Nav>
-
-        <Sidebar.Nav grow={"1"}>
-          <Sidebar.MenuItem
-            text="Settings"
-            icon={
-              <SettingsIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />
-            }
-          />
+        <Sidebar.Nav basis={"1/12"}>
+          <Sidebar.NavLink to="settings" text="Settings" />
         </Sidebar.Nav>
       </Sidebar>
     </div>
