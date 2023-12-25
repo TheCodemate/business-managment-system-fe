@@ -10,7 +10,7 @@ export const MobileMenuNav = ({ children }: Props) => {
 
   return (
     <nav
-      className={`flex flex-col justify-between items-center transition-all overflow-hidden w-full ${
+      className={`absolute flex top-[80px] flex-col justify-between items-center transition-all w-full bg-bgPrimary ${
         isExpanded ? "h-[250px]" : "h-0"
       } `}
     >

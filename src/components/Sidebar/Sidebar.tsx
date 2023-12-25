@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const Sidebar = ({ children }: Props) => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   return (
     <SidebarContext.Provider value={{ isExpanded }}>
       <aside

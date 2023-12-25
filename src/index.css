@@ -61,3 +61,7 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+table {
+  padding: 0.5rem;
+}
