@@ -27,7 +27,6 @@ export const MobileMenuContextProvider = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   const onClickHandler = () => {
-    console.log("isExpended: ", isExpanded);
     setIsExpanded((prev) => !prev);
   };
 

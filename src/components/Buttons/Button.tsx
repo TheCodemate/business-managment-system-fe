@@ -17,7 +17,7 @@ export const Button = ({ icon = "null", content, onClick, variant }: Props) => {
   return (
     <button className={variants[variant]} onClick={onClick}>
       {icons[icon]}
-      <p className="whitespace-nowrap">{content}</p>
+      <p className="whitespace-nowrap text-fontDetail">{content}</p>
     </button>
   );
 };

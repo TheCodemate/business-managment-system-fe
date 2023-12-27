@@ -5,7 +5,6 @@ const CustomerTableContext = createContext<Customer[] | null>(null);
 
 export const useTable = () => {
   const context = useContext(CustomerTableContext);
-  console.log("useTable!");
 
   if (!context) {
     throw new Error(

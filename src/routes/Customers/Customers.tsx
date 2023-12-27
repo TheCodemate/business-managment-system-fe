@@ -1,15 +1,15 @@
-import { Button } from "../../components/Button/Button";
+import { Button } from "../../components/Buttons/Button";
 import { Table } from "./components/Table/Table";
 import { Input } from "../../components/Input/Input";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { Modal } from "../../components/Modal/Modal";
 import { useState } from "react";
+import { AddCustomerForm } from "../../components/Forms/AddCustomerFrom";
 
 export const Customers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
-    console.log("hello");
     setIsModalOpen((prevState) => !prevState);
   };
 
@@ -73,11 +73,11 @@ export const Customers = () => {
   }
 
   return (
-    <div className="grow overflow-hidden">
+    <div className="grow overflow-x-hidden">
       <header className="flex flex-col gap-5 justify-center h-[250px] bg-bgPrimary px-12 sm:flex-row sm:justify-between sm:gap-10">
         <div className="flex flex-col justify-center">
-          <div className="flex flex-col">
-            <PersonSearchIcon />
+          <div className="flex items-center gap-2">
+            <PersonSearchIcon className="text-fontPrimary" />
             <h2 className="text-fontPrimary text-2xl text font-bold">
               Clients
             </h2>
@@ -98,7 +98,7 @@ export const Customers = () => {
       </header>
       <main className="flex flex-col h-full w-full p-8 overflow-x-auto">
         <div className="flex items-center gap-4 w-full">
-          <Input name="search" placeholder="Search..." />
+          <Input name="search" placeholder="Search..." label={"Search"} />
           <Button
             variant="search"
             content={"Search"}
@@ -125,9 +125,11 @@ export const Customers = () => {
           </Table>
         </div>
       </main>
-      <Modal isOpen={isModalOpen} toggleModal={toggleModal}>
-        <form></form>
-      </Modal>
+      {isModalOpen && (
+        <Modal isOpen={isModalOpen} toggleModal={toggleModal}>
+          <AddCustomerForm onCloseHandler={toggleModal} />
+        </Modal>
+      )}
     </div>
   );
 };

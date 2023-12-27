@@ -1,4 +1,4 @@
-import { Button } from "../../components/Button/Button";
+import { Button } from "../Buttons/Button";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { IconTypes } from "../../types";
 
