@@ -2,7 +2,7 @@ import { ReactElement, createContext, useContext, useState } from "react";
 
 type MobileMenuType = {
   isExpanded: boolean;
-  onClickHandler: () => void;
+  expandHandler: () => void;
 };
 
 export const MobileMenuContext = createContext<MobileMenuType>(
@@ -26,13 +26,12 @@ export const MobileMenuContextProvider = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const onClickHandler = () => {
-    console.log("isExpended: ", isExpanded);
+  const expandHandler = () => {
     setIsExpanded((prev) => !prev);
   };
 
   return (
-    <MobileMenuContext.Provider value={{ isExpanded, onClickHandler }}>
+    <MobileMenuContext.Provider value={{ isExpanded, expandHandler }}>
       {children}
     </MobileMenuContext.Provider>
   );
