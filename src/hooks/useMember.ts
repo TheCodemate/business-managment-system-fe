@@ -12,7 +12,8 @@ const loginHandler = async ({
   password: string;
 }) => {
   try {
-    const response = await fetch("http://localhost:8081/api/members/login", {
+    // const response = await fetch("http://localhost:8081/api/members/login", {
+    const response = await fetch(`${import.meta.env.VITE_API}/login`, {
       method: "POST",
       credentials: "include",
       headers: {
