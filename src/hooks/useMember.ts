@@ -1,6 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
-import { AuthType, useAuth } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+
+import { AuthType, useAuth } from "../context/AuthProvider";
+import { delay } from "../utils/delay";
 
 const loginHandler = async ({
   email,
@@ -64,14 +66,49 @@ const logoutHandler = async () => {
   }
 };
 
+const registerHandler = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const res = await fetch("http://localhost:8081/api/members", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!res.ok) {
+    throw new Error(
+      `Something went wrong. You cannot register now. Try again later. Error code: ${res.status}`
+    );
+  }
+
+  const data = await res.json();
+
+  return data;
+};
+
 export const useMember = () => {
   const { authHandler } = useAuth();
   const navigate = useNavigate();
 
+  const registerMutation = useMutation({
+    mutationFn: (values: { email: string; password: string }) =>
+      registerHandler(values),
+    onSuccess: () => {
+      delay(5000, () => navigate("/login"));
+    },
+    onError: (error) => error.message,
+  });
+
   const logoutMutation = useMutation({
     mutationFn: () => logoutHandler(),
-    onSuccess: () => {
-      authHandler({ isAuth: false, user: null });
+    onSuccess: (data) => {
+      authHandler(data);
       navigate("/login");
     },
     onError: (error) => error.message,
@@ -84,9 +121,7 @@ export const useMember = () => {
       authHandler(data);
       navigate("/");
     },
-    onError: (error) => {
-      return error.message;
-    },
+    onError: (error) => error.message,
   });
 
   const logout = () => {
@@ -96,6 +131,12 @@ export const useMember = () => {
   const login = (credentials: { email: string; password: string }) => {
     loginMutation.mutate(credentials);
   };
+
+  const register = (credentials: { email: string; password: string }) => {
+    registerMutation.mutate(credentials);
+  };
+
+  console.log("useMembers - registerMutatino: ", registerMutation.data);
 
   return {
     loginMutation: {
@@ -108,6 +149,12 @@ export const useMember = () => {
       logout,
       data: logoutMutation.data,
       error: logoutMutation.error,
+    },
+    registerMutation: {
+      confirmationMessage: registerMutation.data,
+      isPending: registerMutation.isPending,
+      error: registerMutation.error,
+      register,
     },
   };
 };

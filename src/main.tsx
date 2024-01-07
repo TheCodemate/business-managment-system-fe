@@ -12,6 +12,7 @@ import "./index.css";
 import { Dashboard } from "./routes/Dashboard.tsx";
 import { CustomersList } from "./routes/CustomersList.tsx";
 import { Settings } from "./routes/Settings.tsx";
+import { Register } from "./routes/Register.tsx";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);
 

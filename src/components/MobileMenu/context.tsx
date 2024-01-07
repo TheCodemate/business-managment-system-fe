@@ -1,13 +1,13 @@
 import { ReactElement, createContext, useContext, useState } from "react";
 
-type MobileMenuType = {
-  isExpanded: boolean;
-  expandHandler: () => void;
-};
+type MobileMenuType =
+  | {
+      isExpanded: boolean;
+      expandHandler: () => void;
+    }
+  | undefined;
 
-export const MobileMenuContext = createContext<MobileMenuType>(
-  {} as MobileMenuType
-);
+export const MobileMenuContext = createContext<MobileMenuType>(undefined);
 
 export const useMobileMenuContext = () => {
   const context = useContext(MobileMenuContext);

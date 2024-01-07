@@ -1,7 +1,7 @@
-import { Outlet, Navigate, useNavigate } from "react-router-dom";
-import { AuthType, useAuth } from "../../context/AuthProvider";
+import { Outlet, Navigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import CircularProgress from "@mui/material/CircularProgress";
+import { AuthType, useAuth } from "../../context/AuthProvider";
+import { Loading } from "../Loading/Loading";
 
 const authenticationHandler = async () => {
   try {
@@ -34,19 +34,23 @@ const authenticationHandler = async () => {
 
 export const PrivateRoutes = () => {
   const { auth, authHandler } = useAuth();
-  const navigate = useNavigate();
   const { isLoading } = useQuery({
     queryKey: ["authenticate"],
-    queryFn: async () => await authenticationHandler(),
+    queryFn: async () => {
+      const data = await authenticationHandler();
+
+      authHandler(data);
+      return data;
+    },
   });
 
   if (isLoading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
-        <CircularProgress sx={{ color: "#6225AF" }} />
+        <Loading color={"#6225AF"} />
       </div>
     );
   }
 
-  return auth.isAuth ? <Outlet /> : <Navigate to={"/login"} />;
+  return auth && auth.isAuth ? <Outlet /> : <Navigate to={"/login"} />;
 };
