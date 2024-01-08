@@ -5,7 +5,6 @@ const DialogContext = createContext<ContextType>(undefined);
 
 export const useDialogContext = () => {
   const context = useContext(DialogContext);
-  console.log("useDialogContext: ", context);
 
   if (!context) {
     throw new Error(

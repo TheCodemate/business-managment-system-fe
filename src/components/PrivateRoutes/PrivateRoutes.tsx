@@ -1,26 +1,15 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { AuthType, useAuth } from "../../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import { Loading } from "../Loading/Loading";
+import { axiosMember } from "../../api/axios";
 
 const authenticationHandler = async () => {
   try {
-    const res = await fetch("http://localhost:8081/api/members", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const { data } = await axiosMember({
+      withCredentials: true,
     });
-
-    if (!res.ok) {
-      const errorText: Error = await res.json();
-      throw new Error(errorText.message);
-    }
-
-    const member: AuthType = await res.json();
-
-    return member;
+    return data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);

@@ -13,6 +13,7 @@ export const RegisterFrom = () => {
     handleSubmit,
     register,
     formState: { errors },
+    reset,
   } = useForm<RegisterFromInputsType>({
     resolver: zodResolver(registerFormSchema),
   });
@@ -20,6 +21,7 @@ export const RegisterFrom = () => {
   const submit = async (data: RegisterFromInputsType) => {
     if (registerFormSchema.parse(data)) {
       registerMutation.register({ email: data.email, password: data.password });
+      reset();
     }
   };
 
@@ -77,28 +79,6 @@ export const RegisterFrom = () => {
           Login
         </NavLink>
       </form>
-
-      {/* <Backdrop>
-        {(toggleHandler) => (
-          <Dialog onCloseHandler={toggleHandler}>
-            <Dialog.Title>It's your custom dialog Title</Dialog.Title>
-            <Dialog.Content>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-              arcu augue, mollis at enim nec, congue rutrum magna. Aliquam
-              egestas aliquam accumsan. Nulla facilisi. Phasellus pellentesque
-              vehicula mi, sit amet tincidunt lacus tempus quis.
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Dialog.RejectButton
-                onClick={() => console.log("reject clicked")}
-              />
-              <Dialog.AcceptButton
-                onClick={() => console.log("accept clicked")}
-              />
-            </Dialog.Actions>
-          </Dialog>
-        )}
-      </Backdrop> */}
     </div>
   );
 };
