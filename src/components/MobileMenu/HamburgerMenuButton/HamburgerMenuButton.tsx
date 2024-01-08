@@ -1,14 +1,14 @@
 import { useMobileMenuContext } from "../context";
 
 export const HamburgerMenuButton = () => {
-  const { onClickHandler, isExpanded } = useMobileMenuContext();
+  const { expandHandler, isExpanded } = useMobileMenuContext();
 
   return (
     <button
       className={`flex flex-col  ${
         isExpanded ? "justify-center" : "justify-between"
       } bg-bgPrimary w-8 h-6`}
-      onClick={onClickHandler}
+      onClick={expandHandler}
     >
       <span
         className={`h-0.5

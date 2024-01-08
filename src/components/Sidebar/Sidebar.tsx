@@ -5,21 +5,26 @@ import { Logo } from "../Logo/Logo";
 import { ExpandArrow } from "../ExpandArrow/ExpandArrow";
 import { SidebarNavLink } from "./SidebarMenuItem/SidebarMenuItem";
 import { SidebarNav } from "./SidebarNav/SidebarNav";
+import { useMember } from "../../hooks/useMember";
 
 type Props = {
   children: ReactElement | ReactElement[];
 };
 
 export const Sidebar = ({ children }: Props) => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const { logoutMutation } = useMember();
+  const [isExpanded, setIsExpanded] = useState(false);
   return (
     <SidebarContext.Provider value={{ isExpanded }}>
       <aside
         className={`hidden items-stretch bg-bgPrimary top-0 left-0 h-screen py-4 rounded-tr-lg rounded-br-lg drop-shadow-xl transition-all ${
-          isExpanded ? "max-w-[320px]" : "max-w-[80px]"
+          isExpanded ? "max-w-[340px]" : "max-w-[80px]"
         } sm:flex sm:flex-col`}
       >
-        <div className={`flex basis-2/12 justify-center`}>
+        <div
+          className={`flex basis-2/12 justify-center`}
+          onClick={logoutMutation.logout}
+        >
           <Logo />
           <ExpandArrow
             left={isExpanded}

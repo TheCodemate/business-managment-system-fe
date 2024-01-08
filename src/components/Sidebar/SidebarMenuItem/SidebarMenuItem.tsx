@@ -7,11 +7,11 @@ import GroupsIcon from "@mui/icons-material/Groups";
 
 type SidebarMenuItemProps = {
   text: string;
-  to: "dashboard" | "settings" | "customers-list";
+  to: "" | "settings" | "customers-list";
 };
 
 const sidebarIcons = {
-  dashboard: <DashboardIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />,
+  [""]: <DashboardIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />,
   ["customers-list"]: (
     <GroupsIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />
   ),
@@ -25,7 +25,7 @@ export const SidebarNavLink = ({ text, to }: SidebarMenuItemProps) => {
       {sidebarIcons[to]}
       <p
         className={`flex text-primary text-2xl font-bold items-center min-w-max ${
-          isExpanded ? "opacity-100  pl-8" : "opacity-0 pl-0"
+          isExpanded ? "opacity-100  pl-8 pr-8" : "opacity-0 pl-0 pr-0"
         } transition-all`}
       >
         {text}
