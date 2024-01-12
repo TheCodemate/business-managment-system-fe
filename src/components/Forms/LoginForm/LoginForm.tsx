@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useMember } from "../../../hooks/useMember";
@@ -6,7 +6,7 @@ import { useMember } from "../../../hooks/useMember";
 import { Input } from "../../Input/Input";
 import { Button } from "../../Buttons/Button";
 
-import { LoginFormInputsType, loginFormSchema } from "../types";
+import { loginFormSchema } from "../types";
 import { NavLink } from "react-router-dom";
 
 export const LoginForm = () => {
@@ -16,9 +16,9 @@ export const LoginForm = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<LoginFormInputsType>({ resolver: zodResolver(loginFormSchema) });
+  } = useForm<FieldValues>({ resolver: zodResolver(loginFormSchema) });
 
-  const submit: SubmitHandler<LoginFormInputsType> = async (data) => {
+  const submit: SubmitHandler<FieldValues> = async (data) => {
     if (loginFormSchema.parse(data)) {
       loginMutation.login({
         email: data.email,
@@ -62,12 +62,12 @@ export const LoginForm = () => {
           type="password"
         />
 
-        <a
-          href="#"
+        <NavLink
+          to="/reset-password-request"
           className="cursor-pointer text-xs text-right mb-7 text-purple-700 tracking-widest"
         >
           forgot password?
-        </a>
+        </NavLink>
         <Button content="Login" />
         <span className="my-2 text-center font-bold">or</span>
         <NavLink
