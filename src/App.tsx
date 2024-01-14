@@ -19,10 +19,6 @@ const Layout = () => {
         <Sidebar.Nav basis={"full"}>
           <Sidebar.NavLink to="" text="Dashboard" />
           <Sidebar.NavLink to="customers-list" text="Customer list" />
-          <Sidebar.NavLink
-            to="reset-password/$2b$10$GX.kQI58sIURXTze1UziD.SSDx3y0NgnCHelx2KUuxbdBAJGN1Sv2"
-            text="Customer list"
-          />
         </Sidebar.Nav>
         <Sidebar.Nav basis={"1/12"}>
           <Sidebar.NavLink to="settings" text="Settings" />
