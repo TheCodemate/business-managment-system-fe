@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMember } from "../../../hooks/useMember";
 import { Input } from "../../Input/Input";
 import { Button } from "../../Buttons/Button";
-import { RegisterFromInputsType, registerFormSchema } from "../types";
+import { registerFormSchema } from "../types";
 
 export const RegisterFrom = () => {
   const { registerMutation } = useMember();
@@ -14,11 +14,11 @@ export const RegisterFrom = () => {
     register,
     formState: { errors },
     reset,
-  } = useForm<RegisterFromInputsType>({
+  } = useForm<FieldValues>({
     resolver: zodResolver(registerFormSchema),
   });
 
-  const submit = async (data: RegisterFromInputsType) => {
+  const submit = async (data: FieldValues) => {
     if (registerFormSchema.parse(data)) {
       registerMutation.register({ email: data.email, password: data.password });
       reset();
