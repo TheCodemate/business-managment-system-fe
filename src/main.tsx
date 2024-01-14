@@ -2,17 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import App from "./App.tsx";
 import { Provider } from "./context/Provider.tsx";
-
 import { PrivateRoutes } from "./components/PrivateRoutes/PrivateRoutes.tsx";
 import { Login } from "./routes/Login.tsx";
-
-import "./index.css";
 import { Dashboard } from "./routes/Dashboard.tsx";
 import { CustomersList } from "./routes/CustomersList.tsx";
 import { Settings } from "./routes/Settings.tsx";
 import { Register } from "./routes/Register.tsx";
+import { ResetPassword } from "./routes/ResetPassword.tsx";
+import { ResetPasswordRequest } from "./routes/ResetPasswordRequest.tsx";
+
+import "./index.css";
+import App from "./App.tsx";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,15 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
+  {
+    path: "/reset-password/:resetToken",
+    element: <ResetPassword />,
+  },
+  {
+    path: "/reset-password-request/",
+    element: <ResetPasswordRequest />,
+  },
+
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
