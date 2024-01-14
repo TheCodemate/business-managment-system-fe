@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { axiosMember } from "../api/axios";
+import { AxiosError } from "axios";
 
 import { useAuth } from "../context/AuthProvider";
 import { delay } from "../utils/delay";
@@ -13,6 +14,9 @@ const resetPasswordRequestHandler = async (email: string) => {
 
     return data;
   } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
     if (error instanceof Error) {
       throw new Error(error.message);
     }
@@ -30,10 +34,8 @@ const resetPasswordHandler = async ({
 }) => {
   try {
     const { data } = await axiosMember.post(`/reset-password`, {
-      data: {
-        password,
-        resetToken,
-      },
+      password,
+      resetToken,
     });
 
     return data;
@@ -54,6 +56,9 @@ const loginHandler = async (userCredentials: {
     });
     return data;
   } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
     if (error instanceof Error) {
       throw new Error(error.message);
     }
@@ -100,19 +105,19 @@ export const useMember = () => {
   const navigate = useNavigate();
 
   const resetPasswordRequestMutation = useMutation({
-    mutationFn: async (email: string) => {
-      resetPasswordRequestHandler(email);
-    },
+    mutationFn: (email: string) => resetPasswordRequestHandler(email),
     onSuccess: () => {
       delay(5000, () => navigate("/login"));
     },
-    onError: (error) => error.message,
+    onError: (error) => {
+      delay(5000, () => navigate("/login"));
+      return error.message;
+    },
   });
 
   const resetPasswordMutation = useMutation({
-    mutationFn: async (values: { password: string; resetToken: string }) => {
-      resetPasswordHandler(values);
-    },
+    mutationFn: (values: { password: string; resetToken: string }) =>
+      resetPasswordHandler(values),
     onSuccess: () => {
       delay(5000, () => navigate("/login"));
     },
@@ -171,30 +176,30 @@ export const useMember = () => {
     loginMutation: {
       login,
       data: loginMutation.data,
-      error: loginMutation.error,
+      error: loginMutation.error?.message,
       isPending: loginMutation.isPending,
     },
     logoutMutation: {
       logout,
       data: logoutMutation.data,
-      error: logoutMutation.error,
+      error: logoutMutation.error?.message,
     },
     registerMutation: {
-      confirmationMessage: registerMutation.data,
+      confirmationMessage: registerMutation.data?.message,
       isPending: registerMutation.isPending,
-      error: registerMutation.error,
+      error: registerMutation.error?.message,
       register,
     },
     resetPasswordMutation: {
       resetPassword,
       confirmationMessage: resetPasswordMutation.data,
-      error: resetPasswordMutation.error,
+      error: resetPasswordMutation.error?.message,
       isPending: resetPasswordMutation.isPending,
     },
     resetPasswordRequestMutation: {
       resetPasswordRequest,
-      confirmationMessage: resetPasswordRequestMutation.data,
-      error: resetPasswordRequestMutation.error,
+      confirmationMessage: resetPasswordRequestMutation.data?.message,
+      error: resetPasswordRequestMutation.error?.message,
       isPending: resetPasswordRequestMutation.isPending,
     },
   };
