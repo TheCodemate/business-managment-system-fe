@@ -56,6 +56,7 @@ const router = createBrowserRouter([
     path: "/reset-password-request/",
     element: <ResetPasswordRequest />,
   },
+
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

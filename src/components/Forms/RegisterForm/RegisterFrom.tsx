@@ -6,6 +6,7 @@ import { Input } from "../../Input/Input";
 import { Button } from "../../Buttons/Button";
 import { registerFormSchema } from "../types";
 
+
 export const RegisterFrom = () => {
   const { registerMutation } = useMember();
 
@@ -17,7 +18,7 @@ export const RegisterFrom = () => {
   } = useForm<FieldValues>({
     resolver: zodResolver(registerFormSchema),
   });
-
+  
   const submit = async (data: FieldValues) => {
     if (registerFormSchema.parse(data)) {
       registerMutation.register({ email: data.email, password: data.password });

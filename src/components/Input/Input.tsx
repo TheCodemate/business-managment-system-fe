@@ -40,6 +40,7 @@ export const Input = ({ error, label, name, register, ...rest }: Props) => {
           {error.message?.toString()}
         </span>
       ) : null}
+
     </div>
   );
 };

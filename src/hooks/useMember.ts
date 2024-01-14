@@ -123,7 +123,6 @@ export const useMember = () => {
     },
     onError: (error) => error.message,
   });
-
   const registerMutation = useMutation({
     mutationFn: (values: { email: string; password: string }) =>
       registerHandler(values),
@@ -171,7 +170,6 @@ export const useMember = () => {
   const resetPasswordRequest = (email: string) => {
     resetPasswordRequestMutation.mutate(email);
   };
-
   return {
     loginMutation: {
       login,
