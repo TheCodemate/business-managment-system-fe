@@ -86,4 +86,3 @@ export type ResetPasswordRequestFormInputType = z.infer<
 >;
 export type FormInputsType = LoginFormInputsType | RegisterFromInputsType;
 export type InputNames = "email" | "password" | "confirmPassword";
->>>>>>> main
