@@ -1,23 +1,18 @@
-import { icons } from "../../data";
-import { IconTypes } from "../../types";
+
+import { ButtonHTMLAttributes } from "react";
+import { Loading } from "../Loading/Loading";
 
 type Props = {
-  icon?: IconTypes;
   content: string;
-  onClick: () => void;
-  variant: "basic" | "search";
-};
+} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className" | "style">;
 
-const variants = {
-  basic: `flex px-5 py-3 bg-primary flex-nowrap gap-2`,
-  search: "flex px-5 py-1 bg-primary flex-nowrap rounded-full",
-};
-
-export const Button = ({ icon = "null", content, onClick, variant }: Props) => {
+export const Button = ({ content, ...props }: Props) => {
   return (
-    <button className={variants[variant]} onClick={onClick}>
-      {icons[icon]}
-      <p className="whitespace-nowrap text-fontDetail">{content}</p>
+    <button
+      className="text-white font-bold bg-primary text-textAlternate hover:cursor-pointer w-full px-6 py-2 rounded-lg"
+      {...props}
+    >
+      {props.disabled ? <Loading color={"#FBFBFB"} /> : <p>{content}</p>}
     </button>
   );
 };

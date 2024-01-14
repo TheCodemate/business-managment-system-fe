@@ -1,22 +1,24 @@
 import { Outlet } from "react-router-dom";
-import { Sidebar } from "./components/Sidebar/Sidebar";
 
-import "./App.css";
+import { Sidebar } from "./components/Sidebar/Sidebar";
 import { MobileMenu } from "./components/MobileMenu/MobileMenu";
 
-function App() {
+import "./App.css";
+
+const Layout = () => {
   return (
-    <div className="flex flex-col w-screen h-screen sm:flex-row">
+
+    <div className=" flex flex-col w-full h-full sm:flex-row mt-24 sm:mt-0">
       <MobileMenu>
         <MobileMenu.Nav>
-          <MobileMenu.NavLink to="dashboard" text="Dashboard" />
+          <MobileMenu.NavLink to="" text="Dashboard" />
           <MobileMenu.NavLink to="customers-list" text="Customer list" />
           <MobileMenu.NavLink to="settings" text="Settings" />
         </MobileMenu.Nav>
       </MobileMenu>
       <Sidebar>
         <Sidebar.Nav basis={"full"}>
-          <Sidebar.NavLink to="dashboard" text="Dashboard" />
+          <Sidebar.NavLink to="" text="Dashboard" />
           <Sidebar.NavLink to="customers-list" text="Customer list" />
         </Sidebar.Nav>
         <Sidebar.Nav basis={"2/12"}>
@@ -24,6 +26,14 @@ function App() {
         </Sidebar.Nav>
       </Sidebar>
       <Outlet />
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <div className=" w-screen h-screen">
+      <Layout />
     </div>
   );
 }

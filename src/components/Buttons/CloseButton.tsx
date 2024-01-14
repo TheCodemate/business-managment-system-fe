@@ -1,13 +1,17 @@
 import CloseIcon from "@mui/icons-material/Close";
 
 type Props = {
-  onClick?: () => void;
+
+  onClick: () => void;
 };
 
 export const CloseButton = ({ onClick }: Props) => {
   return (
-    <button onClick={onClick} className="bg-primary w-8 h-8">
-      <CloseIcon className="text-alternate" />
+    <button
+      onClick={onClick}
+      className="flex justify-center items-center max-w-max max-h-max mb-2 rounded-lg bg-primary self-end"
+    >
+      <CloseIcon sx={{ color: "#FBFBFB", width: 24, height: 24 }} />
     </button>
   );
 };
