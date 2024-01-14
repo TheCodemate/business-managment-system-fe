@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useMobileMenuContext } from "../context";
 
 type Props = {
-  to: "" | "customers-list" | "settings";
+  to: "" | "customers" | "settings";
   text: string;
 };
 
