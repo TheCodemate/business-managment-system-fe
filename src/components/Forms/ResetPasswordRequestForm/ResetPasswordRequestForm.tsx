@@ -17,15 +17,11 @@ export const ResetPasswordRequestForm = () => {
     resolver: zodResolver(resetPasswordRequestFormSchema),
   });
 
-  console.log("errors: ", errors);
-
   const submit = async (data: FieldValues) => {
-    console.log("1");
     if (resetPasswordRequestFormSchema.parse(data)) {
-      console.log("sending password request!");
       resetPasswordRequestMutation.resetPasswordRequest(data.email);
+      reset();
     }
-    reset();
   };
 
   return (
@@ -40,7 +36,7 @@ export const ResetPasswordRequestForm = () => {
           role="alert"
           className="w-full bg-redPrimary border-redSecondary text-redSecondary p-2 mb-4 border rounded-lg"
         >
-          {resetPasswordRequestMutation.error.message}
+          {resetPasswordRequestMutation.error}
         </div>
       ) : null}
       {resetPasswordRequestMutation.confirmationMessage ? (
@@ -52,7 +48,7 @@ export const ResetPasswordRequestForm = () => {
         </div>
       ) : null}
       <form
-        className="flex gap-4 justify-between"
+        className="flex flex-col gap-2 justify-between"
         onSubmit={handleSubmit(submit)}
       >
         <Input
@@ -61,13 +57,12 @@ export const ResetPasswordRequestForm = () => {
           register={register}
           error={errors.email}
           type="email"
+          placeholder={"Insert email..."}
         />
-        <div className="my-4">
-          <Button
-            content={"Send"}
-            disabled={resetPasswordRequestMutation.isPending}
-          />
-        </div>
+        <Button
+          content={"Send"}
+          disabled={resetPasswordRequestMutation.isPending}
+        />
       </form>
     </div>
   );

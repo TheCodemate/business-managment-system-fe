@@ -20,11 +20,8 @@ export const ResetPasswordForm = () => {
   });
 
   const submit = async (data: FieldValues) => {
-    if (resetPasswordFormSchema.parse(data)) {
-      resetPasswordMutation.resetPassword(
-        data.password,
-        resetToken ? resetToken : ""
-      );
+    if (resetPasswordFormSchema.parse(data) && resetToken) {
+      resetPasswordMutation.resetPassword(data.password, resetToken);
       reset();
     }
   };
@@ -36,7 +33,7 @@ export const ResetPasswordForm = () => {
           role="alert"
           className="w-full bg-redPrimary border-redSecondary text-redSecondary p-2 mb-4 border rounded-lg"
         >
-          {resetPasswordMutation.error.message}
+          {resetPasswordMutation.error}
         </div>
       ) : null}
       {resetPasswordMutation.confirmationMessage ? (
@@ -52,7 +49,7 @@ export const ResetPasswordForm = () => {
           name="password"
           label="Password"
           register={register}
-          error={errors}
+          error={errors.password}
           type="password"
         />
         <Input

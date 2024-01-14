@@ -34,7 +34,7 @@ export const RegisterFrom = () => {
           role="alert"
           className="w-full bg-redPrimary border-redSecondary text-redSecondary p-2 mb-4 border rounded-lg"
         >
-          {registerMutation.error.message}
+          {registerMutation.error}
         </div>
       ) : null}
       {registerMutation.confirmationMessage ? (
@@ -42,7 +42,7 @@ export const RegisterFrom = () => {
           role="alert"
           className="w-full bg-confirmBasic border-confirmBasic text-confirmAlternate p-2 mb-4 border rounded-lg"
         >
-          {registerMutation.confirmationMessage.message}
+          {registerMutation.confirmationMessage}
         </div>
       ) : null}
       <form className="flex flex-col" onSubmit={handleSubmit(submit)}>

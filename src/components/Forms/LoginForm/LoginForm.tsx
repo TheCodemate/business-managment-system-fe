@@ -37,7 +37,7 @@ export const LoginForm = () => {
           role="alert"
           className="w-full bg-redPrimary border-redSecondary text-redSecondary p-2 mb-4 border rounded-lg"
         >
-          {loginMutation.error.message}
+          {loginMutation.error}
         </div>
       ) : null}
       <div hidden id="login-form">
