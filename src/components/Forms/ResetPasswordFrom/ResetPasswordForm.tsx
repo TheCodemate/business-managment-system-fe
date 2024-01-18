@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldValues, useForm } from "react-hook-form";
-import { resetPasswordFormSchema } from "../types";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { ResetPasswordFormInputType, resetPasswordFormSchema } from "../types";
 import { useMember } from "../../../hooks/useMember";
 import { Input } from "../../Input/Input";
 import { Button } from "../../Buttons/Button";
@@ -15,11 +15,15 @@ export const ResetPasswordForm = () => {
     register,
     formState: { errors },
     reset,
-  } = useForm<FieldValues>({
+  } = useForm({
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
     resolver: zodResolver(resetPasswordFormSchema),
   });
 
-  const submit = async (data: FieldValues) => {
+  const submit: SubmitHandler<ResetPasswordFormInputType> = async (data) => {
     if (resetPasswordFormSchema.parse(data) && resetToken) {
       resetPasswordMutation.resetPassword(data.password, resetToken);
       reset();
@@ -46,18 +50,16 @@ export const ResetPasswordForm = () => {
       ) : null}
       <form className="flex flex-col" onSubmit={handleSubmit(submit)}>
         <Input
-          name="password"
           label="Password"
-          register={register}
-          error={errors.password}
           type="password"
+          error={errors.password?.message}
+          {...register("password")}
         />
         <Input
-          name="confirmPassword"
           label="Confirm password"
-          register={register}
-          error={errors.confirmPassword}
           type="password"
+          error={errors.confirmPassword?.message}
+          {...register("confirmPassword")}
         />
         <div className="my-4">
           <Button

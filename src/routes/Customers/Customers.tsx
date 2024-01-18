@@ -5,9 +5,19 @@ import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { Modal } from "../../components/Modal/Modal";
 import { useState } from "react";
 import { AddCustomerForm } from "../../components/Forms/AddCustomerFrom";
+import { useForm } from "react-hook-form";
 
 export const Customers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const {
+    register,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      search: "",
+    },
+  });
 
   const toggleModal = () => {
     setIsModalOpen((prevState) => !prevState);
@@ -88,19 +98,18 @@ export const Customers = () => {
           </p>
         </div>
         <div className="flex items-center">
-          <Button
-            variant="basic"
-            onClick={toggleModal}
-            icon={"add"}
-            content={"Add customer"}
-          />
+          <Button onClick={toggleModal} content={"Add customer"} />
         </div>
       </header>
       <main className="flex flex-col h-full w-full p-8 overflow-x-auto">
         <div className="flex items-center gap-4 w-full">
-          <Input name="search" placeholder="Search..." label={"Search"} />
+          <Input
+            placeholder="Search..."
+            label={"Search"}
+            error={errors.search?.message}
+            {...register("search")}
+          />
           <Button
-            variant="search"
             content={"Search"}
             onClick={() => console.log("search clicked")}
           />
