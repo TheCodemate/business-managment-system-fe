@@ -1,21 +1,17 @@
-import { Button } from "../../components/Buttons/Button";
-import { Table } from "./components/Table/Table";
-import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-import { Modal } from "../../components/Modal/Modal";
 import { useState } from "react";
-import { AddCustomerForm } from "../../components/Forms/AddCustomerFrom";
-import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useQuery } from "@tanstack/react-query";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import { Button } from "../../components/Buttons/Button";
+import { Modal } from "../../components/Modal/Modal";
+import { CustomerDetails } from "./components/CustomerDetails/CustomerDetails";
+import { AddCustomerForm } from "../../components/Forms/AddCustomerFrom";
 import { axiosCustomer } from "../../api/axios";
 import { CustomerType } from "../../types";
-import { CustomerDetails } from "./components/CustomerDetails/CustomerDetails";
-import { Backdrop } from "../../components/Backdrop/Backdrop";
 
 const fetchCustomers = async () => {
   try {
     const data = await axiosCustomer.get("http://localhost:8081/api/customers");
-
-    console.log("customers - data: ", data);
 
     return data.data as unknown as CustomerType[];
   } catch (error) {
@@ -52,16 +48,9 @@ export const Customers = () => {
   const closeCustomerDetailsModal = () => {
     setIsCustomerDetailsOpen(false);
   };
-  const toggleCustomerDetailsHandler = (customer: CustomerType) => {
-    setProductDetails({ ...customer });
-  };
   const toggleModal = () => {
     setIsAddCustomerOpen((prevState) => !prevState);
   };
-
-  console.log("data: ", data);
-  console.log("data: ", data);
-  console.log("data: ", data);
 
   if (isPending) return "Loading...";
 
@@ -106,7 +95,6 @@ export const Customers = () => {
               >
                 Contact details
               </th>
-              {/* <tr>{children}</tr> */}
             </thead>
             <tbody>
               {data?.map((customer) => {
@@ -121,7 +109,6 @@ export const Customers = () => {
                     <td className="p-4">
                       <div className="flex items-center gap-2">
                         <div className="bg-primary rounded-full w-12 h-12 overflow-hidden">
-                          {/* has to be replaced with avatarLink incoming from API */}
                           <img
                             width={"100%"}
                             height={"100%"}
@@ -139,23 +126,6 @@ export const Customers = () => {
               })}
             </tbody>
           </table>
-          {/* <Table tableData={data}>
-            <Table.Head>
-              <Table.Header>ID</Table.Header>
-              <Table.Header>Customer name</Table.Header>
-              <Table.Header>Assigned assistant</Table.Header>
-              <Table.Header>VAT No</Table.Header>
-              <Table.Header>Phone</Table.Header>
-              <Table.Header>Available actions</Table.Header>
-            </Table.Head>
-            <Table.Body>
-              {(tableData) =>
-                tableData.map((customer) => (
-                  <Table.Row id={customer.id} customer={customer} />
-                ))
-              }
-            </Table.Body>
-          </Table> */}
         </div>
       </main>
       <Modal isOpen={isAddCustomerOpen} toggleModal={toggleModal}>
