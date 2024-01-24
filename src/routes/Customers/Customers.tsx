@@ -1,86 +1,69 @@
 import { Button } from "../../components/Buttons/Button";
 import { Table } from "./components/Table/Table";
-import { Input } from "../../components/Input/Input";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { Modal } from "../../components/Modal/Modal";
 import { useState } from "react";
 import { AddCustomerForm } from "../../components/Forms/AddCustomerFrom";
-import { useForm } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { axiosCustomer } from "../../api/axios";
+import { CustomerType } from "../../types";
+import { CustomerDetails } from "./components/CustomerDetails/CustomerDetails";
+import { Backdrop } from "../../components/Backdrop/Backdrop";
+
+const fetchCustomers = async () => {
+  try {
+    const data = await axiosCustomer.get("http://localhost:8081/api/customers");
+
+    console.log("customers - data: ", data);
+
+    return data.data as unknown as CustomerType[];
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.message);
+    }
+
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(
+      "Could not fetch data. Unknown error occurred. Try again later."
+    );
+  }
+};
 
 export const Customers = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const {
-    register,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      search: "",
-    },
+  const [isAddCustomerOpen, setIsAddCustomerOpen] = useState(false);
+  const [isCustomerDetailsOpen, setIsCustomerDetailsOpen] = useState(false);
+  const [productDetails, setProductDetails] = useState<CustomerType>(
+    {} as CustomerType
+  );
+  const { data, isPending } = useQuery({
+    queryKey: ["customers"],
+    queryFn: fetchCustomers,
   });
 
-  const toggleModal = () => {
-    setIsModalOpen((prevState) => !prevState);
+  const openCustomerDetailsModal = (customer: CustomerType) => {
+    setProductDetails({ ...customer });
+    setIsCustomerDetailsOpen(true);
   };
 
-  const customers = [
-    {
-      id: 134523451,
-      avatarUrl: "https://randomuser.me/api/",
-      first_name: "Piotr",
-      last_name: "Skrzynski",
-      email: "piotr@piotr.pl",
-      phone: "+48500000000",
-      address: "Some randomly generated description...",
-      vatNo: 600000000,
-      assignedAssistant: "Marcin Dąbrowski",
-      description: "Kraków",
-      createdAt: "29-06-1990",
-    },
-    {
-      id: 134523452,
-      avatarUrl: "https://randomuser.me/api/",
-      first_name: "Piotr",
-      last_name: "Skrzynski",
-      email: "piotr@piotr.pl",
-      phone: "+48500000000",
-      address: "Some randomly generated description...",
-      vatNo: 600000000,
-      assignedAssistant: "Marcin Dąbrowski",
-      description: "Kraków",
-      createdAt: "29-06-1990",
-    },
-    {
-      id: 134523453,
-      avatarUrl: "https://randomuser.me/api/",
-      first_name: "Piotr",
-      last_name: "Skrzynski",
-      email: "piotr@piotr.pl",
-      phone: "+48500000000",
-      address: "Some randomly generated description...",
-      vatNo: 600000000,
-      assignedAssistant: "Marcin Dąbrowski",
-      description: "Kraków",
-      createdAt: "29-06-1990",
-    },
-    {
-      id: 134523454,
-      avatarUrl: "https://randomuser.me/api/",
-      first_name: "Piotr",
-      last_name: "Skrzynski",
-      email: "piotr@piotr.pl",
-      phone: "+48500000000",
-      address: "Some randomly generated description...",
-      vatNo: 600000000,
-      assignedAssistant: "Marcin Dąbrowski",
-      description: "Kraków",
-      createdAt: "29-06-1990",
-    },
-  ];
+  const closeCustomerDetailsModal = () => {
+    setIsCustomerDetailsOpen(false);
+  };
+  const toggleCustomerDetailsHandler = (customer: CustomerType) => {
+    setProductDetails({ ...customer });
+  };
+  const toggleModal = () => {
+    setIsAddCustomerOpen((prevState) => !prevState);
+  };
 
-  if (customers.length < 1) {
-    return <p>There are no customers available at the moment</p>;
-  }
+  console.log("data: ", data);
+  console.log("data: ", data);
+  console.log("data: ", data);
+
+  if (isPending) return "Loading...";
 
   return (
     <div className="grow overflow-x-hidden">
@@ -102,20 +85,61 @@ export const Customers = () => {
         </div>
       </header>
       <main className="flex flex-col h-full w-full p-8 overflow-x-auto">
-        <div className="flex items-center gap-4 w-full">
-          <Input
-            placeholder="Search..."
-            label={"Search"}
-            error={errors.search?.message}
-            {...register("search")}
-          />
-          <Button
-            content={"Search"}
-            onClick={() => console.log("search clicked")}
-          />
-        </div>
-        <div className="w-full">
-          <Table tableData={customers}>
+        <div className="flex flex-col w-full gap-2">
+          <table className="w-full border-separate border-spacing-x-0 border-spacing-y-4">
+            <thead className="thead-light text-left h-20 text-sm text-textPrimary font-light">
+              <th
+                className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
+                scope="col"
+              >
+                Company name
+              </th>
+              <th
+                className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
+                scope="col"
+              >
+                VAT No
+              </th>
+              <th
+                className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
+                scope="col"
+              >
+                Contact details
+              </th>
+              {/* <tr>{children}</tr> */}
+            </thead>
+            <tbody>
+              {data?.map((customer) => {
+                return (
+                  <tr
+                    key={customer.customerId}
+                    className="w-full bg-bgPrimary rounded-lg px-8 py-4 cursor-pointer first:rounded-l-lg last:rounded-r-lg hover:scale-105 transition-all"
+                    onClick={() => openCustomerDetailsModal(customer)}
+                  >
+                    <td className="p-4">{customer.companyName}</td>
+                    <td className="p-4">{customer.vatNo}</td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-2">
+                        <div className="bg-primary rounded-full w-12 h-12 overflow-hidden">
+                          {/* has to be replaced with avatarLink incoming from API */}
+                          <img
+                            width={"100%"}
+                            height={"100%"}
+                            src="https://avataaars.io/?avatarStyle=Transparent&topType=Eyepatch&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
+                          />
+                        </div>
+                        <div className="flex flex-col">
+                          <span>{`${customer.contactPerson.firstName} ${customer.contactPerson.lastName}`}</span>
+                          <span>{customer.contactPerson.email}</span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          {/* <Table tableData={data}>
             <Table.Head>
               <Table.Header>ID</Table.Header>
               <Table.Header>Customer name</Table.Header>
@@ -131,14 +155,18 @@ export const Customers = () => {
                 ))
               }
             </Table.Body>
-          </Table>
+          </Table> */}
         </div>
       </main>
-      {isModalOpen && (
-        <Modal isOpen={isModalOpen} toggleModal={toggleModal}>
-          <AddCustomerForm onCloseHandler={toggleModal} />
-        </Modal>
-      )}
+      <Modal isOpen={isAddCustomerOpen} toggleModal={toggleModal}>
+        <AddCustomerForm onCloseHandler={toggleModal} />
+      </Modal>
+      <Modal
+        isOpen={isCustomerDetailsOpen}
+        toggleModal={closeCustomerDetailsModal}
+      >
+        <CustomerDetails data={productDetails} />
+      </Modal>
     </div>
   );
 };

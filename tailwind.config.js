@@ -4,10 +4,10 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     colors: {
-      primary: "#6225AF",
+      primary: "#141414",
       alternate: "#FBFBFB",
       bgPrimary: "#FBFBFB",
-      bgSecondary: "",
+      bgSecondary: "#e7e6e6",
       fontDetail: "#FBFBFB",
       details: "#B6B6B6",
       textPrimary: "#4A4A4A",

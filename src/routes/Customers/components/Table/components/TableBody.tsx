@@ -8,9 +8,6 @@ type TableBodyProps<T> = {
 
 export const TableBody = ({ children }: TableBodyProps<Customer>) => {
   const customers = useTable();
-  if (!children) {
-    return <p>There are no customers available in the system at the moment</p>;
-  }
 
   return <tbody>{children(customers)}</tbody>;
 };

@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 
 import { CustomerTableContextProvider } from "./context";
-import { Customer } from "../../../../types";
+import { CustomerType } from "../../../../types";
 import { TableHeader } from "./components/TableHeader";
 import { TableHead } from "./components/TableHead";
 import { TableBody } from "./components/TableBody";
@@ -9,11 +9,11 @@ import { TableRow } from "./components/TableRow";
 
 type Props<T> = {
   children: ReactElement | ReactElement[];
-  tableData: T[];
+  tableData?: T[];
 };
 
-export const Table = ({ children, tableData }: Props<Customer>) => {
-  if (!tableData) {
+export const Table = ({ children, tableData }: Props<CustomerType>) => {
+  if (!tableData || !(tableData.length > 0)) {
     return <p>No data included in the table</p>;
   }
 

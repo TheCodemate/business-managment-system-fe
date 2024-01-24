@@ -6,47 +6,63 @@ import { CustomerType, customerSchema } from "../../types";
 import { Input } from "../Input/Input";
 import { Select } from "../Select/Select";
 import { CheckboxButton } from "../Buttons/CheckboxButton";
+import { useCustomer } from "../../hooks/useCustomer";
+import { delay } from "../../utils/delay";
 
 type AddCustomerFromProps = {
   onCloseHandler: () => void;
 };
 
+const defaultValues: CustomerType = {
+  companyName: "",
+  shortName: "",
+  vatNo: "",
+  isCompany: true,
+  paymentTerm: "",
+  paymentType: "cash" as const,
+  address: {
+    street: "",
+    streetNumber: "",
+    apartmentNumber: "",
+    city: "",
+    postalCode: "",
+    post: "",
+    country: "",
+  },
+  contactPerson: {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+  },
+};
+
 export const AddCustomerForm = ({ onCloseHandler }: AddCustomerFromProps) => {
+  const { addCustomerMutation } = useCustomer();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      companyName: "",
-      shortName: "",
-      vatNumber: "",
-      isCompany: true,
-      paymentTerm: "",
-      paymentType: "cash" as const,
-      address: {
-        street: "",
-        streetNumber: "",
-        apartmentNumber: "",
-        city: "",
-        postalCode: "",
-        post: "",
-        country: "",
-      },
-      contactPerson: {
-        firstName: "",
-        lastName: "",
-        phoneNumber: "",
-        email: "",
-      },
-    },
+    defaultValues,
     resolver: zodResolver(customerSchema),
   });
 
+  const onSuccessHandler = (data: CustomerType) => {
+    delay(5000, () => onCloseHandler());
+    reset();
+    return data;
+  };
+
+  const onErrorHandler = (error: Error) => error.message;
+
   const submit: SubmitHandler<CustomerType> = (data) => {
     if (customerSchema.parse(data)) {
-      reset();
+      addCustomerMutation.addCustomer(data, {
+        onSuccess: onSuccessHandler,
+        onError: onErrorHandler,
+      });
     }
   };
 
@@ -60,13 +76,26 @@ export const AddCustomerForm = ({ onCloseHandler }: AddCustomerFromProps) => {
           <h2 className="text-2xl font-bold">Add company</h2>
           <p>Insert all the data to insert costumer into a database</p>
         </div>
-        <div
-          className="flex items-center justify-center "
-          onClick={onCloseHandler}
-        >
+        <div className="flex items-center justify-center ">
           <CloseButton onClick={onCloseHandler} />
         </div>
       </header>
+      {addCustomerMutation.error ? (
+        <div
+          role="alert"
+          className="w-full bg-redPrimary border-redSecondary text-redSecondary p-2 mb-4 border rounded-lg"
+        >
+          {addCustomerMutation.error}
+        </div>
+      ) : null}
+      {addCustomerMutation.confirmationMessage ? (
+        <div
+          role="alert"
+          className="w-full bg-confirmBasic border-confirmBasic text-confirmAlternate p-2 mb-4 border rounded-lg"
+        >
+          {addCustomerMutation.confirmationMessage}
+        </div>
+      ) : null}
       <form
         onSubmit={handleSubmit(submit)}
         className="flex flex-col bg-alternate opacity-100 gap-4 rounded-lg"
@@ -86,11 +115,11 @@ export const AddCustomerForm = ({ onCloseHandler }: AddCustomerFromProps) => {
           </div>
           <div className={"col-span-1"}>
             <Input
-              id="vatNumber"
+              id="vatNo"
               variant="outlined"
               label="Vat No"
-              error={errors.vatNumber?.message}
-              {...register("vatNumber")}
+              error={errors.vatNo?.message}
+              {...register("vatNo")}
             />
           </div>
           <Input
@@ -151,7 +180,7 @@ export const AddCustomerForm = ({ onCloseHandler }: AddCustomerFromProps) => {
           <Input
             id="address.streetNumber"
             variant="outlined"
-            error={errors.address?.apartmentNumber?.message}
+            error={errors.address?.streetNumber?.message}
             label="Number"
             {...register("address.streetNumber")}
           />

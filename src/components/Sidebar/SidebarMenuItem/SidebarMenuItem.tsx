@@ -11,11 +11,11 @@ type SidebarMenuItemProps = {
 };
 
 const sidebarIcons = {
-  [""]: <DashboardIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />,
+  [""]: <DashboardIcon sx={{ color: "#141414", width: 36, height: 36 }} />,
   ["customers"]: (
-    <GroupsIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />
+    <GroupsIcon sx={{ color: "#141414", width: 36, height: 36 }} />
   ),
-  settings: <SettingsIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />,
+  settings: <SettingsIcon sx={{ color: "#141414", width: 36, height: 36 }} />,
 };
 
 export const SidebarNavLink = ({ text, to }: SidebarMenuItemProps) => {

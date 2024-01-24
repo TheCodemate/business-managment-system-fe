@@ -13,9 +13,9 @@ export const ExpandArrow = ({ onClick, left }: Props) => {
       className="rounded-full bg-bgPrimary absolute top-9 right-0 w-6 h-6 translate-x-[50%] flex justify-center items-center shadow-sm"
     >
       {left ? (
-        <ChevronLeftIcon sx={{ color: "#6225AF" }} />
+        <ChevronLeftIcon sx={{ color: "#141414" }} />
       ) : (
-        <ChevronRightIcon sx={{ color: "#6225AF" }} />
+        <ChevronRightIcon sx={{ color: "#141414 " }} />
       )}
     </button>
   );
