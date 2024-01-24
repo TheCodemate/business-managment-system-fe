@@ -7,15 +7,15 @@ import GroupsIcon from "@mui/icons-material/Groups";
 
 type SidebarMenuItemProps = {
   text: string;
-  to: "" | "settings" | "customers-list";
+  to: "" | "settings" | "customers";
 };
 
 const sidebarIcons = {
-  [""]: <DashboardIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />,
-  ["customers-list"]: (
-    <GroupsIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />
+  [""]: <DashboardIcon sx={{ color: "#141414", width: 36, height: 36 }} />,
+  ["customers"]: (
+    <GroupsIcon sx={{ color: "#141414", width: 36, height: 36 }} />
   ),
-  settings: <SettingsIcon sx={{ color: "#6225AF", width: 36, height: 36 }} />,
+  settings: <SettingsIcon sx={{ color: "#141414", width: 36, height: 36 }} />,
 };
 
 export const SidebarNavLink = ({ text, to }: SidebarMenuItemProps) => {

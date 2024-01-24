@@ -15,7 +15,7 @@ export const MobileMenu = ({ children }: Props) => {
   return (
     <MobileMenuContextProvider>
       <aside
-        className={`flex flex-col items-center absolute top-0 left-0 bg-bgPrimary py-4  w-screen sm:hidden transition-all`}
+        className={`flex relative flex-col items-center top-0 left-0 bg-bgPrimary py-4  drop-shadow-xl w-screen sm:hidden transition-all`}
       >
         <div className="flex justify-between items-center w-screen px-12">
           <HamburgerMenuButton />

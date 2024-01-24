@@ -21,10 +21,7 @@ export const Sidebar = ({ children }: Props) => {
           isExpanded ? "max-w-[340px]" : "max-w-[80px]"
         } sm:flex sm:flex-col`}
       >
-        <div
-          className={`flex basis-2/12 justify-center`}
-          onClick={logoutMutation.logout}
-        >
+        <div className={`flex basis-2/12 justify-center`}>
           <Logo />
           <ExpandArrow
             left={isExpanded}

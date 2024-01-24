@@ -1,11 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { FieldValues, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMember } from "../../../hooks/useMember";
 import { Input } from "../../Input/Input";
 import { Button } from "../../Buttons/Button";
-import { registerFormSchema } from "../types";
-
+import { RegisterFromInputsType, registerFormSchema } from "../types";
 
 export const RegisterFrom = () => {
   const { registerMutation } = useMember();
@@ -15,11 +14,16 @@ export const RegisterFrom = () => {
     register,
     formState: { errors },
     reset,
-  } = useForm<FieldValues>({
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
     resolver: zodResolver(registerFormSchema),
   });
-  
-  const submit = async (data: FieldValues) => {
+
+  const submit: SubmitHandler<RegisterFromInputsType> = async (data) => {
     if (registerFormSchema.parse(data)) {
       registerMutation.register({ email: data.email, password: data.password });
       reset();
@@ -48,24 +52,21 @@ export const RegisterFrom = () => {
       ) : null}
       <form className="flex flex-col" onSubmit={handleSubmit(submit)}>
         <Input
-          name="email"
           label="Email"
-          register={register}
-          error={errors.email}
+          error={errors.email?.message}
+          {...register("email")}
         />
         <Input
-          name="password"
           label="Password"
-          register={register}
-          error={errors.password}
+          error={errors.password?.message}
           type="password"
+          {...register("password")}
         />
         <Input
-          name="confirmPassword"
           label="Confirm password"
-          register={register}
-          error={errors.confirmPassword}
+          error={errors.confirmPassword?.message}
           type="password"
+          {...register("confirmPassword")}
         />
         <div className="my-4">
           <Button content={"Register"} disabled={registerMutation.isPending} />

@@ -31,12 +31,13 @@ export const PrivateRoutes = () => {
       authHandler(data);
       return data;
     },
+    retry: false,
   });
 
   if (isLoading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
-        <Loading color={"#6225AF"} />
+        <Loading color={"#141414"} />
       </div>
     );
   }

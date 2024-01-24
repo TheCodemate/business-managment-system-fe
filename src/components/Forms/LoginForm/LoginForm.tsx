@@ -1,14 +1,12 @@
-
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { NavLink } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useMember } from "../../../hooks/useMember";
 
 import { Input } from "../../Input/Input";
 import { Button } from "../../Buttons/Button";
-import { loginFormSchema } from "../types";
-
-import { NavLink } from "react-router-dom";
+import { LoginFormInputsType, loginFormSchema } from "../types";
 
 export const LoginForm = () => {
   const { loginMutation } = useMember();
@@ -17,8 +15,11 @@ export const LoginForm = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FieldValues>({ resolver: zodResolver(loginFormSchema) });
-  const submit: SubmitHandler<FieldValues> = async (data) => {
+  } = useForm({
+    defaultValues: { email: "", password: "" },
+    resolver: zodResolver(loginFormSchema),
+  });
+  const submit: SubmitHandler<LoginFormInputsType> = async (data) => {
     if (loginFormSchema.parse(data)) {
       loginMutation.login({
         email: data.email,
@@ -49,17 +50,15 @@ export const LoginForm = () => {
         aria-labelledby="login-form"
       >
         <Input
-          register={register}
-          error={errors.email}
-          name={"email"}
           label={"Email"}
+          error={errors.email?.message}
+          {...register("email")}
         />
         <Input
-          register={register}
-          error={errors.password}
-          name={"password"}
           label={"Password"}
           type="password"
+          error={errors.password?.message}
+          {...register("password")}
         />
 
         <NavLink

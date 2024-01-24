@@ -1,6 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldValues, useForm } from "react-hook-form";
-import { resetPasswordRequestFormSchema } from "../types";
+import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  ResetPasswordRequestFormInputType,
+  resetPasswordRequestFormSchema,
+} from "../types";
 import { useMember } from "../../../hooks/useMember";
 import { Input } from "../../Input/Input";
 import { Button } from "../../Buttons/Button";
@@ -13,11 +16,16 @@ export const ResetPasswordRequestForm = () => {
     register,
     formState: { errors },
     reset,
-  } = useForm<FieldValues>({
+  } = useForm({
+    defaultValues: {
+      email: "",
+    },
     resolver: zodResolver(resetPasswordRequestFormSchema),
   });
 
-  const submit = async (data: FieldValues) => {
+  const submit: SubmitHandler<ResetPasswordRequestFormInputType> = async (
+    data
+  ) => {
     if (resetPasswordRequestFormSchema.parse(data)) {
       resetPasswordRequestMutation.resetPasswordRequest(data.email);
       reset();
@@ -52,12 +60,11 @@ export const ResetPasswordRequestForm = () => {
         onSubmit={handleSubmit(submit)}
       >
         <Input
-          name="email"
           label="Email"
-          register={register}
-          error={errors.email}
           type="email"
           placeholder={"Insert email..."}
+          error={errors.email?.message}
+          {...register("email")}
         />
         <Button
           content={"Send"}

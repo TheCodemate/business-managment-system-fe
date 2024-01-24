@@ -1,6 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 
 type Props = {
+
   onClick: () => void;
 };
 
