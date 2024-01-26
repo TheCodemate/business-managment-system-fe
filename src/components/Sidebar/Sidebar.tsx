@@ -5,14 +5,12 @@ import { Logo } from "../Logo/Logo";
 import { ExpandArrow } from "../ExpandArrow/ExpandArrow";
 import { SidebarNavLink } from "./SidebarMenuItem/SidebarMenuItem";
 import { SidebarNav } from "./SidebarNav/SidebarNav";
-import { useMember } from "../../hooks/useMember";
 
 type Props = {
   children: ReactElement | ReactElement[];
 };
 
 export const Sidebar = ({ children }: Props) => {
-  const { logoutMutation } = useMember();
   const [isExpanded, setIsExpanded] = useState(false);
   return (
     <SidebarContext.Provider value={{ isExpanded }}>

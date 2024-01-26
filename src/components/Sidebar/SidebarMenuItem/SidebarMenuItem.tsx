@@ -4,10 +4,11 @@ import { useSidebarContext } from "../context";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsIcon from "@mui/icons-material/Settings";
 import GroupsIcon from "@mui/icons-material/Groups";
+import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 
 type SidebarMenuItemProps = {
   text: string;
-  to: "" | "settings" | "customers";
+  to: "" | "settings" | "customers" | "products";
 };
 
 const sidebarIcons = {
@@ -16,6 +17,9 @@ const sidebarIcons = {
     <GroupsIcon sx={{ color: "#141414", width: 36, height: 36 }} />
   ),
   settings: <SettingsIcon sx={{ color: "#141414", width: 36, height: 36 }} />,
+  products: (
+    <BusinessCenterIcon sx={{ color: "#141414", width: 36, height: 36 }} />
+  ),
 };
 
 export const SidebarNavLink = ({ text, to }: SidebarMenuItemProps) => {

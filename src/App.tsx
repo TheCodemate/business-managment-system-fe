@@ -12,6 +12,7 @@ const Layout = () => {
         <MobileMenu.Nav>
           <MobileMenu.NavLink to="" text="Dashboard" />
           <MobileMenu.NavLink to="customers" text="Customers" />
+          <MobileMenu.NavLink to="products" text="Products" />
           <MobileMenu.NavLink to="settings" text="Settings" />
         </MobileMenu.Nav>
       </MobileMenu>
@@ -19,6 +20,7 @@ const Layout = () => {
         <Sidebar.Nav basis={"full"}>
           <Sidebar.NavLink to="" text="Dashboard" />
           <Sidebar.NavLink to="customers" text="Customers" />
+          <Sidebar.NavLink to="products" text="Products" />
         </Sidebar.Nav>
         <Sidebar.Nav basis={"2/12"}>
           <Sidebar.NavLink to="settings" text="Settings" />

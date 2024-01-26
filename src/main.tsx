@@ -15,6 +15,8 @@ import { ResetPasswordRequest } from "./routes/ResetPasswordRequest.tsx";
 import "./index.css";
 
 import App from "./App.tsx";
+import { Products } from "./routes/Products.tsx";
+import { ProductDetails } from "./routes/ProductDetails.tsx";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
           {
             path: "/settings",
             element: <Settings />,
+          },
+          {
+            path: "/products",
+            element: <Products />,
+          },
+          {
+            path: "/products/:id",
+            element: <ProductDetails />,
           },
         ],
       },
