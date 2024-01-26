@@ -4,10 +4,12 @@ import { Sidebar } from "./components/Sidebar/Sidebar";
 import { MobileMenu } from "./components/MobileMenu/MobileMenu";
 
 import "./App.css";
+import { ShoppingCart } from "./components/ShoppingCart/ShoppingCart";
 
 const Layout = () => {
   return (
-    <div className=" flex flex-col w-full h-full sm:flex-row mt-24 sm:mt-0">
+    <div className="flex flex-col w-full h-full sm:flex-row mt-24 sm:mt-0">
+      <ShoppingCart />
       <MobileMenu>
         <MobileMenu.Nav>
           <MobileMenu.NavLink to="" text="Dashboard" />
@@ -33,7 +35,7 @@ const Layout = () => {
 
 function App() {
   return (
-    <div className=" w-screen h-screen">
+    <div className="relative w-screen h-screen">
       <Layout />
     </div>
   );

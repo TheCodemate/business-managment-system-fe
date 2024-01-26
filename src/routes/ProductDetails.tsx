@@ -2,7 +2,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const ProductDetails = () => {
   const [count, setCount] = useState<number>(3.36);
@@ -13,10 +13,6 @@ export const ProductDetails = () => {
     setActiveTabIndex(index);
   };
   const navigate = useNavigate();
-  const params = useParams();
-
-  console.log("params: ", params.id);
-  console.log("state: ", product);
 
   const increase = () => {
     setCount((prev) => prev + 3.36);
@@ -30,11 +26,7 @@ export const ProductDetails = () => {
   return (
     <div className="flex w-full">
       <div className="flex-1">
-        <img
-          className="w-full h-full object-cover "
-          //   src="../../public/COSMOPOLITAN CP03 ARABESCATO ORO.jpg"
-          src={product.images[0]}
-        />
+        <img className="w-full h-full object-cover " src={product.images[0]} />
       </div>
       <div className="relative flex-1 flex p-12 flex-col h-full cursor-pointer">
         <div>
