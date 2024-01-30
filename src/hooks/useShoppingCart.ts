@@ -24,11 +24,9 @@ const modifyShoppingCart = async (cartItem: CartItemType) => {
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.log("error: ", error.message);
       throw new Error(error.response?.data.message);
     }
     if (error instanceof Error) {
-      console.log("error: ", error.message);
       throw new Error(error.message);
     }
 
