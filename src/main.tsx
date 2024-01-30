@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { Provider } from "./context/Provider.tsx";
+import { GlobalProvider } from "./context/GlobalProvider.tsx";
 import { PrivateRoutes } from "./components/PrivateRoutes/PrivateRoutes.tsx";
 import { Login } from "./routes/Login.tsx";
 import { Dashboard } from "./routes/Dashboard.tsx";
@@ -76,8 +76,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Provider>
+    <GlobalProvider>
       <RouterProvider router={router} />
-    </Provider>
+    </GlobalProvider>
   </React.StrictMode>
 );

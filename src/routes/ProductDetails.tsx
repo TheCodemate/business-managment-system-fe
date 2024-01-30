@@ -3,30 +3,34 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useShoppingCart } from "../hooks/useShoppingCart";
 
 export const ProductDetails = () => {
-  const [count, setCount] = useState<number>(3.36);
+  const {
+    modifyShoppingCartMutation: { modifyShoppingCartHandler },
+  } = useShoppingCart();
+  const [count, setCount] = useState<number>(0);
   const [activeTabIndex, setActiveTabIndex] = useState(1);
-  const { state: product } = useLocation();
+  const { state } = useLocation();
+  const navigate = useNavigate();
 
   const handleOnClick = (index: number) => {
     setActiveTabIndex(index);
   };
-  const navigate = useNavigate();
 
   const increase = () => {
-    setCount((prev) => prev + 3.36);
+    setCount((prev) => prev + state.packing.package);
   };
   const decrease = () => {
-    if (count > 3.36) {
-      setCount((prev) => prev - 3.36);
+    if (count > 0) {
+      setCount((prev) => prev - state.packing.package);
     }
   };
 
   return (
     <div className="flex w-full">
       <div className="flex-1">
-        <img className="w-full h-full object-cover " src={product.images[0]} />
+        <img className="w-full h-full object-cover " src={state.images[0]} />
       </div>
       <div className="relative flex-1 flex p-12 flex-col h-full cursor-pointer">
         <div>
@@ -38,11 +42,11 @@ export const ProductDetails = () => {
           </div>
         </div>
         <header className="mt-40">
-          <span className="text-lg tracking-widest">{product.brandName}</span>
-          <h2 className="text-4xl font-bold">{product.productName}</h2>
-          <span className="text-xs">Product code: {product.productCode}</span>
+          <span className="text-lg tracking-widest">{state.brandName}</span>
+          <h2 className="text-4xl font-bold">{state.productName}</h2>
+          <span className="text-xs">Product code: {state.productCode}</span>
           <p className="text-md font-light mt-8 mb-12">
-            {product.productDescription}
+            {state.productDescription}
           </p>
         </header>
         <main className="flex-1">
@@ -50,13 +54,13 @@ export const ProductDetails = () => {
             <div className="flex flex-col">
               <span className="text-lg font-bold">Cena:</span>
               <span className="text-2xl font-bold">
-                {product.price} <span className="font-light text-2xl">PLN</span>
+                {state.price} <span className="font-light text-2xl">PLN</span>
               </span>
             </div>
             <div className="flex flex-col">
               <span className="text-lg font-bold">Dostępność</span>
               <span className="text-2xl font-bold">
-                {product.stockAmount - count}
+                {state.stockAmount - count}
                 <span className="font-light text-2xl">M2</span>
               </span>
             </div>
@@ -125,7 +129,7 @@ export const ProductDetails = () => {
             <span className="font-light text-4xl">
               PLN
               <b className="font-extrabold text-4xl">
-                {(count * product.price).toFixed(2)}
+                {(count * state.price).toFixed(2)}
               </b>
             </span>
           </div>
@@ -136,8 +140,16 @@ export const ProductDetails = () => {
             <FavoriteBorderOutlinedIcon
               sx={{ color: "#141414", width: 36, height: 36 }}
             />
-            <button className="px-8 py-4 bg-primary border-primary text-alternate font-bold text-nowrap border rounded-3xl hover:bg-bgPrimary hover:border-primary hover:text-primary transition-all">
-              Zamów
+            <button
+              onClick={() =>
+                modifyShoppingCartHandler({
+                  product_id: state.productId,
+                  quantity: count,
+                })
+              }
+              className="px-8 py-4 bg-primary border-primary text-alternate font-bold text-nowrap border rounded-3xl hover:bg-bgPrimary hover:border-primary hover:text-primary transition-all"
+            >
+              Dodaj
             </button>
           </div>
         </footer>

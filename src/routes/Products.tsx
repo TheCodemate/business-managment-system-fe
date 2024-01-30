@@ -219,6 +219,7 @@ export const Products = () => {
         </div>
         <div className="flex items-center">
           <Button
+            //this onClick must be replaced as soon as AddProduct form will be created
             onClick={() => console.log("clicked button")}
             content={"Add product"}
           />
