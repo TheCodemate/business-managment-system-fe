@@ -92,7 +92,7 @@ const slipResistantSchema = z.object({
   DIN51130: z.array(z.enum(["R9", "R10", "R11", "R12", "R13"])),
 });
 
-const productSchema = z.object({
+export const productSchema = z.object({
   productName: z.string(),
   productDescription: z.string(),
   productCode: z.string(),
