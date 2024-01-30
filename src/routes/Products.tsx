@@ -1,8 +1,9 @@
 import GridViewIcon from "@mui/icons-material/GridView";
 import { Button } from "../components/Buttons/Button";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const Products = () => {
+  const navigate = useNavigate();
   const products = [
     {
       productId: "asdfa-asfawe45434fe-asfas-45vratve",
@@ -317,15 +318,16 @@ export const Products = () => {
                       <button className="px-4 py-2 bg-bgSecondary rounded-md hover:bg-details transition-all">
                         Remove
                       </button>
-                      <NavLink
-                        to={{
-                          pathname: `/products/${product.productId}`,
-                        }}
-                        state={product}
+                      <button
+                        onClick={() =>
+                          navigate(`/products/${product.productId}`, {
+                            state: product,
+                          })
+                        }
                         className="px-4 py-2 bg-bgSecondary rounded-md hover:bg-details transition-all"
                       >
                         Details
-                      </NavLink>
+                      </button>
                     </div>
                   </td>
                 </tr>
