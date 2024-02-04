@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Loading } from "../Loading/Loading";
 import { ShoppingCartItem } from "./components/ShoppingCartItem/ShoppingCartItem";
 import { Header } from "./components/Header/Header";
-import { useCartItems } from "../../services/querries";
+import { useCartItems } from "../../services/queries";
 
 export const ShoppingCart = () => {
   const { data, isPending } = useCartItems();

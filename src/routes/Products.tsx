@@ -1,6 +1,7 @@
 import GridViewIcon from "@mui/icons-material/GridView";
 import { Button } from "../components/Buttons/Button";
 import { useNavigate } from "react-router-dom";
+import { useProducts } from "../services/queries";
 
 export const Products = () => {
   const navigate = useNavigate();

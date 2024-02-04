@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCartItems, getCustomers } from "./controllers";
+import { getCartItems, getCustomers, getProducts } from "./controllers";
 
 export const useCartItems = () => {
   return useQuery({
@@ -12,5 +12,12 @@ export const useCustomers = () => {
   return useQuery({
     queryKey: ["customers"],
     queryFn: getCustomers,
+  });
+};
+
+export const useProducts = () => {
+  return useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
   });
 };
