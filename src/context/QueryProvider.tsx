@@ -5,7 +5,13 @@ type Props = {
   children: ReactElement | ReactElement[];
 };
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export const QueryProvider = ({ children }: Props) => {
   return (

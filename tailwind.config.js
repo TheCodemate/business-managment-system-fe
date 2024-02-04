@@ -2,6 +2,7 @@
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  important: "#root",
   theme: {
     colors: {
       primary: "#141414",
@@ -23,7 +24,21 @@ export default {
       confirmAlternate: "#22CC00",
       elementsColor: "#4A4A4A",
     },
-    extend: {},
+
+    extend: {
+      dropShadow: {
+        inset: [
+          "-10px -10px 10px rgba(255, 255, 255, 0.7)",
+          "10px 10px 10px rgba(174, 174, 192, 0.2)",
+        ],
+      },
+      scale: {
+        101: "1.01",
+      },
+      transitionProperty: {
+        gridTemplateRows: "grid-template-rows",
+      },
+    },
+    plugins: [],
   },
-  plugins: [],
 };

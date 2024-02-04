@@ -10,12 +10,6 @@ const addressSchema = z.object({
   street: z
     .string()
     .min(2, { message: "Street name must be 2 chars long at least." }),
-  // streetNumber: doesStringContainNumbersOnly(
-  //   z
-  //     .string()
-  //     .min(1, { message: "Street number must be provided" })
-  //     .max(5, { message: "Street number cannot be longer than 5 digits" })
-  // ),
   streetNumber: z
     .string()
     .min(1, { message: "Street number must be provided" })
@@ -69,4 +63,73 @@ export const customerSchema = z.object({
   note: z.string().max(2000).optional(),
 });
 
+const packingSchema = z.object({
+  package: z.number(),
+  pallete: z.number(),
+});
+
+const dimensionSchema = z.object({
+  metric: z.object({
+    distanceUnit: z.string(),
+    height: z.number(),
+    width: z.number(),
+    thickness: z.number(),
+    weight: z.number(),
+    weightUnit: z.string(),
+  }),
+  imperial: z.object({
+    distanceUnit: z.string(),
+    height: z.number(),
+    width: z.number(),
+    thickness: z.number(),
+    weight: z.number(),
+    weightUnit: z.string(),
+  }),
+});
+
+const slipResistantSchema = z.object({
+  DIN51097: z.array(z.enum(["A", "B", "C"])),
+  DIN51130: z.array(z.enum(["R9", "R10", "R11", "R12", "R13"])),
+});
+
+export const productSchema = z.object({
+  productId: z.string(),
+  productName: z.string(),
+  productDescription: z.string(),
+  productCode: z.string(),
+  categories: z.array(z.string()),
+  price: z.number(),
+  stockAmount: z.number(),
+  productProducer: z.string(),
+  brandName: z.string(),
+  color: z.string(),
+  packing: packingSchema,
+  dimensions: dimensionSchema,
+  material: z.string(),
+  finish: z.string(),
+  slipResistance: slipResistantSchema,
+  createdDate: z.string(),
+  updatedDate: z.string(),
+  isActive: z.boolean(),
+  images: z.array(z.string()),
+});
+
+export const cartItemRequestSchema = z.object({
+  product_id: z.string(),
+  quantity: z.number(),
+});
+
+const cartItemResponseSchema = z.object({
+  cart_item_id: z.string(),
+  shopping_cart_id: z.string(),
+  product_id: z.string(),
+  quantity: z.number(),
+  created_at: z.date(),
+  updated_at: z.date(),
+  product: productSchema,
+});
+
+export type CartItemType = z.infer<typeof cartItemRequestSchema>;
+export type CartItemResponseType = z.infer<typeof cartItemResponseSchema>;
 export type CustomerType = z.infer<typeof customerSchema>;
+export type ProductType = z.infer<typeof productSchema>;

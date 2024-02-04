@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { QueryProvider } from "./QueryProvider";
 import { AuthProvider } from "./AuthProvider";
 
@@ -6,7 +6,7 @@ type Props = {
   children: ReactElement | ReactElement[];
 };
 
-export const Provider = ({ children }: Props) => {
+export const GlobalProvider = ({ children }: Props) => {
   return (
     <QueryProvider>
       <AuthProvider>{children}</AuthProvider>

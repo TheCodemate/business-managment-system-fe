@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { Provider } from "./context/Provider.tsx";
+import { GlobalProvider } from "./context/GlobalProvider.tsx";
 import { PrivateRoutes } from "./components/PrivateRoutes/PrivateRoutes.tsx";
 import { Login } from "./routes/Login.tsx";
 import { Dashboard } from "./routes/Dashboard.tsx";
@@ -15,6 +15,9 @@ import { ResetPasswordRequest } from "./routes/ResetPasswordRequest.tsx";
 import "./index.css";
 
 import App from "./App.tsx";
+import { Products } from "./routes/Products.tsx";
+import { ProductDetails } from "./routes/ProductDetails.tsx";
+import { Order } from "./routes/Order.tsx";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +40,18 @@ const router = createBrowserRouter([
           {
             path: "/settings",
             element: <Settings />,
+          },
+          {
+            path: "/products",
+            element: <Products />,
+          },
+          {
+            path: "/products/:id",
+            element: <ProductDetails />,
+          },
+          {
+            path: "/shopping-cart",
+            element: <Order />,
           },
         ],
       },
@@ -66,8 +81,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Provider>
+    <GlobalProvider>
       <RouterProvider router={router} />
-    </Provider>
+    </GlobalProvider>
   </React.StrictMode>
 );

@@ -1,15 +1,15 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { NavLink } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { useMember } from "../../../hooks/useMember";
+import { useLogin } from "../../../services/mutations";
 
 import { Input } from "../../Input/Input";
 import { Button } from "../../Buttons/Button";
+
 import { LoginFormInputsType, loginFormSchema } from "../types";
 
 export const LoginForm = () => {
-  const { loginMutation } = useMember();
+  const { error, mutate: login } = useLogin();
   const {
     register,
     handleSubmit,
@@ -20,12 +20,10 @@ export const LoginForm = () => {
     resolver: zodResolver(loginFormSchema),
   });
   const submit: SubmitHandler<LoginFormInputsType> = async (data) => {
-    if (loginFormSchema.parse(data)) {
-      loginMutation.login({
-        email: data.email,
-        password: data.password,
-      });
-    }
+    login({
+      email: data.email,
+      password: data.password,
+    });
     reset();
   };
 
@@ -33,12 +31,12 @@ export const LoginForm = () => {
     <div className="flex flex-col justify-center mx-auto my-0 max-w-md p-12 shadow-lg rounded-lg mt-0 bg-bgPrimary">
       <p className="text-3xl mb-0 text-left font-bold">Welcome!</p>
       <h1 className="text-xl mb-6 font-medium">Login to your account</h1>
-      {loginMutation.error ? (
+      {error ? (
         <div
           role="alert"
           className="w-full bg-redPrimary border-redSecondary text-redSecondary p-2 mb-4 border rounded-lg"
         >
-          {loginMutation.error}
+          {error.message}
         </div>
       ) : null}
       <div hidden id="login-form">
