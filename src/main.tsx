@@ -17,6 +17,7 @@ import "./index.css";
 import App from "./App.tsx";
 import { Products } from "./routes/Products.tsx";
 import { ProductDetails } from "./routes/ProductDetails.tsx";
+import { Order } from "./routes/Order.tsx";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
           {
             path: "/products/:id",
             element: <ProductDetails />,
+          },
+          {
+            path: "/shopping-cart",
+            element: <Order />,
           },
         ],
       },

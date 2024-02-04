@@ -23,6 +23,7 @@ const Layout = () => {
           <Sidebar.NavLink to="" text="Dashboard" />
           <Sidebar.NavLink to="customers" text="Customers" />
           <Sidebar.NavLink to="products" text="Products" />
+          <Sidebar.NavLink to="shopping-cart" text="Shopping Cart" />
         </Sidebar.Nav>
         <Sidebar.Nav basis={"2/12"}>
           <Sidebar.NavLink to="settings" text="Settings" />
