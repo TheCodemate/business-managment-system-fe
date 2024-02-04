@@ -1,4 +1,4 @@
-import { useCartItems } from "../../services/querries";
+import { useCartItems } from "../../services/queries";
 import MUIShoppingCartItem from "@mui/icons-material/ShoppingCart";
 
 export const ShoppingCartIcon = () => {

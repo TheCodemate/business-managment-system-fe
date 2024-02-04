@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-import { useCustomers } from "../../services/querries";
+import { useCustomers } from "../../services/queries";
 
 import { Button } from "../../components/Buttons/Button";
 import { Modal } from "../../components/Modal/Modal";

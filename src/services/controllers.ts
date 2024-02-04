@@ -1,6 +1,16 @@
 import { AxiosError } from "axios";
-import { axiosUser, axiosShoppingCart, axiosCustomer } from "../api/axios";
-import { CartItemResponseType, CartItemType, CustomerType } from "../types";
+import {
+  axiosUser,
+  axiosShoppingCart,
+  axiosCustomer,
+  axiosProducts,
+} from "../api/axios";
+import {
+  CartItemResponseType,
+  CartItemType,
+  CustomerType,
+  ProductType,
+} from "../types";
 
 export const addToCart = async (cartItem: CartItemType) => {
   try {
@@ -148,9 +158,33 @@ export const addCustomer = async (customer: CustomerType) => {
 
 export const getCustomers = async () => {
   try {
-    const data = await axiosCustomer.get("http://localhost:8081/api/customers");
+    const { data } = await axiosCustomer.get<CustomerType[]>(
+      "http://localhost:8081/api/customers"
+    );
 
-    return data.data as unknown as CustomerType[];
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.message);
+    }
+
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(
+      "Could not fetch data. Unknown error occurred. Try again later."
+    );
+  }
+};
+
+export const getProducts = async () => {
+  try {
+    const { data } = await axiosProducts.get<ProductType[]>("/", {
+      withCredentials: true,
+    });
+
+    return data;
   } catch (error) {
     if (error instanceof AxiosError) {
       throw new Error(error.message);
