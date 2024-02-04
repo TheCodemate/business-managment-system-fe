@@ -10,7 +10,7 @@ import { useAddToCart } from "../services/mutations";
 export const ProductDetails = () => {
   const { mutate: addToCart } = useAddToCart();
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const { state: product } = useLocation();
   const [activeTabIndex, setActiveTabIndex] = useState(1);
   const [count, setCount] = useState<number>(0);
 
@@ -18,38 +18,43 @@ export const ProductDetails = () => {
     setActiveTabIndex(index);
   };
 
-  const addToShoppingCartHandler = () => {
+  const addToShoppingCartHandler = (productId: string, quantity: number) => {
     addToCart({
-      product_id: state.productId,
-      quantity: count,
+      product_id: productId,
+      quantity: quantity,
     });
   };
 
-  const increase = () => {
-    if (
-      state.stockAmount < count ||
-      state.stockAmount - count < state.packing.package
-    ) {
-      setCount((prev) => prev + (state.stockAmount - count));
+  const increase = (stockAmount: number, packing: number) => {
+    if (stockAmount < count || stockAmount - count < packing) {
+      setCount((prev) => prev + (stockAmount - count));
       return;
     }
 
-    setCount((prev) => prev + state.packing.package);
+    setCount((prev) => prev + packing);
   };
-  const decrease = () => {
-    if (count <= state.packing.package) {
+  const decrease = (packing: number) => {
+    if (count <= packing) {
       setCount((prev) => prev - count);
       return;
     }
-    setCount((prev) => prev - state.packing.package);
+    setCount((prev) => prev - packing);
   };
+
+  if (!product) {
+    return (
+      <div className="flex w-full">
+        <p>Product not available at the moment</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex w-full">
       <div className="flex-1">
-        <img className="w-full h-full object-cover " src={state.images[0]} />
+        <img className="w-full h-full object-cover " src={product.images[0]} />
       </div>
-      <div className="relative flex-1 flex p-12 flex-col h-full cursor-pointer">
+      <div className="relative flex-1 flex p-12 flex-col h-full w-full cursor-pointer">
         <div>
           <div
             onClick={() => navigate(-1)}
@@ -59,11 +64,11 @@ export const ProductDetails = () => {
           </div>
         </div>
         <header className="mt-40">
-          <span className="text-lg tracking-widest">{state.brandName}</span>
-          <h2 className="text-4xl font-bold">{state.productName}</h2>
-          <span className="text-xs">Product code: {state.productCode}</span>
+          <span className="text-lg tracking-widest">{product.brand_name}</span>
+          <h2 className="text-4xl font-bold">{product.product_name}</h2>
+          <span className="text-xs">Product code: {product.product_code}</span>
           <p className="text-md font-light mt-8 mb-12">
-            {state.productDescription}
+            {product.product_description}
           </p>
         </header>
         <main className="flex-1">
@@ -71,26 +76,28 @@ export const ProductDetails = () => {
             <div className="flex flex-col">
               <span className="text-lg font-bold">Cena:</span>
               <span className="text-2xl font-bold">
-                {state.price} <span className="font-light text-2xl">PLN</span>
+                {product.price} <span className="font-light text-2xl">PLN</span>
               </span>
             </div>
             <div className="flex flex-col">
               <span className="text-lg font-bold">Dostępność</span>
               <span className="text-2xl font-bold">
-                {state.stockAmount}
+                <span>{product.stock_amount} </span>
                 <span className="font-light text-2xl">M2</span>
               </span>
             </div>
             <div className="flex justify-between items-center w-1/5 bg-bgPrimary rounded-full px-4 py-2 ">
               <button
-                onClick={decrease}
+                onClick={() => decrease(product.stock_amount)}
                 className="font-bold active:text-details"
               >
                 -
               </button>
               <span className="p-1 bg-bgPrimary">{count.toFixed(2)}</span>
               <button
-                onClick={increase}
+                onClick={() =>
+                  increase(product.stock_amount, product.packing.package)
+                }
                 className="font-bold active:text-details"
               >
                 +
@@ -149,7 +156,9 @@ export const ProductDetails = () => {
               sx={{ color: "#141414", width: 36, height: 36 }}
             />
             <button
-              onClick={addToShoppingCartHandler}
+              onClick={() =>
+                addToShoppingCartHandler(product.product_id, count)
+              }
               className={`px-8 py-4 bg-primary border-primary text-alternate font-bold text-nowrap border rounded-3xl hover:bg-bgPrimary hover:border-primary hover:text-primary transition-all`}
             >
               Dodaj
