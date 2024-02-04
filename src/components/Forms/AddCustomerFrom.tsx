@@ -1,13 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useAddCustomer } from "../../services/mutations";
+import { useCustomer } from "../../hooks/useCustomer";
+
+import { delay } from "../../utils/delay";
 import { Button } from "../Buttons/Button";
 import { CloseButton } from "../Buttons/CloseButton";
-import { CustomerType, customerSchema } from "../../types";
 import { Input } from "../Input/Input";
 import { Select } from "../Select/Select";
 import { CheckboxButton } from "../Buttons/CheckboxButton";
-import { useCustomer } from "../../hooks/useCustomer";
-import { delay } from "../../utils/delay";
+import { CustomerType, customerSchema } from "../../types";
 
 type AddCustomerFromProps = {
   onCloseHandler: () => void;
@@ -38,6 +40,7 @@ const defaultValues: CustomerType = {
 };
 
 export const AddCustomerForm = ({ onCloseHandler }: AddCustomerFromProps) => {
+  const { mutate: addCustomer } = useAddCustomer();
   const { addCustomerMutation } = useCustomer();
   const {
     register,
@@ -58,12 +61,10 @@ export const AddCustomerForm = ({ onCloseHandler }: AddCustomerFromProps) => {
   const onErrorHandler = (error: Error) => error.message;
 
   const submit: SubmitHandler<CustomerType> = (data) => {
-    if (customerSchema.parse(data)) {
-      addCustomerMutation.addCustomer(data, {
-        onSuccess: onSuccessHandler,
-        onError: onErrorHandler,
-      });
-    }
+    addCustomer(data, {
+      onSuccess: onSuccessHandler,
+      onError: onErrorHandler,
+    });
   };
 
   return (

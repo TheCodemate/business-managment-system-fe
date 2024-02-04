@@ -1,11 +1,12 @@
-import { ProductType } from "../../../../types";
+import { CartItemResponseType } from "../../../../types";
 
 type Props = {
-  product: ProductType;
-  quantity: number;
+  cartItem: CartItemResponseType;
 };
 
-export const ShoppingCartItem = ({ product, quantity }: Props) => {
+export const ShoppingCartItem = ({
+  cartItem: { quantity, product },
+}: Props) => {
   return (
     <li className="border-b border-details pb-2">
       <div className="flex justify-between ">
@@ -14,10 +15,10 @@ export const ShoppingCartItem = ({ product, quantity }: Props) => {
         </div>
         <div className="flex-1 flex flex-col justify-between p-2">
           <span className="font-bold">{product.productName}</span>
-          <span>{product.price}</span>
+          <span>{Number(product.price).toFixed(2)}</span>
         </div>
         <div className="flex justify-center items-center p-2">
-          <span>{quantity}m2 </span>
+          <span>{Number(quantity).toFixed(2)}m2 </span>
         </div>
       </div>
     </li>

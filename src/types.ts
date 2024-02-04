@@ -93,6 +93,7 @@ const slipResistantSchema = z.object({
 });
 
 export const productSchema = z.object({
+  productId: z.string(),
   productName: z.string(),
   productDescription: z.string(),
   productCode: z.string(),
@@ -113,5 +114,22 @@ export const productSchema = z.object({
   images: z.array(z.string()),
 });
 
+export const cartItemRequestSchema = z.object({
+  product_id: z.string(),
+  quantity: z.number(),
+});
+
+const cartItemResponseSchema = z.object({
+  cart_item_id: z.string(),
+  shopping_cart_id: z.string(),
+  product_id: z.string(),
+  quantity: z.number(),
+  created_at: z.date(),
+  updated_at: z.date(),
+  product: productSchema,
+});
+
+export type CartItemType = z.infer<typeof cartItemRequestSchema>;
+export type CartItemResponseType = z.infer<typeof cartItemResponseSchema>;
 export type CustomerType = z.infer<typeof customerSchema>;
 export type ProductType = z.infer<typeof productSchema>;

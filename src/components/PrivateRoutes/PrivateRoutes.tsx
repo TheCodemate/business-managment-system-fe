@@ -2,11 +2,11 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../context/AuthProvider";
 import { Loading } from "../Loading/Loading";
-import { axiosMember } from "../../api/axios";
+import { axiosUser } from "../../api/axios";
 
 const authenticationHandler = async () => {
   try {
-    const { data } = await axiosMember({
+    const { data } = await axiosUser({
       withCredentials: true,
     });
     return data;

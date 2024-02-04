@@ -4,12 +4,17 @@ import {
   ResetPasswordRequestFormInputType,
   resetPasswordRequestFormSchema,
 } from "../types";
-import { useMember } from "../../../hooks/useMember";
 import { Input } from "../../Input/Input";
 import { Button } from "../../Buttons/Button";
+import { useRequestUserPasswordReset } from "../../../services/mutations";
 
 export const ResetPasswordRequestForm = () => {
-  const { resetPasswordRequestMutation } = useMember();
+  const {
+    data,
+    mutate: sendResetUserPasswordRequest,
+    error,
+    isPending,
+  } = useRequestUserPasswordReset();
 
   const {
     handleSubmit,
@@ -26,10 +31,8 @@ export const ResetPasswordRequestForm = () => {
   const submit: SubmitHandler<ResetPasswordRequestFormInputType> = async (
     data
   ) => {
-    if (resetPasswordRequestFormSchema.parse(data)) {
-      resetPasswordRequestMutation.resetPasswordRequest(data.email);
-      reset();
-    }
+    sendResetUserPasswordRequest(data.email);
+    reset();
   };
 
   return (
@@ -39,20 +42,20 @@ export const ResetPasswordRequestForm = () => {
         Insert your email and press reset button. We will send you reset link
         immediately
       </p>
-      {resetPasswordRequestMutation.error ? (
+      {error ? (
         <div
           role="alert"
           className="w-full bg-redPrimary border-redSecondary text-redSecondary p-2 mb-4 border rounded-lg"
         >
-          {resetPasswordRequestMutation.error}
+          {error.message}
         </div>
       ) : null}
-      {resetPasswordRequestMutation.confirmationMessage ? (
+      {data.message ? (
         <div
           role="alert"
           className="w-full bg-confirmBasic border-confirmBasic text-confirmAlternate p-2 mb-4 border rounded-lg"
         >
-          {resetPasswordRequestMutation.confirmationMessage}
+          {data.message}
         </div>
       ) : null}
       <form
@@ -66,10 +69,7 @@ export const ResetPasswordRequestForm = () => {
           error={errors.email?.message}
           {...register("email")}
         />
-        <Button
-          content={"Send"}
-          disabled={resetPasswordRequestMutation.isPending}
-        />
+        <Button content={"Send"} disabled={isPending} />
       </form>
     </div>
   );
