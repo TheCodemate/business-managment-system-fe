@@ -15,9 +15,10 @@ import {
 export const addToCart = async (cartItem: CartItemType) => {
   try {
     const { data } = await axiosShoppingCart.post<{ message: string }>(
-      `/`,
+      `/add-to-cart`,
       {
-        cartItem: cartItem,
+        product_id: cartItem.product_id,
+        quantity: cartItem.quantity,
       },
       { withCredentials: true }
     );
@@ -197,5 +198,50 @@ export const getProducts = async () => {
     throw new Error(
       "Could not fetch data. Unknown error occurred. Try again later."
     );
+  }
+};
+
+export const removeFromCart = async (cartItem: CartItemType) => {
+  try {
+    const { data } = await axiosShoppingCart.post<{ message: string }>(
+      `/remove-from-cart`,
+      {
+        cartItem: cartItem,
+      },
+      { withCredentials: true }
+    );
+
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+export const deleteCartItem = async (cartItemId: string) => {
+  try {
+    const { data } = await axiosShoppingCart.post<{ message: string }>(
+      `/delete-cart-item`,
+      {
+        cartItemId,
+      },
+      { withCredentials: true }
+    );
+
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
   }
 };

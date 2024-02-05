@@ -9,7 +9,7 @@ import { ShoppingCartIcon } from "../../Icons/ShoppingCartIcon";
 
 type SidebarMenuItemProps = {
   text: string;
-  to: "" | "settings" | "customers" | "products" | "shopping-cart";
+  to: "" | "settings" | "customers" | "products" | "order";
 };
 
 const sidebarIcons = {
@@ -21,7 +21,7 @@ const sidebarIcons = {
   products: (
     <BusinessCenterIcon sx={{ color: "#141414", width: 36, height: 36 }} />
   ),
-  ["shopping-cart"]: <ShoppingCartIcon />,
+  ["order"]: <ShoppingCartIcon />,
 };
 
 export const SidebarNavLink = ({ text, to }: SidebarMenuItemProps) => {

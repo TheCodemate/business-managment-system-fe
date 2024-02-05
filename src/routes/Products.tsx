@@ -3,36 +3,42 @@ import { Button } from "../components/Buttons/Button";
 import { useNavigate } from "react-router-dom";
 import { useProducts } from "../services/queries";
 import { Loading } from "../components/Loading/Loading";
+import { useAddToCart } from "../services/mutations";
 
 export const Products = () => {
   const navigate = useNavigate();
-  const { data: products, isPending } = useProducts();
+  const { data: products, isPending: isProductPending } = useProducts();
+  const { isPending: isAddToCartPending, mutate: addToCart } = useAddToCart();
+
   return (
     <div className="flex flex-1 flex-col">
-      <header className="flex flex-col gap-5 justify-center h-[250px] bg-bgPrimary px-12 sm:flex-row sm:justify-between sm:gap-10">
+      <header className="flex flex-col gap-5 justify-center p-12 bg-bgPrimary px-12 sm:flex-row sm:justify-between sm:gap-10">
         <div className="flex flex-col justify-center">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mb-4">
             <GridViewIcon className="text-fontPrimary" />
-            <h2 className="text-fontPrimary text-2xl text font-bold">
-              Products list
+            <h2 className="text-fontPrimary align-center  text-2xl text font-bold">
+              Lista produktów w ofercie
             </h2>
           </div>
-          <p className="text-fontPrimary text-sm">
-            Find your product and check all the details: availability, params,
-            pictures, description and many more.
+          <p className="text-fontPrimary max-w-[75%] text-sm">
+            W tej sekcji znajdziesz wszystkie dostępne produkty. W tym miejscu
+            mozesz dodać produkt do Twojej listy zamowien klikajac przyczycisk
+            "Dodaj" lub dowiedzieć się więcej o produkcie klikając przycisk
+            "Szczegóły". Pamiętaj, produkt mozesz rowniez zamówić po przejściu
+            do karty "Szczegóły".
           </p>
         </div>
         <div className="flex items-center">
           <Button
             //this onClick must be replaced as soon as AddProduct form will be created
             onClick={() => console.log("clicked button")}
-            content={"Add product"}
+            content={"Dodaj nowy produkt"}
           />
         </div>
       </header>
       <main className="flex flex-col h-full w-full p-8 overflow-x-auto">
         <div className="flex flex-col w-full gap-2">
-          {isPending ? (
+          {isProductPending ? (
             <Loading color="#141414" />
           ) : (
             <table className="w-full border-separate border-spacing-x-0 border-spacing-y-4">
@@ -90,7 +96,7 @@ export const Products = () => {
                 {products
                   ? products.map((product) => (
                       <tr
-                        key={product.product_code}
+                        key={product.product_id}
                         className="w-full bg-bgPrimary rounded-lg px-8 py-4 cursor-pointer first:rounded-l-lg last:rounded-r-lg hover:scale-101 transition-all"
                       >
                         <td className="flex-col p-4">
@@ -119,17 +125,11 @@ export const Products = () => {
                           </div>
                         </td>
                         <td className="p-4">Options</td>
-                        <td className="p-4">{product.price}</td>
-                        <td className="p-4">{product.stock_amount}</td>
+                        <td className="p-4">{product.price}PLN</td>
+                        <td className="p-4">{product.stock_amount}m2</td>
                         <td className="p-4">{product.product_code}</td>
                         <td className="p-4">
                           <div className="flex gap-2 font-bold text-xs">
-                            <button className="px-4 py-2 bg-bgSecondary rounded-md hover:bg-details transition-all">
-                              Edit
-                            </button>
-                            <button className="px-4 py-2 bg-bgSecondary rounded-md hover:bg-details transition-all">
-                              Remove
-                            </button>
                             <button
                               onClick={() =>
                                 navigate(`/products/${product.product_id}`, {
@@ -138,7 +138,22 @@ export const Products = () => {
                               }
                               className="px-4 py-2 bg-bgSecondary rounded-md hover:bg-details transition-all"
                             >
-                              Details
+                              Więcej
+                            </button>
+                            <button
+                              onClick={() =>
+                                addToCart({
+                                  product_id: product.product_id,
+                                  quantity: Number(product.package),
+                                })
+                              }
+                              className="px-4 py-2 bg-primary text-textAlternate font-bold rounded-md hover:bg-details hover:scale-105 transition-all cursor-pointer "
+                            >
+                              {isAddToCartPending ? (
+                                <Loading color={"#141414"} />
+                              ) : (
+                                "Dodaj"
+                              )}
                             </button>
                           </div>
                         </td>

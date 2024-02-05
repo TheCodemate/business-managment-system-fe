@@ -63,33 +63,9 @@ export const customerSchema = z.object({
   note: z.string().max(2000).optional(),
 });
 
-const packingSchema = z.object({
-  package: z.number(),
-  pallete: z.number(),
-});
-
-const dimensionSchema = z.object({
-  metric: z.object({
-    distanceUnit: z.string(),
-    height: z.number(),
-    width: z.number(),
-    thickness: z.number(),
-    weight: z.number(),
-    weightUnit: z.string(),
-  }),
-  imperial: z.object({
-    distanceUnit: z.string(),
-    height: z.number(),
-    width: z.number(),
-    thickness: z.number(),
-    weight: z.number(),
-    weightUnit: z.string(),
-  }),
-});
-
-const slipResistantSchema = z.object({
-  DIN51097: z.array(z.enum(["A", "B", "C"])),
-  DIN51130: z.array(z.enum(["R9", "R10", "R11", "R12", "R13"])),
+export const cartItemRequestSchema = z.object({
+  product_id: z.string(),
+  quantity: z.number(),
 });
 
 export const productSchema = z.object({
@@ -100,23 +76,25 @@ export const productSchema = z.object({
   categories: z.array(z.string()),
   price: z.number(),
   stock_amount: z.number(),
-  product_producer: z.string(),
+  producer: z.string(),
   brand_name: z.string(),
   color: z.string(),
-  packing: packingSchema,
-  dimensions: dimensionSchema,
+  package: z.number(),
+  pallete: z.number(),
+  size_unit: z.string(),
+  height: z.number(),
+  width: z.number(),
+  thickness: z.number(),
+  weight: z.number(),
+  weight_unit: z.string(),
   material: z.string(),
   finish: z.string(),
-  slip_resistance: slipResistantSchema,
-  created_date: z.string(),
-  updated_date: z.string(),
+  slip_resistance_DIN51097: z.array(z.string()),
+  slip_resistance_DIN51130: z.string(),
+  created_date: z.date(),
+  updated_date: z.date(),
   is_active: z.boolean(),
   images: z.array(z.string()),
-});
-
-export const cartItemRequestSchema = z.object({
-  product_id: z.string(),
-  quantity: z.number(),
 });
 
 const cartItemResponseSchema = z.object({

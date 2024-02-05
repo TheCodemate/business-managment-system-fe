@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Loading } from "../Loading/Loading";
 import { ShoppingCartItem } from "./components/ShoppingCartItem/ShoppingCartItem";
 import { Header } from "./components/Header/Header";
@@ -8,11 +8,6 @@ import { useCartItems } from "../../services/queries";
 export const ShoppingCart = () => {
   const { data, isPending } = useCartItems();
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    setIsOpen((prev) => !prev);
-    setTimeout(() => setIsOpen((prev) => !prev), 2000);
-  }, [data]);
 
   return (
     <aside

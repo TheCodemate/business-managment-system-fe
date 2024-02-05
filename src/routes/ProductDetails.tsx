@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -8,9 +8,9 @@ import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutl
 import { useAddToCart } from "../services/mutations";
 
 export const ProductDetails = () => {
-  const { mutate: addToCart } = useAddToCart();
   const navigate = useNavigate();
   const { state: product } = useLocation();
+  const { mutate: addToCart } = useAddToCart();
   const [activeTabIndex, setActiveTabIndex] = useState(1);
   const [count, setCount] = useState<number>(0);
 
@@ -40,14 +40,6 @@ export const ProductDetails = () => {
     }
     setCount((prev) => prev - packing);
   };
-
-  if (!product) {
-    return (
-      <div className="flex w-full">
-        <p>Product not available at the moment</p>
-      </div>
-    );
-  }
 
   return (
     <div className="flex w-full">
@@ -93,10 +85,10 @@ export const ProductDetails = () => {
               >
                 -
               </button>
-              <span className="p-1 bg-bgPrimary">{count.toFixed(2)}</span>
+              <span className="p-1 bg-bgPrimary">{count}</span>
               <button
                 onClick={() =>
-                  increase(product.stock_amount, product.packing.package)
+                  increase(product.stock_amount, Number(product.package))
                 }
                 className="font-bold active:text-details"
               >
@@ -149,9 +141,11 @@ export const ProductDetails = () => {
         </main>
         <footer className="flex justify-end border-t border-details pt-2">
           <div className="flex items-center gap-8">
-            <ShoppingCartOutlinedIcon
-              sx={{ color: "#141414", width: 36, height: 36 }}
-            />
+            <NavLink to="/order">
+              <ShoppingCartOutlinedIcon
+                sx={{ color: "#141414", width: 36, height: 36 }}
+              />
+            </NavLink>
             <FavoriteBorderOutlinedIcon
               sx={{ color: "#141414", width: 36, height: 36 }}
             />
