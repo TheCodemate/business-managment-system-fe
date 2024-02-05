@@ -8,6 +8,8 @@ import {
   registerUser,
   requestUserPasswordReset,
   resetUserPassword,
+  removeFromCart,
+  deleteCartItem,
 } from "./controllers";
 import { queryClient } from "../context/QueryProvider";
 import { useNavigate } from "react-router-dom";
@@ -94,9 +96,33 @@ export const useAddToCart = () => {
   });
 };
 
+export const useRemoveFromCart = () => {
+  return useMutation({
+    mutationFn: (cartItem: CartItemType) => removeFromCart(cartItem),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      return data;
+    },
+    onError: (error) => {
+      return error.message;
+    },
+  });
+};
+
 export const useAddCustomer = () => {
   return useMutation({
     mutationFn: (data: CustomerType) => addCustomer(data),
     onError: (error) => error.message,
+  });
+};
+
+export const useDeleteCartItem = () => {
+  return useMutation({
+    mutationFn: (cartItemId: string) => deleteCartItem(cartItemId),
+    onError: (error) => error.message,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      return data;
+    },
   });
 };

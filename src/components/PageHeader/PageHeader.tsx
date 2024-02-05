@@ -6,11 +6,11 @@ type Props = {
   title: string;
   content: string;
   buttonContent: string;
-  icon: IconTypes;
+  icon?: IconTypes;
   onClick: () => void;
 };
 
-export const PagerHeader = ({
+export const PageHeader = ({
   content,
   title,
   buttonContent,
@@ -18,9 +18,9 @@ export const PagerHeader = ({
   onClick,
 }: Props) => {
   return (
-    <header className="flex flex-col gap-5 justify-center h-[250px] bg-bgPrimary px-12 sm:flex-row sm:justify-between sm:gap-10">
-      <div className="flex flex-col justify-center">
-        <div className="flex flex-col">
+    <header className="flex flex-col gap-5 justify-center bg-bgPrimary p-12 sm:flex-row sm:justify-between sm:gap-10">
+      <div className="flex flex-col justify-start sm:max-w-[60%] ">
+        <div className="flex items-center mb-8">
           <PersonSearchIcon />
           <h2 className="text-fontPrimary text-2xl text font-bold">{title}</h2>
         </div>
