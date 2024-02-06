@@ -6,8 +6,16 @@ import { Button } from "../../components/Buttons/Button";
 import { Modal } from "../../components/Modal/Modal";
 import { CustomerDetails } from "./components/CustomerDetails/CustomerDetails";
 import { AddCustomerForm } from "../../components/Forms/AddCustomerFrom";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../components/Table/Table";
 
 import { CustomerType } from "../../types";
+import { CustomerCard } from "../../components/CustomerCard/CustomerCard";
 
 export const Customers = () => {
   const [isAddCustomerOpen, setIsAddCustomerOpen] = useState(false);
@@ -47,68 +55,40 @@ export const Customers = () => {
           </p>
         </div>
         <div className="flex items-center">
-          <Button onClick={toggleModal} content={"Add customer"} />
+          <Button onClick={toggleModal} content={"Dodaj klienta"} />
         </div>
       </header>
       <main className="flex flex-col h-full w-full p-8 overflow-x-auto">
         <div className="flex flex-col w-full gap-2">
-          <table className="w-full border-separate border-spacing-x-0 border-spacing-y-4">
-            <thead className="thead-light text-left h-20 text-sm text-textPrimary font-light">
-              <th
-                className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
-                scope="col"
-              >
-                Company name
-              </th>
-              <th
-                className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
-                scope="col"
-              >
-                VAT No
-              </th>
-              <th
-                className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
-                scope="col"
-              >
-                Contact details
-              </th>
-            </thead>
-            <tbody>
+          <Table className="w-full border-separate border-spacing-x-0 border-spacing-y-4">
+            <TableHeader className="thead-light text-left h-20 text-sm text-textPrimary font-light">
+              <TableRow>
+                <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                  Company name
+                </TableHead>
+                <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                  VAT No
+                </TableHead>
+                <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                  Contact details
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {customers ? (
-                customers.map((customer) => {
-                  return (
-                    <tr
-                      key={customer.customerId}
-                      className="w-full bg-bgPrimary rounded-lg px-8 py-4 cursor-pointer first:rounded-l-lg last:rounded-r-lg hover:scale-105 transition-all"
-                      onClick={() => openCustomerDetailsModal(customer)}
-                    >
-                      <td className="p-4">{customer.companyName}</td>
-                      <td className="p-4">{customer.vatNo}</td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          <div className="bg-primary rounded-full w-12 h-12 overflow-hidden">
-                            <img
-                              width={"100%"}
-                              height={"100%"}
-                              src="https://avataaars.io/?avatarStyle=Transparent&topType=Eyepatch&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
-                            />
-                          </div>
-                          <div className="flex flex-col">
-                            <span>{`${customer.contactPerson.firstName} ${customer.contactPerson.lastName}`}</span>
-                            <span>{customer.contactPerson.email}</span>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
+                customers.map((customer) => (
+                  <CustomerCard
+                    customer={customer}
+                    onClickHandler={openCustomerDetailsModal}
+                  />
+                ))
               ) : (
-                <tr className="flex justify-center items-center ">
+                <TableRow className="flex justify-center items-center ">
                   <p>No customers available</p>
-                </tr>
+                </TableRow>
               )}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </main>
       <Modal isOpen={isAddCustomerOpen} toggleModal={toggleModal}>

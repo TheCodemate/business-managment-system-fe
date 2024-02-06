@@ -4,6 +4,14 @@ import { Loading } from "../components/Loading/Loading";
 import { OrderItemCard } from "../components/OrderItemCard/OrderItemCard";
 import { PageHeader } from "../components/PageHeader/PageHeader";
 
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/Table/Table";
+
 export const Order = () => {
   const navigate = useNavigate();
   const { data: cartItems, isPending } = useCartItems();
@@ -29,72 +37,47 @@ export const Order = () => {
           {isPending ? (
             <Loading color="#141414" />
           ) : cartItems && cartItems?.length > 0 ? (
-            <table className="flex-col w-full border-separate border-spacing-x-0 border-spacing-y-4">
-              <thead className="thead-light text-left h-20 text-sm text-textPrimary font-light">
-                <th
-                  className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
-                  scope="col"
-                >
-                  Zdjęcie
-                </th>
-                <th
-                  className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
-                  scope="col"
-                >
-                  Produkt
-                </th>
-                <th
-                  className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
-                  scope="col"
-                >
-                  Cena jed.
-                </th>
-                <th
-                  className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
-                  scope="col"
-                >
-                  Razem
-                </th>
-                <th
-                  className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
-                  scope="col"
-                >
-                  Waga
-                </th>
-                <th
-                  className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
-                  scope="col"
-                >
-                  Palety
-                </th>
-                <th
-                  className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
-                  scope="col"
-                >
-                  {/* Product code */}
-                </th>
-                <th
-                  className="py-10 px-3 pb-6 min-w-min whitespace-nowrap"
-                  scope="col"
-                >
-                  {/* Actions */}
-                </th>
-              </thead>
+            <Table className="flex-col w-full border-separate border-spacing-x-0 border-spacing-y-4">
+              <TableHeader>
+                <TableRow className="thead-light text-left h-20 text-sm text-textPrimary font-light">
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Zdjęcie
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Produkt
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Cena jed.
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Razem
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Waga
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Palety
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Akcje
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
 
-              <tbody>
+              <TableBody>
                 {cartItems.map((cartItem) => (
                   <OrderItemCard
                     key={cartItem.cart_item_id}
                     cartItem={cartItem}
                   />
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           ) : (
             <div className="flex h-full justify-center items-center mx-auto">
               <p className="font-bold text-textDetail">
                 Jeszcze nic nie zamówiłeś. Przejdź do listy i dodaj wybrane
-                produkty do zamówienia{" "}
+                produkty do zamówienia
               </p>
             </div>
           )}
