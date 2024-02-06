@@ -33,6 +33,7 @@ export const OrderItemCard = ({
         </div>
       </TableCell>
       <TableCell className="flex-1 flex flex-col p-4 h-full gap-1">
+        <span className="font-bold">{product.brand_name}</span>
         <span className="font-bold">{product.product_name}</span>
         <span className="text-xs text-ellipsis overflow-hidden max-w-[300px] text-nowrap">
           {product.product_description}
