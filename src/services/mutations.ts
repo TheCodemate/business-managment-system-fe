@@ -86,9 +86,8 @@ export const usePasswordReset = () => {
 export const useAddToCart = () => {
   return useMutation({
     mutationFn: (cartItem: CartItemType) => addToCart(cartItem),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
-      return data;
     },
     onError: (error) => {
       return error.message;
@@ -99,9 +98,8 @@ export const useAddToCart = () => {
 export const useRemoveFromCart = () => {
   return useMutation({
     mutationFn: (cartItem: CartItemType) => removeFromCart(cartItem),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
-      return data;
     },
     onError: (error) => {
       return error.message;
@@ -120,9 +118,8 @@ export const useDeleteCartItem = () => {
   return useMutation({
     mutationFn: (cartItemId: string) => deleteCartItem(cartItemId),
     onError: (error) => error.message,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
-      return data;
     },
   });
 };

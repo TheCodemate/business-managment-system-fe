@@ -1,3 +1,4 @@
+import { TableCell, TableRow } from "../../components/Table/Table";
 import {
   useAddToCart,
   useDeleteCartItem,
@@ -7,7 +8,6 @@ import { CartItemResponseType } from "../../types";
 import { RemoveButton } from "../Buttons/RemoveButton";
 
 type OrderItemRowProps = {
-  key: string;
   cartItem: CartItemResponseType;
 };
 
@@ -26,31 +26,31 @@ export const OrderItemCard = ({
     return 1;
   };
   return (
-    <tr className="w-full bg-bgPrimary rounded-lg px-8 py-4 cursor-pointer first:rounded-l-lg last:rounded-r-lg hover:scale-101 transition-all">
-      <td className="flex-col p-4">
+    <TableRow className="w-full bg-bgPrimary rounded-lg px-8 py-4 cursor-pointer first:rounded-l-lg last:rounded-r-lg hover:scale-101 transition-all">
+      <TableCell className="flex-col p-4">
         <div className="w-20 h-20">
           <img src={product.images[0]} alt="" />
         </div>
-      </td>
-      <td className="flex-1 flex flex-col p-4 h-full gap-1">
+      </TableCell>
+      <TableCell className="flex-1 flex flex-col p-4 h-full gap-1">
         <span className="font-bold">{product.product_name}</span>
         <span className="text-xs text-ellipsis overflow-hidden max-w-[300px] text-nowrap">
           {product.product_description}
         </span>
         <span className="text-xs text-nowrap">Ref: {product.product_code}</span>
-      </td>
+      </TableCell>
 
-      <td className="p-4 text-nowrap">{product.price} PLN</td>
-      <td className="p-4 text-nowrap">
+      <TableCell className="p-4 text-nowrap">{product.price} PLN</TableCell>
+      <TableCell className="p-4 text-nowrap">
         {(product.price * quantity).toFixed(2)} PLN
-      </td>
-      <td className="p-4 text-nowrap">
+      </TableCell>
+      <TableCell className="p-4 text-nowrap">
         {(product.weight * quantity).toFixed(2)} {product.weight_unit}
-      </td>
-      <td className="p-4 text-nowrap">
+      </TableCell>
+      <TableCell className="p-4 text-nowrap">
         {getPalletsNumber(quantity, Number(product.pallete))}
-      </td>
-      <td className="p-4 text-nowrap">
+      </TableCell>
+      <TableCell className="p-4 text-nowrap">
         <div className="flex gap-4 justify-between items-center w-1/5 bg-bgPrimary rounded-full">
           <button
             onClick={() => {
@@ -78,12 +78,12 @@ export const OrderItemCard = ({
             +
           </button>
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex gap-2 font-bold text-xs">
           <RemoveButton onClick={() => deleteCartItem(cart_item_id)} />
         </div>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 };
