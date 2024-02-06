@@ -11,6 +11,8 @@ import {
   TableHeader,
   TableRow,
 } from "../components/Table/Table";
+import { OrderDetails } from "../components/OrderDetails/OrderDetails";
+import { Button } from "../components/Buttons/Button";
 
 export const Order = () => {
   const navigate = useNavigate();
@@ -24,41 +26,42 @@ export const Order = () => {
     );
   }
   return (
-    <div className="flex flex-1 flex-col gap-4">
+    <div className="flex flex-1 flex-col">
       <PageHeader
         title="Twoje zamówienia"
-        buttonContent="Idź do sklepu"
+        buttonContent="Wróć do sklepu"
         content="W tej sekcji wyświetlane są wszystkie produkty, które dodałeś do zamówienia. Mozesz usuwac oraz modyfkikować wybrane ilości, a tak ze uzyskac informacje o jego szczegółach "
         onClick={() => navigate("/products")}
       />
 
-      <main className="flex flex-col justify-stretch h-full w-full p-8 overflow-x-auto">
-        <div className="flex flex-col w-full h-full gap-2">
+      <OrderDetails />
+      <main className="flex flex-col justify-stretch w-full p-8 pt-0 overflow-x-auto">
+        <div className="flex flex-col w-full gap-2">
           {isPending ? (
             <Loading color="#141414" />
           ) : cartItems && cartItems?.length > 0 ? (
             <Table className="flex-col w-full border-separate border-spacing-x-0 border-spacing-y-4">
               <TableHeader>
-                <TableRow className="thead-light text-left h-20 text-sm text-textPrimary font-light">
-                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                <TableRow className="thead-light text-left text-sm text-textPrimary font-light">
+                  <TableHead className="py-2 px-2 pb-2 min-w-min whitespace-nowrap">
                     Zdjęcie
                   </TableHead>
-                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                  <TableHead className="py-2 px-2 pb-2 min-w-min whitespace-nowrap">
                     Produkt
                   </TableHead>
-                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                  <TableHead className="py-2 px-2 pb-2 min-w-min whitespace-nowrap">
                     Cena jed.
                   </TableHead>
-                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                  <TableHead className="py-2 px-2 pb-2 min-w-min whitespace-nowrap">
                     Razem
                   </TableHead>
-                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                  <TableHead className="py-2 px-2 pb-2 min-w-min whitespace-nowrap">
                     Waga
                   </TableHead>
-                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                  <TableHead className="py-2 px-2 pb-2 min-w-min whitespace-nowrap">
                     Palety
                   </TableHead>
-                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                  <TableHead className="py-2 px-2 pb-2 min-w-min whitespace-nowrap">
                     Akcje
                   </TableHead>
                 </TableRow>
@@ -83,6 +86,11 @@ export const Order = () => {
           )}
         </div>
       </main>
+      <div className="flex justify-end px-12">
+        <div className="max-w-[300px] min-w-[200px]">
+          <Button content="Idź dalej" variant="basic" />
+        </div>
+      </div>
     </div>
   );
 };

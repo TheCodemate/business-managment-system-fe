@@ -10,7 +10,7 @@ type Props = {
 export const Button = ({ content, ...props }: Props) => {
   return (
     <button
-      className="text-white font-bold text-nowrap bg-primary text-textAlternate hover:cursor-pointer w-full px-6 py-2 rounded-lg"
+      className="text-white font-bold text-nowrap bg-primary text-textAlternate hover:cursor-pointer w-full px-6 py-2 rounded-lg hover:bg-details transition-all"
       {...props}
     >
       {props.disabled ? <Loading color={"#FBFBFB"} /> : <p>{content}</p>}
