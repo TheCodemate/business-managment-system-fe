@@ -18,6 +18,7 @@ import App from "./App.tsx";
 import { Products } from "./routes/Products.tsx";
 import { ProductDetails } from "./routes/ProductDetails.tsx";
 import { Order } from "./routes/Order.tsx";
+import { Requests } from "./routes/Requests.tsx";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
           {
             path: "/order",
             element: <Order />,
+          },
+          {
+            path: "/requests",
+            element: <Requests />,
           },
         ],
       },

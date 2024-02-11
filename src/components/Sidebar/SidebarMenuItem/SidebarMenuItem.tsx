@@ -5,11 +5,12 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsIcon from "@mui/icons-material/Settings";
 import GroupsIcon from "@mui/icons-material/Groups";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
+import HelpCenterIcon from "@mui/icons-material/HelpCenter";
 import { ShoppingCartIcon } from "../../Icons/ShoppingCartIcon";
 
 type SidebarMenuItemProps = {
   text: string;
-  to: "" | "settings" | "customers" | "products" | "order";
+  to: "" | "settings" | "customers" | "products" | "order" | "requests";
 };
 
 const sidebarIcons = {
@@ -22,6 +23,9 @@ const sidebarIcons = {
     <BusinessCenterIcon sx={{ color: "#141414", width: 36, height: 36 }} />
   ),
   ["order"]: <ShoppingCartIcon />,
+  ["requests"]: (
+    <HelpCenterIcon sx={{ color: "#141414", width: 36, height: 36 }} />
+  ),
 };
 
 export const SidebarNavLink = ({ text, to }: SidebarMenuItemProps) => {
