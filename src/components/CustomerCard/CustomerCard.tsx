@@ -1,6 +1,5 @@
-import React from "react";
-import { CustomerType } from "../../types";
-import { TableRow, TableCell } from "../../components/Table/Table";
+import { CustomerType } from "@/types";
+import { TableRow, TableCell } from "@/components/Table/Table";
 
 type CustomerCardProps = {
   customer: CustomerType;
