@@ -1,6 +1,6 @@
 import { ZodString, ZodTypeAny, ZodUnion, z } from "zod";
 
-export type IconTypes = "add" | "null";
+export type IconTypes = "add" | "null" | "addRequest";
 
 const doesStringContainNumbersOnly = (
   stringToCheck: ZodString | ZodUnion<[ZodTypeAny, ...ZodTypeAny[]]>
