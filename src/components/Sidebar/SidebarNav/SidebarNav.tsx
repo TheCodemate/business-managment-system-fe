@@ -6,7 +6,9 @@ type Props = {
 
 export const SidebarNav = ({ children, basis }: Props) => {
   return (
-    <nav className={`flex flex-col justify-start basis-${basis} gap-4`}>
+    <nav
+      className={`flex flex-col justify-start basis-${basis} gap-4 overflow-x-hidden`}
+    >
       {children}
     </nav>
   );

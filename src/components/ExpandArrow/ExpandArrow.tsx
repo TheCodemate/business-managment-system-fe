@@ -10,7 +10,7 @@ export const ExpandArrow = ({ onClick, left }: Props) => {
   return (
     <button
       onClick={onClick}
-      className="rounded-full bg-bgPrimary absolute top-9 right-0 w-6 h-6 translate-x-[50%] flex justify-center items-center shadow-sm"
+      className="rounded-[100%] bg-bgPrimary absolute top-9 right-0 w-6 h-6 translate-x-[50%] flex justify-center items-center shadow-sm"
     >
       {left ? (
         <ChevronLeftIcon sx={{ color: "#141414" }} />
