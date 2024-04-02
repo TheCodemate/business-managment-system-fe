@@ -107,7 +107,100 @@ const cartItemResponseSchema = z.object({
   product: productSchema,
 });
 
+export const requestSchema = z.object({
+  requestTypes: z.array(
+    z.enum([
+      "price",
+      "priceNet",
+      "availability",
+      "productionDate",
+      "substitute",
+      "technicalDocumentation",
+    ])
+  ),
+  productCode: z
+    .string()
+    .min(1, { message: "Kod produktu jest wymagane" })
+    .max(50),
+  collectionName: z
+    .string()
+    .min(1, { message: "Nazwa produktu jest wymagana" })
+    .max(50),
+  width: z.string(),
+  height: z.string(),
+  thickness: z.string(),
+  finish: z.string(),
+  producer: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
+  color: z.string().min(1, { message: "Kolor jest wymagany" }).max(50),
+  productCategory: z.enum([
+    "ceramicTiles",
+    "bathroomEquipment",
+    "accessories",
+    "furniture",
+    "lightning",
+  ]),
+  quantity: z.string(),
+  additionalInfo: z.string(),
+  contactPerson: z.string(),
+  email: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
+  phone: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
+  files: z.string().optional(),
+});
+
+export const responseRequestSchema = z.object({
+  requestId: z.string(),
+  requestTypes: z.array(
+    z.enum([
+      "price",
+      "priceNet",
+      "availability",
+      "productionDate",
+      "substitute",
+      "technicalDocumentation",
+    ])
+  ),
+  productCode: z
+    .string()
+    .min(1, { message: "Kod produktu jest wymagane" })
+    .max(50),
+  collectionName: z
+    .string()
+    .min(1, { message: "Nazwa produktu jest wymagana" })
+    .max(50),
+  width: z.string(),
+  height: z.string(),
+  thickness: z.string(),
+  finish: z.string(),
+  producer: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
+  color: z.string().min(1, { message: "Kolor jest wymagany" }).max(50),
+  productCategory: z.enum([
+    "ceramicTiles",
+    "bathroomEquipment",
+    "accessories",
+    "furniture",
+    "lightning",
+  ]),
+  quantity: z.string(),
+  additionalInfo: z.string(),
+  contactPerson: z.string(),
+  email: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
+  phone: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
+  files: z.string().optional(),
+  highPriority: z.boolean(),
+  status: z.enum(["notAssigned", "inProgress", "expired", "resolved"]),
+  assignedTo: z.array(
+    z.object({
+      firstName: z.string(),
+      lastName: z.string(),
+      store: z.string(),
+      department: z.string(),
+    })
+  ),
+});
+
+export type ResponseRequestType = z.infer<typeof responseRequestSchema>;
 export type CartItemType = z.infer<typeof cartItemRequestSchema>;
 export type CartItemResponseType = z.infer<typeof cartItemResponseSchema>;
 export type CustomerType = z.infer<typeof customerSchema>;
 export type ProductType = z.infer<typeof productSchema>;
+export type RequestType = z.infer<typeof requestSchema>;

@@ -1,7 +1,7 @@
-type StatusEnum = "inProgress" | "notAssigned" | "expired" | "resolved";
+type StatusTypes = "inProgress" | "notAssigned" | "expired" | "resolved";
 
 type Props = {
-  status?: StatusEnum;
+  status: StatusTypes;
 };
 
 const statusText = {
@@ -34,7 +34,7 @@ export const StatusIndicator = ({ status = "inProgress" }: Props) => {
   return (
     <div
       className={
-        "flex items-center gap-1 w-fit py-1 px-2 rounded-sm text-neutral "
+        "flex items-center gap-2 w-fit py-1 px-4 rounded-md text-neutral text-nowrap"
       }
       style={{ backgroundColor: `${statusBgColor[status].primary}` }}
     >

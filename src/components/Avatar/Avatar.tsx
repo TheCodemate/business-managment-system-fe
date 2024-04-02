@@ -1,13 +1,15 @@
+import { AssignmentAvatar } from "./AssignmentAvatar";
+import { getInitials } from "@/utils/getInitials";
+
 type Props = {
-  firstName: string;
-  lastName: string;
+  assignedTo?: string;
   url?: string;
 };
 
-export const Avatar = ({ firstName, lastName, url }: Props) => {
+export const Avatar = ({ assignedTo, url }: Props) => {
   return (
-    <div className="flex justify-center items-center rounded-[100%] w-14 h-14 bg-neutral-100 border-sky-500 border-2 font-bold text-neutral600 cursor-pointer">
-      {url ? url : `${firstName[0]}${lastName[0]}`}
+    <div className="flex justify-center items-center rounded-[100%] w-14 h-14 bg-sky-50 border-sky-500 border-4 font-semibold text-sky-500 cursor-pointer text-2xl">
+      {url ? url : assignedTo ? getInitials(assignedTo) : <AssignmentAvatar />}
     </div>
   );
 };

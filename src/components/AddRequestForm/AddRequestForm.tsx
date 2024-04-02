@@ -1,11 +1,9 @@
-import { z } from "zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import NoteAddOutlinedIcon from "@mui/icons-material/NoteAddOutlined";
 
-import { useForm } from "react-hook-form";
-
 import { CloseButton } from "../Buttons/CloseButton";
-
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -26,7 +25,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { addRequestFormSchema } from "./types";
+import { RequestType, requestSchema } from "@/types";
+import { delay } from "@/utils/delay";
+import { Loading } from "../Loading/Loading";
+import { Link } from "lucide-react";
 
 const items = [
   {
@@ -34,7 +36,7 @@ const items = [
     label: "Cena brutto",
   },
   {
-    id: "purchaseNetPrice",
+    id: "priceNet",
     label: "Cena netto zakupu",
   },
   {
@@ -60,20 +62,24 @@ type Props = {
 };
 
 export const AddRequestForm = ({ closeHandler }: Props) => {
-  const form = useForm<z.infer<typeof addRequestFormSchema>>({
-    resolver: zodResolver(addRequestFormSchema),
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [validData, setValidData] = useState({} as RequestType);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const form = useForm<RequestType>({
+    resolver: zodResolver(requestSchema),
     defaultValues: {
+      requestTypes: ["price"],
       productCode: "",
       collectionName: "",
       width: "",
       height: "",
       thickness: "",
       finish: "",
-      type: "",
       producer: "",
       color: "",
-      productCategory: "",
-      requestTypes: ["price"],
+      quantity: "",
+      productCategory: "ceramicTiles",
       additionalInfo: "",
       contactPerson: "",
       email: "",
@@ -82,11 +88,26 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof addRequestFormSchema>) => {
-    console.log(values);
+  const closeConfirmationHandler = () => {
+    setIsConfirmationOpen(false);
   };
 
-  console.log("form field: ", form.getValues());
+  const openConfirmationHandler = () => {
+    setIsConfirmationOpen(true);
+  };
+
+  const onSubmit = (values: RequestType) => {
+    setValidData(values);
+    openConfirmationHandler();
+  };
+
+  const confirmationHandler = async () => {
+    setIsLoading(true);
+    await delay(5000, () => closeHandler());
+    setIsLoading(false);
+    form.reset();
+  };
+
   return (
     <div
       onClick={(e) => {
@@ -107,15 +128,16 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-6"
           >
-            <fieldset className="grid grid-cols-8 gap-4 w-full">
+            <fieldset className="grid grid-cols-12 gap-4 w-full">
               <legend className="mb-4 text-sm font-bold text-neutral600">
                 Wprowadź dane produktu
               </legend>
+
               <FormField
                 control={form.control}
                 name="productCategory"
                 render={({ field }) => (
-                  <FormItem className="col-span-8 lg:col-span-4 xl:col-span-4">
+                  <FormItem className="col-span-12 lg:col-span-2 xl:col-span-4">
                     <FormLabel className="text-sm font-bold text-neutral600">
                       Kategoria
                     </FormLabel>
@@ -124,20 +146,19 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="">
                           <SelectValue placeholder="Wybierz" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">
-                          m@example.com
+                      <SelectContent className={""}>
+                        <SelectItem className="" value="ceramicTiles">
+                          Płytki
                         </SelectItem>
-                        <SelectItem value="m@google.com">
-                          m@google.com
+                        <SelectItem value="bathroomEquipment">
+                          Wyposazenie łazienkowe
                         </SelectItem>
-                        <SelectItem value="m@support.com">
-                          m@support.com
-                        </SelectItem>
+                        <SelectItem value="accessories">Akcesoria</SelectItem>
+                        <SelectItem value="lightning">Oświetlenie</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage className="text-xs font-bold text-red-500" />
@@ -168,7 +189,7 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
                 control={form.control}
                 name="productCode"
                 render={({ field }) => (
-                  <FormItem className="w-full col-span-8 lg:col-span-2 xl:col-span-2">
+                  <FormItem className="w-full col-span-8 lg:col-span-2 xl:col-span-4">
                     <FormLabel className="text-sm font-bold text-neutral600">
                       Kod
                     </FormLabel>
@@ -206,9 +227,49 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
 
               <FormField
                 control={form.control}
+                name="color"
+                render={({ field }) => (
+                  <FormItem className="w-full col-span-8 lg:col-span-2 xl:col-span-4">
+                    <FormLabel className="text-sm font-bold text-neutral600">
+                      Kolor
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-transparent flex-1"
+                        placeholder=""
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs font-bold text-red-500" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="quantity"
+                render={({ field }) => (
+                  <FormItem className="w-full col-span-8 lg:col-span-2 xl:col-span-2">
+                    <FormLabel className="text-sm font-bold text-neutral600">
+                      Ilość
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-transparent grow-2"
+                        placeholder=""
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs font-bold text-red-500" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name="width"
                 render={({ field }) => (
-                  <FormItem className="w-full col-span-8 lg:col-span-2">
+                  <FormItem className="w-full col-span-8 lg:col-span-3">
                     <FormLabel className="text-sm font-bold text-neutral600">
                       Szerokość
                     </FormLabel>
@@ -228,7 +289,7 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
                 control={form.control}
                 name="height"
                 render={({ field }) => (
-                  <FormItem className="w-full col-span-8 lg:col-span-2">
+                  <FormItem className="w-full col-span-8 lg:col-span-3">
                     <FormLabel className="text-sm font-bold text-neutral600">
                       Wysokość
                     </FormLabel>
@@ -247,7 +308,7 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
                 control={form.control}
                 name="thickness"
                 render={({ field }) => (
-                  <FormItem className="w-full col-span-8 lg:col-span-2">
+                  <FormItem className="w-full col-span-8 lg:col-span-3">
                     <FormLabel className="text-sm font-bold text-neutral600">
                       Grubość
                     </FormLabel>
@@ -266,7 +327,7 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
                 control={form.control}
                 name="finish"
                 render={({ field }) => (
-                  <FormItem className="w-full col-span-8 lg:col-span-2">
+                  <FormItem className="w-full col-span-8 lg:col-span-3">
                     <FormLabel className="text-sm font-bold text-neutral600">
                       Wykończenie
                     </FormLabel>
@@ -446,7 +507,7 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
       </main>
       <footer className="flex gap-4 justify-end p-6">
         <Button
-          className=" font-bold  text-neutral600"
+          className="font-bold  text-neutral600"
           variant={"outline"}
           onClick={closeHandler}
         >
@@ -460,14 +521,56 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
           Wyślij
         </Button>
       </footer>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        {isConfirmationOpen && (
+          <Dialog
+            closeHandler={closeConfirmationHandler}
+            confirmationHandler={confirmationHandler}
+            isLoading={isLoading}
+          />
+        )}
+      </div>
     </div>
   );
 };
 
-//kod produktu
-//wymiar a - dodać tooltipa
-//wymiar b
-//wymiar c
-//nazwa producenta
-//nazwa kolekcji
-//kolor
+type DialogProps = {
+  closeHandler: () => void;
+  confirmationHandler: () => void;
+  isLoading?: boolean;
+};
+
+const Dialog = ({
+  closeHandler,
+  confirmationHandler,
+  isLoading,
+}: DialogProps) => {
+  return (
+    <div className="flex flex-col gap-6 top-1/2 left-1/2 min-w-[360px] max-w-[800px] bg-alternate p-6 rounded-xl shadow-xl">
+      <div className="flex flex-col gap-4">
+        <h3 className="font-bold text-xl">Potwierdzenie zapytania</h3>
+        <p>
+          To ostatni moment w którym mozesz sprawdzi czy wprowadzone dane na
+          pewno są poprawne. Kliknij "Wróć", zeby sprawdzić zapytanie ponownie
+          lub "Potwierdź", zeby przesłać zapytanie do logistyki
+        </p>
+      </div>
+      <div className="flex justify-end gap-6">
+        <Button
+          className=" font-bold  text-neutral600 min-w-[120px]"
+          variant={"outline"}
+          onClick={closeHandler}
+        >
+          Lepiej sprawdzę
+        </Button>
+        <Button
+          disabled={isLoading}
+          className="text-alternate font-bold min-w-[120px]"
+          onClick={confirmationHandler}
+        >
+          {isLoading ? <Loading size={20} color="#FFFFFF" /> : "Potwierdzam"}
+        </Button>
+      </div>
+    </div>
+  );
+};

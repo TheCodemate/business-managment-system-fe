@@ -59,7 +59,11 @@ export const Customers = () => {
           </p>
         </div>
         <div className="flex items-center">
-          <Button onClick={openAddCustomerModal} content={"Dodaj klienta"} />
+          <Button
+            onClick={openAddCustomerModal}
+            content={"Dodaj klienta"}
+            variant="default"
+          />
         </div>
       </header>
       <main className="flex flex-col h-full w-full p-8 overflow-x-auto">

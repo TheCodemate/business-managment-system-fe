@@ -17,7 +17,7 @@ export const Modal = ({ children, isOpen, toggleModal }: Props) => {
 
   return (
     <div
-      className="fixed top-0 left-0 z-10  bg-opacity-90 bg-textPrimary w-full h-full overflow-y-auto"
+      className="fixed top-0 left-0 bg-opacity-90 bg-textPrimary w-full h-full overflow-y-auto"
       onClick={(e) => handleToggler(e)}
     >
       {children}
