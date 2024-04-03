@@ -15,13 +15,13 @@ import {
 import { Modal } from "@/components/Modal/Modal";
 import { useState } from "react";
 import { AddRequestForm } from "@/components/AddRequestForm/AddRequestForm";
-import { RequestPreviewModal } from "@/components/RequestPreviewModal/RequestPreviewModal";
 import { AssignmentAvatar } from "@/components/Avatar/AssignmentAvatar";
 import { requests } from "@/data";
 
 import { ResponseRequestType } from "@/types";
+import { TechnicalRequestResponseForm } from "@/components/Forms/TechnicalRequestResponseForm/TechnicalRequestResponseForm";
 
-export const Requests = () => {
+export const SupportTeamRequests = () => {
   const [isAddRequestFormOpen, setIsAddRequestFormOpen] = useState(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [request, setRequest] = useState<ResponseRequestType>();
@@ -46,7 +46,7 @@ export const Requests = () => {
     <div className="flex flex-col w-full">
       <PageHeader
         icon="addRequest"
-        content="Tutaj znajduje się strefa pomocy. Składając zapytanie mozesz uzyskać potrzebne informacje dotyczące produktów."
+        content="Lista wszystkich zapytań zgłoszonych przez zespół sprzedazowy."
         title="Panel zapytań"
         onClick={openModal}
         buttonContent="Nowe zapytanie"
@@ -77,14 +77,14 @@ export const Requests = () => {
                     {request.requestId}
                   </TableCell>
                   <TableCell>
-                    {request.contactPerson || request.phone || request.email ? (
+                    {request.requestedBy ? (
                       <>
-                        <p className="font-bold">{`${request.contactPerson}`}</p>
-                        <p className="">{`Email: ${request.email}`}</p>
-                        <p className="">{`Phone: ${request.phone}`}</p>
+                        <p className="font-bold">{`${request.requestedBy.firstName} ${request.requestedBy.lastName}`}</p>
+                        <p className="">{`Departament: ${request.requestedBy.department}`}</p>
+                        <p className="">{`Sklep: ${request.requestedBy.store}`}</p>
                       </>
                     ) : (
-                      <p className="font-bold">Customer data not provided</p>
+                      <p>Data not provided</p>
                     )}
                   </TableCell>
                   <TableCell>
@@ -112,7 +112,7 @@ export const Requests = () => {
                   <TableCell>
                     <Button
                       onClick={() => openPreviewRequestModal(request)}
-                      content="Szczegóły"
+                      content="Rozwiąż"
                       variant=""
                     />
                   </TableCell>
@@ -128,9 +128,8 @@ export const Requests = () => {
 
       <Modal isOpen={isPreviewModalOpen} toggleModal={closePreviewRequestModal}>
         <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
-          <RequestPreviewModal
+          <TechnicalRequestResponseForm
             request={request}
-            timeCount={new Date()}
             onCloseHandler={closePreviewRequestModal}
           />
         </div>

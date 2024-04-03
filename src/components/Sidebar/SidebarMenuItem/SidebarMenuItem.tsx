@@ -10,7 +10,14 @@ import { ShoppingCartIcon } from "../../Icons/ShoppingCartIcon";
 
 type SidebarMenuItemProps = {
   text: string;
-  to: "" | "settings" | "customers" | "products" | "order" | "requests";
+  to:
+    | ""
+    | "settings"
+    | "customers"
+    | "products"
+    | "order"
+    | "requests"
+    | "support-team-requests";
 };
 
 const sidebarIcons = {
@@ -24,6 +31,9 @@ const sidebarIcons = {
   ),
   ["order"]: <ShoppingCartIcon />,
   ["requests"]: (
+    <HelpCenterIcon sx={{ color: "#141414", width: 36, height: 36 }} />
+  ),
+  ["support-team-requests"]: (
     <HelpCenterIcon sx={{ color: "#141414", width: 36, height: 36 }} />
   ),
 };

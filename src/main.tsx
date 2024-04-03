@@ -19,6 +19,7 @@ import { Products } from "./routes/Products.tsx";
 import { ProductDetails } from "./routes/ProductDetails.tsx";
 import { Order } from "./routes/Order.tsx";
 import { Requests } from "./routes/Requests.tsx";
+import { SupportTeamRequests } from "./routes/SupportTeamRequests.tsx/SupportTeamRequests.tsx";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
           {
             path: "/requests",
             element: <Requests />,
+          },
+          {
+            path: "/support-team-requests",
+            element: <SupportTeamRequests />,
           },
         ],
       },
