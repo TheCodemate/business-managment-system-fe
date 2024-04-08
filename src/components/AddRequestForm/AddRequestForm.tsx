@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import NoteAddOutlinedIcon from "@mui/icons-material/NoteAddOutlined";
 
+import { delay } from "@/utils/delay";
 import { CloseButton } from "../Buttons/CloseButton";
+import { Loading } from "../Loading/Loading";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+
+import { postNewRequest } from "@/services/controllers";
+
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,10 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { RequestType, requestSchema } from "@/types";
-import { delay } from "@/utils/delay";
-import { Loading } from "../Loading/Loading";
-import { Link } from "lucide-react";
+import { RequestRequestType, requestRequestSchema } from "@/types";
 
 const items = [
   {
@@ -63,11 +65,11 @@ type Props = {
 
 export const AddRequestForm = ({ closeHandler }: Props) => {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-  const [validData, setValidData] = useState({} as RequestType);
+  const [validData, setValidData] = useState({} as RequestRequestType);
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<RequestType>({
-    resolver: zodResolver(requestSchema),
+  const form = useForm<RequestRequestType>({
+    resolver: zodResolver(requestRequestSchema),
     defaultValues: {
       requestTypes: ["price"],
       productCode: "",
@@ -82,8 +84,8 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
       productCategory: "ceramicTiles",
       additionalInfo: "",
       contactPerson: "",
-      email: "",
-      phone: "",
+      contactPersonPhone: "",
+      contactPersonEmail: "",
       files: "",
     },
   });
@@ -96,16 +98,31 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
     setIsConfirmationOpen(true);
   };
 
-  const onSubmit = (values: RequestType) => {
-    setValidData(values);
-    openConfirmationHandler();
+  const onSubmit = (values: RequestRequestType) => {
+    try {
+      setValidData(values);
+      openConfirmationHandler();
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+
+      throw new Error("Hellow World");
+    }
   };
 
   const confirmationHandler = async () => {
-    setIsLoading(true);
-    await delay(5000, () => closeHandler());
-    setIsLoading(false);
-    form.reset();
+    try {
+      setIsLoading(true);
+      await postNewRequest(validData);
+      await delay(3000, () => closeHandler());
+      setIsLoading(false);
+      form.reset();
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw new Error(error.message);
+      }
+    }
   };
 
   return (
@@ -465,7 +482,7 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
 
               <FormField
                 control={form.control}
-                name="email"
+                name="contactPersonEmail"
                 render={({ field }) => (
                   <FormItem className="w-full col-span-6 md:col-span-3 xl:col-span-2">
                     <FormLabel className="text-sm font-bold text-neutral600">
@@ -484,7 +501,7 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
               />
               <FormField
                 control={form.control}
-                name="phone"
+                name="contactPersonPhone"
                 render={({ field }) => (
                   <FormItem className="w-full col-span-6 md:col-span-3 xl:col-span-2">
                     <FormLabel className="text-sm font-bold text-neutral600">

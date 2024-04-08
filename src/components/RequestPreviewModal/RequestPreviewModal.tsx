@@ -1,9 +1,9 @@
-import { ResponseRequestType } from "@/types";
 import { CloseButton } from "../Buttons/CloseButton";
+import { Loading } from "../Loading/Loading";
 import { StatusIndicator } from "../StatusIndicator/StatusIndicator";
 import { Checkbox } from "../ui/checkbox";
+import { useTechnicalRequestById } from "@/services/queries";
 
-//has to be removed when API connected and swaped for real items props
 const items = [
   {
     id: "price",
@@ -34,10 +34,16 @@ const items = [
 type Props = {
   onCloseHandler: () => void;
   timeCount: Date;
-  request: ResponseRequestType | null;
+  requestId: string;
 };
 
-export const RequestPreviewModal = ({ onCloseHandler, request }: Props) => {
+export const RequestPreviewModal = ({ onCloseHandler, requestId }: Props) => {
+  const { data: request, isPending } = useTechnicalRequestById(requestId);
+
+  if (isPending) {
+    return <Loading color={"#141414"} />;
+  }
+
   return (
     <div
       className="min-w-[360px] max-w-[1080px] min-h-[300px] xl:min-w-[920px] lg:min-w-[760px] md:min-w-[600px]  bg-alternate rounded-xl"
@@ -50,10 +56,10 @@ export const RequestPreviewModal = ({ onCloseHandler, request }: Props) => {
           <header className="flex bg-neutral100 px-6 py-3 justify-between items-center rounded-xl">
             <div className="flex gap-2 items-center justify-center">
               <span className="text-sm font-bold text-neutral600">
-                Zapytanie nr {request.requestId}
+                Zapytanie nr {request.technicalRequestId}
               </span>
 
-              <StatusIndicator status={request.status} />
+              <StatusIndicator status={"notAssigned"} />
             </div>
             <CloseButton onClick={onCloseHandler} />
           </header>
@@ -85,11 +91,20 @@ export const RequestPreviewModal = ({ onCloseHandler, request }: Props) => {
                 Typ zapytania
               </h2>
               <div className="flex gap-2 flex-wrap mb-4">
-                {request.requestTypes.map((type) => (
-                  <div className="flex gap-1 items-center">
+                {request.requestTypes.map((requestType) => (
+                  <div
+                    key={requestType.technicalRequestType.typeName}
+                    className="flex gap-1 items-center"
+                  >
                     <Checkbox checked={true} disabled />
                     <label className="text-sm font-normal">
-                      {items.find((item) => item.id === type)?.label}
+                      {
+                        items.find(
+                          (item) =>
+                            item.id ===
+                            requestType.technicalRequestType.typeName
+                        )?.label
+                      }
                     </label>
                   </div>
                 ))}
@@ -118,11 +133,19 @@ export const RequestPreviewModal = ({ onCloseHandler, request }: Props) => {
                 </div>
                 <div className="flex flex-col">
                   <span className="font-bold text-sm mb-1">Telefon:</span>
-                  <span>{request.phone ? request.phone : "Nie podano"}</span>
+                  <span>
+                    {request.contactPersonPhone
+                      ? request.contactPersonPhone
+                      : "Nie podano"}
+                  </span>
                 </div>
                 <div className="flex flex-col">
                   <span className="font-bold text-sm mb-1">Email</span>
-                  <span>{request.email ? request.email : "Nie podano"}</span>
+                  <span>
+                    {request.contactPersonEmail
+                      ? request.contactPersonEmail
+                      : "Nie podano"}
+                  </span>
                 </div>
               </div>
             </section>

@@ -4,12 +4,15 @@ import {
   axiosShoppingCart,
   axiosCustomer,
   axiosProducts,
+  axiosRequests,
 } from "../api/axios";
 import {
   CartItemResponseType,
   CartItemType,
   CustomerType,
   ProductType,
+  RequestRequestType,
+  TechnicalRequestResponseType,
 } from "../types";
 
 export const addToCart = async (cartItem: CartItemType) => {
@@ -83,7 +86,10 @@ export const registerUser = async (userCredentials: {
   password: string;
 }) => {
   try {
-    const { data } = await axiosUser.post("", userCredentials);
+    const { data } = await axiosUser.post<{ message: string }>(
+      "/",
+      userCredentials
+    );
 
     return data;
   } catch (error) {
@@ -233,6 +239,68 @@ export const deleteCartItem = async (cartItemId: string) => {
       { withCredentials: true }
     );
 
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+export const postNewRequest = async (request: RequestRequestType) => {
+  try {
+    const { data } = await axiosRequests.post<{ message: string }>(
+      `/`,
+      {
+        ...request,
+      },
+      { withCredentials: true }
+    );
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+
+export const getTechnicalRequests = async () => {
+  try {
+    const { data } = await axiosRequests.get<TechnicalRequestResponseType[]>(
+      `/`,
+      { withCredentials: true }
+    );
+
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+export const getTechnicalRequestsById = async (requestId: string) => {
+  try {
+    const { data } = await axiosRequests.get<TechnicalRequestResponseType>(
+      `/request-by-id`,
+      {
+        params: { requestId: requestId },
+        withCredentials: true,
+      }
+    );
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {

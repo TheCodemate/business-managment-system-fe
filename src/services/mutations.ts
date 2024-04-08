@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { CartItemType, CustomerType } from "../types";
+import { CartItemType, CustomerType, RequestRequestType } from "../types";
 import {
   addCustomer,
   addToCart,
@@ -10,6 +10,7 @@ import {
   resetUserPassword,
   removeFromCart,
   deleteCartItem,
+  postNewRequest,
 } from "./controllers";
 import { queryClient } from "../context/QueryProvider";
 import { useNavigate } from "react-router-dom";
@@ -120,6 +121,16 @@ export const useDeleteCartItem = () => {
     onError: (error) => error.message,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+    },
+  });
+};
+
+export const usePostNewRequest = () => {
+  return useMutation({
+    mutationFn: (request: RequestRequestType) => postNewRequest(request),
+    onError: (error) => error.message,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["requests"] });
     },
   });
 };

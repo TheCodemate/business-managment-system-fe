@@ -42,7 +42,7 @@ export const RegisterFrom = () => {
           {error.message}
         </div>
       ) : null}
-      {data.message ? (
+      {data ? (
         <div
           role="alert"
           className="w-full bg-confirmBasic border-confirmBasic text-confirmAlternate p-2 mb-4 border rounded-lg"

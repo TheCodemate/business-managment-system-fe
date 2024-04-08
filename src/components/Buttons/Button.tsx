@@ -5,7 +5,6 @@ import { IconTypes } from "@/types";
 
 type Props = {
   content: string;
-  variant: string;
   icon?: IconTypes;
 } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className" | "style">;
 

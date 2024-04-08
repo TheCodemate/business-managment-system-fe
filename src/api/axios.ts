@@ -14,3 +14,6 @@ export const axiosShoppingCart = axios.create({
 export const axiosProducts = axios.create({
   baseURL: "http://localhost:8081/api/products",
 });
+export const axiosRequests = axios.create({
+  baseURL: "http://localhost:8081/api/support-requests",
+});
