@@ -5,7 +5,6 @@ import { PageHeader } from "@/components/PageHeader/PageHeader";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { Timer } from "@/components/Timer/Timer";
 import { Loading } from "@/components/Loading/Loading";
-import { Avatar } from "@/components/Avatar/Avatar";
 import { Modal } from "@/components/Modal/Modal";
 import { AddRequestForm } from "@/components/AddRequestForm/AddRequestForm";
 import { RequestPreviewModal } from "@/components/RequestPreviewModal/RequestPreviewModal";
@@ -18,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { AssignmentAvatar } from "@/components/Avatar/AssignmentAvatar";
 
 export const Requests = () => {
   const [isAddRequestFormOpen, setIsAddRequestFormOpen] = useState(false);
@@ -51,7 +51,7 @@ export const Requests = () => {
         buttonContent="Nowe zapytanie"
       />
 
-      <main className="flex flex-col justify-stretch w-full h-full">
+      <main className="flex flex-col justify-stretch w-full h-full overflow-hidden scroll-y-auto">
         {isPending ? (
           <Loading color="#141414" />
         ) : (
@@ -62,7 +62,6 @@ export const Requests = () => {
                 <TableHead>Id</TableHead>
                 <TableHead>Od</TableHead>
                 <TableHead>Czas</TableHead>
-                <TableHead>Priorytet</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="flex justify-center items-center">
                   Przydzielone do
@@ -79,10 +78,10 @@ export const Requests = () => {
                       key={request.technicalRequestId}
                       className="bg-bgPrimary rounded-lg"
                     >
-                      <TableCell className="font-medium">
+                      <TableCell className="min-w-[120px]">
                         {request.technicalRequestId}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="min-w-[120px]">
                         {request.contactPerson ||
                         request.contactPersonEmail ||
                         request.contactPersonPhone ? (
@@ -97,20 +96,23 @@ export const Requests = () => {
                           </p>
                         )}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="min-w-[120px]">
                         <Timer createdAt={request.createdAt} timeCap={120} />
                       </TableCell>
-                      <TableCell>"Normalny"</TableCell>
-                      <TableCell>
-                        <StatusIndicator status={"notAssigned"} />
+                      <TableCell className="min-w-[120px]">
+                        <StatusIndicator
+                          status={
+                            request.requestStatus.technicalRequestStatusName
+                          }
+                        />
                       </TableCell>
-                      <TableCell className="flex justify-center items-stretch"></TableCell>
-                      {request.assignedTo
-                        ? request.assignedTo.map((assignee) => {
-                            return <Avatar assignedTo={`${assignee.userId}`} />;
-                          })
-                        : ""}
-                      <TableCell>
+                      <TableCell className="min-w-[200px]">
+                        <AssignmentAvatar
+                          technicalRequestId={request.technicalRequestId}
+                          data={request}
+                        />
+                      </TableCell>
+                      <TableCell className="min-w-[120px]">
                         <Button
                           onClick={() => {
                             openPreviewRequestModal(request.technicalRequestId);

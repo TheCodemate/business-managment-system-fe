@@ -313,3 +313,92 @@ export const getTechnicalRequestsById = async (requestId: string) => {
     throw new Error("Could not reset password. Try again later.");
   }
 };
+export const assignUser = async (assigneeId: string, requestId: string) => {
+  try {
+    const { data } = await axiosRequests.post(
+      `/assign-user`,
+      { assignedToId: assigneeId, requestId: requestId },
+      {
+        withCredentials: true,
+      }
+    );
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+
+export const unassignUser = async (
+  unassignedUserId: string,
+  requestId: string
+) => {
+  try {
+    const { data } = await axiosRequests.delete(`/unassign-user`, {
+      data: { unassignedUserId: unassignedUserId, requestId: requestId },
+      withCredentials: true,
+    });
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+
+export const fetchUsers = async () => {
+  try {
+    const { data } = await axiosUser.get<{ email: string; userId: string }[]>(
+      `/`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+
+export const authenticationHandler = async () => {
+  try {
+    const { data } = await axiosUser.get<{
+      isAuth: boolean;
+      user: {
+        id: number | null;
+        email: string;
+      } | null;
+    }>("/authenticateMember", {
+      withCredentials: true,
+    });
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(
+      "Could not fetch data. The reason is unknown. Try again later."
+    );
+  }
+};

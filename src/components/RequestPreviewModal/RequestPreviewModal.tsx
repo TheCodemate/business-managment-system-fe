@@ -59,7 +59,9 @@ export const RequestPreviewModal = ({ onCloseHandler, requestId }: Props) => {
                 Zapytanie nr {request.technicalRequestId}
               </span>
 
-              <StatusIndicator status={"notAssigned"} />
+              <StatusIndicator
+                status={request.requestStatus.technicalRequestStatusName}
+              />
             </div>
             <CloseButton onClick={onCloseHandler} />
           </header>

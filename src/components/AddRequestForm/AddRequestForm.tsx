@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { postNewRequest } from "@/services/controllers";
+import { usePostNewRequest } from "@/services/mutations";
 
 import {
   Form,
@@ -67,6 +67,7 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [validData, setValidData] = useState({} as RequestRequestType);
   const [isLoading, setIsLoading] = useState(false);
+  const { mutate: postNewRequest } = usePostNewRequest();
 
   const form = useForm<RequestRequestType>({
     resolver: zodResolver(requestRequestSchema),
@@ -107,14 +108,16 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
         throw new Error(error.message);
       }
 
-      throw new Error("Hellow World");
+      throw new Error(
+        "Unexpected error ocurred while submitting new request. Try again later."
+      );
     }
   };
 
   const confirmationHandler = async () => {
     try {
       setIsLoading(true);
-      await postNewRequest(validData);
+      postNewRequest(validData);
       await delay(3000, () => closeHandler());
       setIsLoading(false);
       form.reset();

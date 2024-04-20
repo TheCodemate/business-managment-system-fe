@@ -18,13 +18,13 @@ import { AddRequestForm } from "@/components/AddRequestForm/AddRequestForm";
 import { AssignmentAvatar } from "@/components/Avatar/AssignmentAvatar";
 import { requests } from "@/data";
 
-import { ResponseRequestType } from "@/types";
+import { TechnicalRequestResponseType } from "@/types";
 import { TechnicalRequestResponseForm } from "@/components/Forms/TechnicalRequestResponseForm/TechnicalRequestResponseForm";
 
 export const SupportTeamRequests = () => {
   const [isAddRequestFormOpen, setIsAddRequestFormOpen] = useState(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
-  const [request, setRequest] = useState<ResponseRequestType>();
+  const [request, setRequest] = useState<TechnicalRequestResponseType>();
 
   const openModal = () => {
     setIsAddRequestFormOpen(true);
@@ -37,7 +37,9 @@ export const SupportTeamRequests = () => {
     setIsPreviewModalOpen(false);
   };
 
-  const openPreviewRequestModal = (requestDetail: ResponseRequestType) => {
+  const openPreviewRequestModal = (
+    requestDetail: TechnicalRequestResponseType
+  ) => {
     setRequest(requestDetail);
     setIsPreviewModalOpen(true);
   };
@@ -113,7 +115,6 @@ export const SupportTeamRequests = () => {
                     <Button
                       onClick={() => openPreviewRequestModal(request)}
                       content="Rozwiąż"
-                      variant=""
                     />
                   </TableCell>
                 </TableRow>

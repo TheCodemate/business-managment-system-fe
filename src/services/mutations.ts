@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 import { CartItemType, CustomerType, RequestRequestType } from "../types";
 import {
   addCustomer,
@@ -11,20 +11,28 @@ import {
   removeFromCart,
   deleteCartItem,
   postNewRequest,
+  assignUser,
+  unassignUser,
+  authenticationHandler,
 } from "./controllers";
 import { queryClient } from "../context/QueryProvider";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthProvider";
 import { delay } from "../utils/delay";
+
+export const useAuth = () => {
+  return useMutation({
+    mutationFn: authenticationHandler,
+    onError: (error) => error.message,
+  });
+};
 
 export const useLogin = () => {
   const navigate = useNavigate();
-  const { authHandler } = useAuth();
   return useMutation({
     mutationFn: (values: { email: string; password: string }) =>
       loginUser(values),
-    onSuccess: (data) => {
-      authHandler(data);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["authenticate"] });
       navigate("/");
     },
     onError: (error) => error.message,
@@ -33,13 +41,13 @@ export const useLogin = () => {
 
 export const useLogout = () => {
   const navigate = useNavigate();
-  const { authHandler } = useAuth();
+  const { mutate: authHandler } = useAuth();
 
   useMutation({
     mutationFn: () => logoutUser(),
     onSuccess: (data) => {
       authHandler(data);
-      navigate("/login");
+      navigate("/");
     },
     onError: (error) => error.message,
   });
@@ -130,7 +138,38 @@ export const usePostNewRequest = () => {
     mutationFn: (request: RequestRequestType) => postNewRequest(request),
     onError: (error) => error.message,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["requests"] });
+      queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
+    },
+  });
+};
+
+export const useAssignment = () => {
+  return useMutation({
+    mutationFn: ({
+      assignId,
+      requestId,
+    }: {
+      assignId: string;
+      requestId: string;
+    }) => assignUser(assignId, requestId),
+    onError: (error) => error.message,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
+    },
+  });
+};
+export const useUnassign = () => {
+  return useMutation({
+    mutationFn: ({
+      assignId,
+      requestId,
+    }: {
+      assignId: string;
+      requestId: string;
+    }) => unassignUser(assignId, requestId),
+    onError: (error) => error.message,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
     },
   });
 };

@@ -250,11 +250,36 @@ export const technicalRequestResponseSchema = z.object({
     .min(1, { message: "Producent jest wymagany" })
     .max(50),
   files: z.string().optional(),
-  assignedTo: z.array(
+  requestStatus: z.object({
+    technicalRequestStatusName: z.enum([
+      "notAssigned",
+      "inProgress",
+      "expired",
+      "resolved",
+      "canceled",
+      "forwarded",
+      "assigned",
+    ]),
+  }),
+  assignees: z.array(
     z.object({
-      userId: z.string(),
+      userAccount: z.object({
+        userId: z.string(),
+      }),
     })
   ),
+});
+
+const userAccountSchema = z.object({
+  user_id: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+  active: z.boolean(),
+  activate_token: z.string(),
+  activate_token_expire_date: z.number().positive(),
+  created_at: z.string(), // Assuming it's a string representation of timestamp
+  updated_at: z.string(), // Assuming it's a string representation of timestamp
+  role: z.enum(["ADMIN"]), // Assuming only 'ADMIN' role is allowed
 });
 
 export type CartItemType = z.infer<typeof cartItemRequestSchema>;
@@ -266,3 +291,4 @@ export type RequestRequestType = z.infer<typeof requestRequestSchema>;
 export type TechnicalRequestResponseType = z.infer<
   typeof technicalRequestResponseSchema
 >;
+export type UserAccountType = z.infer<typeof userAccountSchema>;

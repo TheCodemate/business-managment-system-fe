@@ -1,7 +1,14 @@
-type StatusTypes = "inProgress" | "notAssigned" | "expired" | "resolved";
+type StatusTypes =
+  | "inProgress"
+  | "notAssigned"
+  | "expired"
+  | "resolved"
+  | "canceled"
+  | "forwarded"
+  | "assigned";
 
 type Props = {
-  status: StatusTypes;
+  status?: StatusTypes;
 };
 
 const statusText = {
@@ -9,9 +16,12 @@ const statusText = {
   notAssigned: "Not assigned",
   expired: "Expired",
   resolved: "Resolved",
+  canceled: "Canceled",
+  forwarded: "Forwarded",
+  assigned: "Assigned",
 };
 
-export const StatusIndicator = ({ status = "inProgress" }: Props) => {
+export const StatusIndicator = ({ status = "notAssigned" }: Props) => {
   const statusBgColor = {
     inProgress: {
       primary: "#E0E7FF",
@@ -26,11 +36,22 @@ export const StatusIndicator = ({ status = "inProgress" }: Props) => {
       secondary: "#FB7185",
     },
     resolved: {
-      primary: "emerald-50",
-      secondary: "emerald-800",
+      primary: "#A2FF99",
+      secondary: "#0A7A00",
+    },
+    canceled: {
+      primary: "#CCCCCC",
+      secondary: "#3D3D3D",
+    },
+    assigned: {
+      primary: "#DAD6FC",
+      secondary: "#6454F2",
+    },
+    forwarded: {
+      primary: "#FFF1F2",
+      secondary: "#FB7185",
     },
   };
-
   return (
     <div
       className={
