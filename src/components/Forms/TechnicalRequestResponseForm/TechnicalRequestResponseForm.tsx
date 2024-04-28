@@ -1,5 +1,6 @@
 import {
   TechnicalRequestResponseType,
+  TechnicalResponseRequestType,
   technicalResponseRequestSchema,
 } from "@/types";
 import { CloseButton } from "@/components/Buttons/CloseButton";
@@ -73,16 +74,9 @@ export const TechnicalRequestResponseForm = ({
   request,
 }: Props) => {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-  const [validData, setValidData] = useState<{
-    price: string;
-    purchasePrice: string;
-    availability: string;
-    productionDate: string;
-    substitute: string;
-    technicalDocumentation: string;
-    technicalResponseText: string;
-    technicalRequestId: string;
-  }>({});
+  const [validData, setValidData] = useState<TechnicalResponseRequestType>(
+    {} as TechnicalResponseRequestType
+  );
   const [isLoading, setIsLoading] = useState(false);
   const { mutate: postResponse, isPending } = usePostResponse();
   const { register, handleSubmit, control, reset } = useForm({
@@ -99,21 +93,6 @@ export const TechnicalRequestResponseForm = ({
     resolver: zodResolver(technicalResponseRequestSchema),
   });
 
-  const submitHandler = (values: {
-    price: string;
-    purchasePrice: string;
-    availability: string;
-    productionDate: string;
-    substitute: string;
-    technicalDocumentation: string;
-    technicalResponseText: string;
-    technicalRequestId: string;
-  }) => {
-    setIsLoading(true);
-    setValidData(values);
-    setIsLoading(false);
-  };
-
   const closeConfirmationHandler = () => {
     setIsConfirmationOpen(false);
   };
@@ -122,16 +101,7 @@ export const TechnicalRequestResponseForm = ({
     setIsConfirmationOpen(true);
   };
 
-  const onSubmit = (values: {
-    price: string;
-    purchasePrice: string;
-    availability: string;
-    productionDate: string;
-    substitute: string;
-    technicalDocumentation: string;
-    technicalResponseText: string;
-    technicalRequestId: string;
-  }) => {
+  const onSubmit = (values: TechnicalResponseRequestType) => {
     try {
       setValidData(values);
       openConfirmationHandler();
@@ -283,7 +253,6 @@ export const TechnicalRequestResponseForm = ({
                 <Dialog
                   onCloseHandler={closeConfirmationHandler}
                   confirmationHandler={confirmationHandler}
-                  // isLoading={isLoading}
                 >
                   <Dialog.Actions>
                     <Dialog.AcceptButton onClick={confirmationHandler} />

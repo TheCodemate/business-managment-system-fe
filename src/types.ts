@@ -229,7 +229,6 @@ export const technicalResponseRequestSchema = z.object({
   price: z.string().nullable(),
   substitute: z.string().nullable(),
   productionDate: z.string().nullable(),
-  // unit: z.enum(["m2", "szt", "komplet", "mb"]),
 });
 
 export const technicalRequestResponseSchema = z.object({
