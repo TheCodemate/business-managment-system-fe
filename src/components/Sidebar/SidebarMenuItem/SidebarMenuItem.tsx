@@ -2,10 +2,11 @@ import { NavLink } from "react-router-dom";
 import { useSidebarContext } from "../context";
 
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import SettingsIcon from "@mui/icons-material/Settings";
 import GroupsIcon from "@mui/icons-material/Groups";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
-import HelpCenterIcon from "@mui/icons-material/HelpCenter";
 import { ShoppingCartIcon } from "../../Icons/ShoppingCartIcon";
 
 type SidebarMenuItemProps = {
@@ -31,10 +32,10 @@ const sidebarIcons = {
   ),
   ["order"]: <ShoppingCartIcon />,
   ["requests"]: (
-    <HelpCenterIcon sx={{ color: "#141414", width: 36, height: 36 }} />
+    <SupportAgentIcon sx={{ color: "#141414", width: 36, height: 36 }} />
   ),
   ["support-team-requests"]: (
-    <HelpCenterIcon sx={{ color: "#141414", width: 36, height: 36 }} />
+    <AssignmentIcon sx={{ color: "#141414", width: 36, height: 36 }} />
   ),
 };
 

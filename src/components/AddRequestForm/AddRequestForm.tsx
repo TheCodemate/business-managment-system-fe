@@ -88,6 +88,7 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
       contactPersonPhone: "",
       contactPersonEmail: "",
       files: "",
+      unit: "szt",
     },
   });
 
@@ -264,12 +265,32 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="finish"
+                render={({ field }) => (
+                  // <FormItem className="w-full col-span-8 lg:col-span-3">
+                  <FormItem className="w-full col-span-8 lg:col-span-2 xl:col-span-2">
+                    <FormLabel className="text-sm font-bold text-neutral600">
+                      Wykończenie
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-transparent flex-1"
+                        placeholder=""
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs font-bold text-red-500" />
+                  </FormItem>
+                )}
+              />
 
               <FormField
                 control={form.control}
                 name="quantity"
                 render={({ field }) => (
-                  <FormItem className="w-full col-span-8 lg:col-span-2 xl:col-span-2">
+                  <FormItem className="w-full col-span-2 lg:col-span-2 xl:col-span-4">
                     <FormLabel className="text-sm font-bold text-neutral600">
                       Ilość
                     </FormLabel>
@@ -287,9 +308,40 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
 
               <FormField
                 control={form.control}
+                name="unit"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-2 xl:col-span-2">
+                    <FormLabel className="text-sm font-bold text-neutral600">
+                      Jednostka
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="">
+                          <SelectValue placeholder="Wybierz" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className={""}>
+                        <SelectItem className="" value="m2">
+                          m2
+                        </SelectItem>
+                        <SelectItem value="szt">szt</SelectItem>
+                        <SelectItem value="mb">mb</SelectItem>
+                        <SelectItem value="komplet">komplet</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs font-bold text-red-500" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name="width"
                 render={({ field }) => (
-                  <FormItem className="w-full col-span-8 lg:col-span-3">
+                  <FormItem className="w-full col-span-8 lg:col-span-2">
                     <FormLabel className="text-sm font-bold text-neutral600">
                       Szerokość
                     </FormLabel>
@@ -309,7 +361,7 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
                 control={form.control}
                 name="height"
                 render={({ field }) => (
-                  <FormItem className="w-full col-span-8 lg:col-span-3">
+                  <FormItem className="w-full col-span-8 lg:col-span-2">
                     <FormLabel className="text-sm font-bold text-neutral600">
                       Wysokość
                     </FormLabel>
@@ -328,28 +380,9 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
                 control={form.control}
                 name="thickness"
                 render={({ field }) => (
-                  <FormItem className="w-full col-span-8 lg:col-span-3">
+                  <FormItem className="w-full col-span-8 lg:col-span-2">
                     <FormLabel className="text-sm font-bold text-neutral600">
                       Grubość
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="bg-transparent flex-1"
-                        placeholder=""
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs font-bold text-red-500" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="finish"
-                render={({ field }) => (
-                  <FormItem className="w-full col-span-8 lg:col-span-3">
-                    <FormLabel className="text-sm font-bold text-neutral600">
-                      Wykończenie
                     </FormLabel>
                     <FormControl>
                       <Input

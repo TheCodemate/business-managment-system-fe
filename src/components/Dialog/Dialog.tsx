@@ -6,6 +6,7 @@ import { Actions } from "./Actions/Actions";
 type Props = {
   children: ReactElement | ReactElement[];
   onCloseHandler: () => void;
+  confirmationHandler: () => void;
   closeButtonVisible?: boolean;
 };
 

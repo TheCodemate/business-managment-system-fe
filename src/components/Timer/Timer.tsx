@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   createdAt: string;
   timeCap?: number;
+  expiredAt: string;
+  resolvedAt: string;
+  resolved: boolean;
 };
 
 const statusBgColor = {
@@ -26,9 +29,20 @@ const statusBgColor = {
     secondary: "#F92444",
     text: "#FFFFFF",
   },
+  resolved: {
+    primary: "#CCCCCC",
+    secondary: "#CCCCCC",
+    text: "#CCCCCC",
+  },
 };
 
-export const Timer = ({ createdAt, timeCap = 30 }: Props) => {
+export const Timer = ({
+  createdAt,
+  timeCap = 30,
+  resolved = false,
+  resolvedAt,
+  expiredAt,
+}: Props) => {
   const timerRef = useRef<HTMLDivElement>(null);
   const dateOfCreation = new Date(createdAt);
 
@@ -63,10 +77,15 @@ export const Timer = ({ createdAt, timeCap = 30 }: Props) => {
   useEffect(() => {
     const timer = setInterval(() => {
       if (timerRef.current) {
-        const timeCapInMils = timeCap * 60 * 1000;
+        const resolvedDate = new Date(resolvedAt).getTime();
+        // const timeCapInMils = timeCap * 60 * 1000;
+        const timeCapInMils =
+          new Date(expiredAt).getTime() - new Date(createdAt).getTime();
         const oneMilisecToPixel = timerRef.current.clientWidth / timeCapInMils;
         const creationDateInMil = dateOfCreation.getTime();
-        const timePassedInMilis = new Date().getTime() - creationDateInMil;
+        const timePassedInMilis = resolved
+          ? resolvedDate - creationDateInMil
+          : new Date().getTime() - creationDateInMil;
         const progressInPercentage =
           (timePassedInMilis * oneMilisecToPixel * 100) /
           timerRef.current.clientWidth;
@@ -97,24 +116,40 @@ export const Timer = ({ createdAt, timeCap = 30 }: Props) => {
         setProgressBarLength((prev) => {
           return prev + oneMilisecToPixel * 1000;
         });
+
+        if (resolved) {
+          clearInterval(timer);
+        }
       }
     }, 1000);
+
+    return () => clearInterval(timer);
   }, []);
   return (
     <div
       ref={timerRef}
-      style={{ borderColor: statusBgColor[progress].secondary }}
+      style={{
+        borderColor: resolved
+          ? statusBgColor["resolved"].secondary
+          : statusBgColor[progress].secondary,
+      }}
       className="relative border flex items-center justify-center w-[180px] min-h-[20px] bg-neutral100 rounded-md overflow-hidden"
     >
       <div
         style={{
           width: `${progressBarLength}px`,
-          backgroundColor: statusBgColor[progress].primary,
+          backgroundColor: resolved
+            ? statusBgColor["resolved"].primary
+            : statusBgColor[progress].primary,
         }}
         className={`absolute top-0 left-0 h-full`}
       ></div>
       <p
-        style={{ color: statusBgColor[progress].text }}
+        style={{
+          color: resolved
+            ? statusBgColor["resolved"].text
+            : statusBgColor[progress].text,
+        }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold"
       >
         {`${hoursLeft}h ${minsLeft}min`}

@@ -193,6 +193,7 @@ export const requestRequestSchema = z.object({
     .max(50)
     .optional(),
   files: z.string().optional(),
+  unit: z.enum(["szt", "m2", "komplet", "mb"]),
 });
 
 export const technicalRequestTypeSchema = z.array(
@@ -201,7 +202,7 @@ export const technicalRequestTypeSchema = z.array(
       typeId: z.number(),
       typeName: z.enum([
         "price",
-        "priceNet",
+        "purchasePrice",
         "availability",
         "productionDate",
         "substitute",
@@ -210,6 +211,26 @@ export const technicalRequestTypeSchema = z.array(
     }),
   })
 );
+
+export const assigneesSchema = z.array(
+  z.object({
+    userAccount: z.object({
+      userId: z.string(),
+    }),
+  })
+);
+
+export const technicalResponseRequestSchema = z.object({
+  technicalRequestId: z.string(),
+  technicalResponseText: z.string(),
+  availability: z.string().nullable(),
+  technicalDocumentation: z.string().nullable(),
+  purchasePrice: z.string().nullable(),
+  price: z.string().nullable(),
+  substitute: z.string().nullable(),
+  productionDate: z.string().nullable(),
+  // unit: z.enum(["m2", "szt", "komplet", "mb"]),
+});
 
 export const technicalRequestResponseSchema = z.object({
   technicalRequestId: z.string(),
@@ -239,6 +260,7 @@ export const technicalRequestResponseSchema = z.object({
     "lightning",
   ]),
   quantity: z.string(),
+  unit: z.enum(["m2", "szt", "mb", "komplet"]),
   additionalInfo: z.string(),
   contactPerson: z.string(),
   contactPersonEmail: z
@@ -261,6 +283,9 @@ export const technicalRequestResponseSchema = z.object({
       "assigned",
     ]),
   }),
+  resolvedAt: z.string(),
+  expiresAt: z.string(),
+  resolved: z.boolean(),
   assignees: z.array(
     z.object({
       userAccount: z.object({
@@ -268,6 +293,10 @@ export const technicalRequestResponseSchema = z.object({
       }),
     })
   ),
+  technicalRequestResponse: technicalResponseRequestSchema,
+  technicalRequestResolvedBy: z.object({
+    userAccountId: z.string(),
+  }),
 });
 
 const userAccountSchema = z.object({
@@ -292,3 +321,9 @@ export type TechnicalRequestResponseType = z.infer<
   typeof technicalRequestResponseSchema
 >;
 export type UserAccountType = z.infer<typeof userAccountSchema>;
+export type TechnicalResponseRequestType = z.infer<
+  typeof technicalResponseRequestSchema
+>;
+
+export type Assignees = z.infer<typeof assigneesSchema>;
+export type UserToBeAssignedType = { email: string; userId: string };

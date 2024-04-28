@@ -1,11 +1,19 @@
-import { ResponseRequestType } from "@/types";
+import {
+  TechnicalRequestResponseType,
+  technicalResponseRequestSchema,
+} from "@/types";
 import { CloseButton } from "@/components/Buttons/CloseButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, useState } from "react";
+import { usePostResponse } from "@/services/mutations";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Dialog } from "@/components/Dialog/Dialog";
+import { delay } from "@/utils/delay";
+import { AxiosError } from "axios";
 
 //has to be removed when API connected and swaped for real items props
 const items = [
@@ -14,7 +22,7 @@ const items = [
     label: "Cena brutto",
   },
   {
-    id: "priceNet",
+    id: "purchasePrice",
     label: "Cena netto zakupu",
   },
   {
@@ -33,11 +41,15 @@ const items = [
     id: "technicalDocumentation",
     label: "Karta techniczna",
   },
+  {
+    id: "technicalResponseText",
+    label: "Odpowiedź",
+  },
 ] as const;
 
 type Props = {
   onCloseHandler: () => void;
-  request: ResponseRequestType | null;
+  request: TechnicalRequestResponseType;
 };
 
 const generateInput = (props: DynamicInputProps) => {
@@ -60,29 +72,94 @@ export const TechnicalRequestResponseForm = ({
   onCloseHandler,
   request,
 }: Props) => {
-  const { register, handleSubmit, control } = useForm({
-    defaultValues: {
-      price: "",
-      priceNet: "",
-      availability: "",
-      productionDate: "",
-      substitute: "",
-      technicalDocumentation: "",
-      additionalInfo: "",
-    },
-  });
-
-  const submitHandler = (values: {
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [validData, setValidData] = useState<{
     price: string;
-    priceNet: string;
+    purchasePrice: string;
     availability: string;
     productionDate: string;
     substitute: string;
     technicalDocumentation: string;
-    additionalInfo: string;
+    technicalResponseText: string;
+    technicalRequestId: string;
+  }>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: postResponse, isPending } = usePostResponse();
+  const { register, handleSubmit, control, reset } = useForm({
+    defaultValues: {
+      technicalRequestId: request.technicalRequestId,
+      price: "",
+      purchasePrice: "",
+      availability: "",
+      productionDate: "",
+      substitute: "",
+      technicalDocumentation: "",
+      technicalResponseText: "",
+    },
+    resolver: zodResolver(technicalResponseRequestSchema),
+  });
+
+  const submitHandler = (values: {
+    price: string;
+    purchasePrice: string;
+    availability: string;
+    productionDate: string;
+    substitute: string;
+    technicalDocumentation: string;
+    technicalResponseText: string;
+    technicalRequestId: string;
   }) => {
-    console.log("submitting...: ", values);
+    setIsLoading(true);
+    setValidData(values);
+    setIsLoading(false);
   };
+
+  const closeConfirmationHandler = () => {
+    setIsConfirmationOpen(false);
+  };
+
+  const openConfirmationHandler = () => {
+    setIsConfirmationOpen(true);
+  };
+
+  const onSubmit = (values: {
+    price: string;
+    purchasePrice: string;
+    availability: string;
+    productionDate: string;
+    substitute: string;
+    technicalDocumentation: string;
+    technicalResponseText: string;
+    technicalRequestId: string;
+  }) => {
+    try {
+      setValidData(values);
+      openConfirmationHandler();
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+
+      throw new Error(
+        "Unexpected error ocurred while submitting new request. Try again later."
+      );
+    }
+  };
+
+  const confirmationHandler = async () => {
+    try {
+      setIsLoading(true);
+      postResponse({ ...validData });
+      await delay(3000, () => closeConfirmationHandler());
+      setIsLoading(false);
+      reset();
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw new Error(error.message);
+      }
+    }
+  };
+
   return (
     <div
       className="min-w-[360px] max-w-[1080px] min-h-[300px] xl:min-w-[920px] lg:min-w-[760px] md:min-w-[600px]  bg-alternate rounded-xl"
@@ -95,10 +172,12 @@ export const TechnicalRequestResponseForm = ({
           <header className="flex bg-neutral100 px-6 py-3 justify-between items-center rounded-xl">
             <div className="flex gap-2 items-center justify-center">
               <span className="text-sm font-bold text-neutral600">
-                Zapytanie nr {request.requestId}
+                Zapytanie nr {request.technicalRequestId}
               </span>
 
-              <StatusIndicator status={request.status} />
+              <StatusIndicator
+                status={request.requestStatus.technicalRequestStatusName}
+              />
             </div>
             <CloseButton onClick={onCloseHandler} />
           </header>
@@ -129,23 +208,30 @@ export const TechnicalRequestResponseForm = ({
               <h2 className="font-bold text-lg text-neutral600 mb-2">
                 Typ zapytania
               </h2>
-              <form id="responseForm" onSubmit={handleSubmit(submitHandler)}>
+              <form id="responseForm" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex gap-2 flex-wrap mb-4">
-                  {request.requestTypes.map((type) => (
-                    <div className="flex flex-col gap-1 items-start">
-                      <div className="flex items-center gap-2">
-                        <Checkbox checked={true} disabled />
-                        <label className="text-sm font-normal">
-                          {items.find((item) => item.id === type)?.label}
-                        </label>
+                  {request.requestTypes.map((type) => {
+                    return (
+                      <div className="flex flex-col gap-1 items-start">
+                        <div className="flex items-center gap-2">
+                          <Checkbox checked={true} disabled />
+                          <label className="text-sm font-normal">
+                            {
+                              items.find(
+                                (item) =>
+                                  item.id === type.technicalRequestType.typeName
+                              )?.label
+                            }
+                          </label>
+                        </div>
+                        <Controller
+                          name={type.technicalRequestType.typeName}
+                          control={control}
+                          render={({ field }) => <DynamicInput {...field} />}
+                        />
                       </div>
-                      <Controller
-                        name={type}
-                        control={control}
-                        render={({ field }) => <DynamicInput {...field} />}
-                      />
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </form>
             </section>
@@ -168,11 +254,11 @@ export const TechnicalRequestResponseForm = ({
                 </div>
                 <div className="flex flex-col">
                   <span className="font-bold text-sm mb-1">Telefon:</span>
-                  <span>{request.phone}</span>
+                  <span>{request.contactPersonPhone}</span>
                 </div>
                 <div className="flex flex-col">
                   <span className="font-bold text-sm mb-1">Email</span>
-                  <span>{request.email}</span>
+                  <span>{request.contactPersonEmail}</span>
                 </div>
               </div>
             </section>
@@ -192,6 +278,20 @@ export const TechnicalRequestResponseForm = ({
                 Wyślij
               </Button>
             </footer>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+              {isConfirmationOpen && (
+                <Dialog
+                  onCloseHandler={closeConfirmationHandler}
+                  confirmationHandler={confirmationHandler}
+                  // isLoading={isLoading}
+                >
+                  <Dialog.Actions>
+                    <Dialog.AcceptButton onClick={confirmationHandler} />
+                    {/* <Dialog.RejectButton /> */}
+                  </Dialog.Actions>
+                </Dialog>
+              )}
+            </div>
           </div>
         </div>
       ) : (

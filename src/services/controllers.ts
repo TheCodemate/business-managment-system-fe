@@ -13,6 +13,7 @@ import {
   ProductType,
   RequestRequestType,
   TechnicalRequestResponseType,
+  TechnicalResponseRequestType,
 } from "../types";
 
 export const addToCart = async (cartItem: CartItemType) => {
@@ -301,6 +302,8 @@ export const getTechnicalRequestsById = async (requestId: string) => {
         withCredentials: true,
       }
     );
+
+    console.log("getTechnicalRequestById - data: ", data);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -390,6 +393,27 @@ export const authenticationHandler = async () => {
     }>("/authenticateMember", {
       withCredentials: true,
     });
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(
+      "Could not fetch data. The reason is unknown. Try again later."
+    );
+  }
+};
+
+export const postResponse = async (response: TechnicalResponseRequestType) => {
+  try {
+    console.log("postResponse - response: ", response);
+    const { data } = await axiosRequests.post<{ message: string }>(
+      "/response",
+      { ...response },
+      { withCredentials: true }
+    );
 
     return data;
   } catch (error) {

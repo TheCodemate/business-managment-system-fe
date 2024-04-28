@@ -1,5 +1,10 @@
-import { QueryClient, useMutation } from "@tanstack/react-query";
-import { CartItemType, CustomerType, RequestRequestType } from "../types";
+import { useMutation } from "@tanstack/react-query";
+import {
+  CartItemType,
+  CustomerType,
+  RequestRequestType,
+  TechnicalResponseRequestType,
+} from "../types";
 import {
   addCustomer,
   addToCart,
@@ -14,6 +19,7 @@ import {
   assignUser,
   unassignUser,
   authenticationHandler,
+  postResponse,
 } from "./controllers";
 import { queryClient } from "../context/QueryProvider";
 import { useNavigate } from "react-router-dom";
@@ -167,6 +173,17 @@ export const useUnassign = () => {
       assignId: string;
       requestId: string;
     }) => unassignUser(assignId, requestId),
+    onError: (error) => error.message,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
+    },
+  });
+};
+
+export const usePostResponse = () => {
+  return useMutation({
+    mutationFn: (response: TechnicalResponseRequestType) =>
+      postResponse(response),
     onError: (error) => error.message,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });

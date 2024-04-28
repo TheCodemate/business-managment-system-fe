@@ -1,4 +1,3 @@
-import { Avatar } from "@/components/Avatar/Avatar";
 import { Button } from "@/components/Buttons/Button";
 import { PageHeader } from "@/components/PageHeader/PageHeader";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
@@ -15,20 +14,21 @@ import {
 import { Modal } from "@/components/Modal/Modal";
 import { useState } from "react";
 import { AddRequestForm } from "@/components/AddRequestForm/AddRequestForm";
-import { AssignmentAvatar } from "@/components/Avatar/AssignmentAvatar";
-import { requests } from "@/data";
 
 import { TechnicalRequestResponseType } from "@/types";
 import { TechnicalRequestResponseForm } from "@/components/Forms/TechnicalRequestResponseForm/TechnicalRequestResponseForm";
+import { useTechnicalRequests } from "@/services/queries";
+import { Loading } from "@/components/Loading/Loading";
+import { AssignmentInput } from "@/components/AssignmentInput/AssignmentInput";
+import { AssigneeAvatar } from "@/components/Avatar/Avatar";
 
 export const SupportTeamRequests = () => {
   const [isAddRequestFormOpen, setIsAddRequestFormOpen] = useState(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [request, setRequest] = useState<TechnicalRequestResponseType>();
 
-  const openModal = () => {
-    setIsAddRequestFormOpen(true);
-  };
+  const { data: requests, isPending } = useTechnicalRequests();
+
   const closeModal = () => {
     setIsAddRequestFormOpen(false);
   };
@@ -50,8 +50,7 @@ export const SupportTeamRequests = () => {
         icon="addRequest"
         content="Lista wszystkich zapytań zgłoszonych przez zespół sprzedazowy."
         title="Panel zapytań"
-        onClick={openModal}
-        buttonContent="Nowe zapytanie"
+        buttonVisible={false}
       />
 
       <main className="flex flex-col justify-stretch w-full h-full">
@@ -62,7 +61,6 @@ export const SupportTeamRequests = () => {
               <TableHead>Id</TableHead>
               <TableHead>Od</TableHead>
               <TableHead>Czas</TableHead>
-              <TableHead>Priorytet</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="flex justify-center items-center">
                 Przydzielone do
@@ -72,54 +70,74 @@ export const SupportTeamRequests = () => {
           </TableHeader>
 
           <TableBody>
-            {requests.map((request) => {
-              return (
-                <TableRow className="bg-bgPrimary rounded-lg">
-                  <TableCell className="font-medium">
-                    {request.requestId}
-                  </TableCell>
-                  <TableCell>
-                    {request.requestedBy ? (
-                      <>
-                        <p className="font-bold">{`${request.requestedBy.firstName} ${request.requestedBy.lastName}`}</p>
-                        <p className="">{`Departament: ${request.requestedBy.department}`}</p>
-                        <p className="">{`Sklep: ${request.requestedBy.store}`}</p>
-                      </>
-                    ) : (
-                      <p>Data not provided</p>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Timer createdAt={request.createdAt} timeCap={120} />
-                  </TableCell>
-                  <TableCell>
-                    {request.highPriority ? "Wysoki" : "Normalny"}
-                  </TableCell>
-                  <TableCell>
-                    <StatusIndicator status={request.status} />
-                  </TableCell>
-                  <TableCell className="flex justify-center items-stretch">
-                    {request.assignedTo.length > 0 ? (
-                      request.assignedTo.map((assignee) => {
-                        return (
-                          <Avatar
-                            assignedTo={`${assignee.firstName} ${assignee.lastName}`}
+            {requests ? (
+              requests.map((request) => {
+                return (
+                  <TableRow className="bg-bgPrimary rounded-lg h-[120px]">
+                    <TableCell className="min-w-[120px] max-w-[190px] font-medium">
+                      {request.technicalRequestId}
+                    </TableCell>
+                    <TableCell>
+                      {request.userId ? (
+                        <>
+                          <p className="font-bold">{`${request.userId}`}</p>
+                        </>
+                      ) : (
+                        <p>Data not provided</p>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Timer
+                        createdAt={request.createdAt}
+                        timeCap={120}
+                        resolved={request.resolved}
+                        resolvedAt={request.resolvedAt}
+                        expiredAt={request.expiresAt}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <StatusIndicator
+                        status={
+                          request.requestStatus.technicalRequestStatusName
+                        }
+                      />
+                    </TableCell>
+                    <TableCell className="min-w-[200px] gorw-1">
+                      <div className="flex justify-center w-full">
+                        {request.resolved ? (
+                          <AssigneeAvatar
+                            requestId={request.technicalRequestId}
+                            assignedTo={
+                              request.technicalRequestResolvedBy.userAccountId
+                            }
+                            removable={false}
+                            size={"large"}
                           />
-                        );
-                      })
-                    ) : (
-                      <AssignmentAvatar />
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      onClick={() => openPreviewRequestModal(request)}
-                      content="Rozwiąż"
-                    />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                        ) : (
+                          <AssignmentInput
+                            technicalRequestId={request.technicalRequestId}
+                            assignees={request.assignees}
+                          />
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        disabled={
+                          request.requestStatus.technicalRequestStatusName ===
+                          "resolved"
+                        }
+                        isLoading={isPending}
+                        onClick={() => openPreviewRequestModal(request)}
+                        content="Rozwiąż"
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <Loading color="#141414" />
+            )}
           </TableBody>
         </Table>
       </main>

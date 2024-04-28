@@ -10,7 +10,7 @@ const items = [
     label: "Cena brutto",
   },
   {
-    id: "priceNet",
+    id: "purchasePrice",
     label: "Cena netto zakupu",
   },
   {
@@ -43,6 +43,8 @@ export const RequestPreviewModal = ({ onCloseHandler, requestId }: Props) => {
   if (isPending) {
     return <Loading color={"#141414"} />;
   }
+
+  console.log("response: ", request?.technicalRequestResponse);
 
   return (
     <div
@@ -85,14 +87,15 @@ export const RequestPreviewModal = ({ onCloseHandler, requestId }: Props) => {
           ${request.height}x${request.width}x${request.thickness}`}
               </p>
               <p>
-                <span className="font-bold">Ilość</span> {`${request.quantity}`}
+                <span className="font-bold">Ilość</span>{" "}
+                {`${request.quantity} ${request.unit}`}
               </p>
             </section>
             <section className="flex flex-col mb-4">
               <h2 className="font-bold text-lg text-neutral600 mb-2">
                 Typ zapytania
               </h2>
-              <div className="flex gap-2 flex-wrap mb-4">
+              <div className="flex flex-col text-sm gap-2 flex-wrap mb-4">
                 {request.requestTypes.map((requestType) => (
                   <div
                     key={requestType.technicalRequestType.typeName}
@@ -108,10 +111,18 @@ export const RequestPreviewModal = ({ onCloseHandler, requestId }: Props) => {
                         )?.label
                       }
                     </label>
+                    <div className="text-lime-500 font-bold">
+                      {request.technicalRequestResponse
+                        ? request.technicalRequestResponse[
+                            requestType.technicalRequestType.typeName
+                          ]
+                        : null}
+                    </div>
                   </div>
                 ))}
               </div>
             </section>
+
             <section className="flex flex-col mb-4">
               <h2 className="font-bold text-xl text-neutral600">
                 Additional details

@@ -17,7 +17,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AssignmentAvatar } from "@/components/Avatar/AssignmentAvatar";
+import { AssigneeAvatar } from "@/components/Avatar/Avatar";
+import { AssignmentDisplay } from "@/components/AssignementDisplay/AssignmentDisplay";
 
 export const Requests = () => {
   const [isAddRequestFormOpen, setIsAddRequestFormOpen] = useState(false);
@@ -49,6 +50,7 @@ export const Requests = () => {
         title="Panel zapytań"
         onClick={openModal}
         buttonContent="Nowe zapytanie"
+        buttonVisible={true}
       />
 
       <main className="flex flex-col justify-stretch w-full h-full overflow-hidden scroll-y-auto">
@@ -76,7 +78,7 @@ export const Requests = () => {
                   return (
                     <TableRow
                       key={request.technicalRequestId}
-                      className="bg-bgPrimary rounded-lg"
+                      className="bg-bgPrimary rounded-lg h-[120px]"
                     >
                       <TableCell className="min-w-[120px]">
                         {request.technicalRequestId}
@@ -97,7 +99,12 @@ export const Requests = () => {
                         )}
                       </TableCell>
                       <TableCell className="min-w-[120px]">
-                        <Timer createdAt={request.createdAt} timeCap={120} />
+                        <Timer
+                          expiredAt={request.expiresAt}
+                          createdAt={request.createdAt}
+                          resolved={request.resolved}
+                          resolvedAt={request.resolvedAt}
+                        />
                       </TableCell>
                       <TableCell className="min-w-[120px]">
                         <StatusIndicator
@@ -106,11 +113,24 @@ export const Requests = () => {
                           }
                         />
                       </TableCell>
-                      <TableCell className="min-w-[200px]">
-                        <AssignmentAvatar
-                          technicalRequestId={request.technicalRequestId}
-                          data={request}
-                        />
+                      <TableCell className="min-w-[200px] items-center justify-center grow-1 h-full">
+                        <div className="flex justify-center w-full">
+                          {request.resolved ? (
+                            <AssigneeAvatar
+                              requestId={request.technicalRequestId}
+                              assignedTo={
+                                request.technicalRequestResolvedBy.userAccountId
+                              }
+                              removable={false}
+                              size={"large"}
+                            />
+                          ) : (
+                            <AssignmentDisplay
+                              technicalRequestId={request.technicalRequestId}
+                              assignees={request.assignees}
+                            />
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell className="min-w-[120px]">
                         <Button
