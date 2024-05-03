@@ -10,6 +10,8 @@ import {
   CartItemType,
   CustomerType,
   ProductType,
+  UploadedProductRequestType,
+  UploadedProductResponseType,
 } from "../types";
 
 export const addToCart = async (cartItem: CartItemType) => {
@@ -231,6 +233,51 @@ export const deleteCartItem = async (cartItemId: string) => {
         cartItemId,
       },
       { withCredentials: true }
+    );
+
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+export const uploadProducts = async (
+  products: UploadedProductRequestType[]
+) => {
+  try {
+    const { data } = await axiosProducts.post<{ message: string }>(
+      `/upload`,
+      {
+        products,
+      },
+      { withCredentials: true }
+    );
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+
+export const getUploadedProducts = async () => {
+  try {
+    const { data } = await axiosProducts.get<UploadedProductResponseType[]>(
+      `/upload`,
+      {
+        withCredentials: true,
+      }
     );
 
     return data;

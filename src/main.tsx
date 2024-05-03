@@ -20,43 +20,43 @@ import { ProductDetails } from "./routes/ProductDetails.tsx";
 import { Order } from "./routes/Order.tsx";
 
 const router = createBrowserRouter([
+  // {
+  //   path: "/",
+  //   element: <PrivateRoutes />,
+
+  //   children: [
   {
     path: "/",
-    element: <PrivateRoutes />,
-
+    element: <App />,
     children: [
       {
-        path: "/",
-        element: <App />,
-        children: [
-          {
-            index: true,
-            element: <Dashboard />,
-          },
-          {
-            path: "/customers",
-            element: <Customers />,
-          },
-          {
-            path: "/settings",
-            element: <Settings />,
-          },
-          {
-            path: "/products",
-            element: <Products />,
-          },
-          {
-            path: "/products/:id",
-            element: <ProductDetails />,
-          },
-          {
-            path: "/order",
-            element: <Order />,
-          },
-        ],
+        index: true,
+        element: <Dashboard />,
+      },
+      {
+        path: "/customers",
+        element: <Customers />,
+      },
+      {
+        path: "/settings",
+        element: <Settings />,
+      },
+      {
+        path: "/products",
+        element: <Products />,
+      },
+      {
+        path: "/products/:id",
+        element: <ProductDetails />,
+      },
+      {
+        path: "/order",
+        element: <Order />,
       },
     ],
   },
+  //   ],
+  // },
   {
     path: "/",
     element: <Customers />,

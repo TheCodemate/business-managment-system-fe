@@ -107,7 +107,48 @@ const cartItemResponseSchema = z.object({
   product: productSchema,
 });
 
+const uploadedProductsResponse = z.object({
+  uploadedProductId: z.string(),
+  collectionName: z.string(),
+  productName: z.string(),
+  eanCode: z.number(),
+  productCode: z.string(),
+  finish: z.string(),
+  format: z.string(),
+  weight: z.number(),
+  M2xPKG: z.number(),
+  PCxPKG: z.number(),
+  M2xPLT: z.number(),
+  unit: z.string(),
+  color: z.string(),
+  producer: z.string(),
+  category: z.string(),
+});
+const uploadProductRequestSchema = z.object({
+  collectionName: z.string(),
+  productName: z.string(),
+  eanCode: z.number().optional(),
+  productCode: z.string().optional(),
+  finish: z.string().optional(),
+  format: z.string(),
+  weight: z.number(),
+  M2xPKG: z.number(),
+  PCxPKG: z.number(),
+  M2xPLT: z.number(),
+  PCxPLT: z.number(),
+  unit: z.string(),
+  color: z.string(),
+  producer: z.string(),
+  category: z.string(),
+});
+
 export type CartItemType = z.infer<typeof cartItemRequestSchema>;
 export type CartItemResponseType = z.infer<typeof cartItemResponseSchema>;
 export type CustomerType = z.infer<typeof customerSchema>;
 export type ProductType = z.infer<typeof productSchema>;
+export type UploadedProductResponseType = z.infer<
+  typeof uploadedProductsResponse
+>;
+export type UploadedProductRequestType = z.infer<
+  typeof uploadProductRequestSchema
+>;
