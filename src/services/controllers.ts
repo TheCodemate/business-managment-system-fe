@@ -292,3 +292,28 @@ export const getUploadedProducts = async () => {
     throw new Error("Could not reset password. Try again later.");
   }
 };
+
+export const searchProducts = async (searchPhrase: string) => {
+  try {
+    const { data } = await axiosProducts.get<UploadedProductResponseType[]>(
+      `/searched`,
+      {
+        params: {
+          searchPhrase,
+        },
+        withCredentials: true,
+      }
+    );
+
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not get products. Try again later.");
+  }
+};

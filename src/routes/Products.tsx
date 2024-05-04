@@ -4,6 +4,9 @@ import * as XLSX from "xlsx";
 import { useForm } from "react-hook-form";
 import { useProductUpload } from "@/services/mutations";
 import { UploadedProductRequestType } from "@/types";
+// import { SearchBar } from "@/components/SearchBar/SearchBar";
+import GridViewIcon from "@mui/icons-material/GridView";
+import { Button } from "@/components/Buttons/Button";
 
 type ConvertedProductType = {
   producer: string;
@@ -265,8 +268,7 @@ export const Products = () => {
 
   return (
     <div className="flex flex-1 flex-col">
-      <ExcelMapper />
-      {/* <header className="flex flex-col gap-5 justify-center p-12 bg-bgPrimary px-12 sm:flex-row sm:justify-between sm:gap-10">
+      <header className="flex flex-col gap-5 justify-center p-12 bg-bgPrimary px-12 sm:flex-row sm:justify-between sm:gap-10">
         <div className="flex flex-col justify-center">
           <div className="flex items-center gap-2 mb-4">
             <GridViewIcon className="text-fontPrimary" />
@@ -290,7 +292,7 @@ export const Products = () => {
           />
         </div>
       </header>
-      <main className="flex flex-col h-full w-full p-8 overflow-x-auto">
+      {/* <main className="flex flex-col h-full w-full p-8 overflow-x-auto">
         <div className="flex flex-col w-full gap-2">
           {isProductPending ? (
             <Loading color="#141414" />
@@ -298,31 +300,31 @@ export const Products = () => {
             <Table className="w-full border-separate border-spacing-x-0 border-spacing-y-4">
               <TableHeader>
                 <TableRow className="thead-light text-left h-20 text-sm text-textPrimary font-light">
-                <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
-                  Zdjęcie
-                </TableHead>
-                <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
-                  Produkt
-                </TableHead>
-                <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
-                  Kategorie
-                </TableHead>
-                <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
-                  Options
-                </TableHead>
-                <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
-                  Cena
-                </TableHead>
-                <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
-                  Ilość
-                </TableHead>
-                <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
-                  Kod produktu
-                </TableHead>
-                <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
-                  Akcje
-                </TableHead>
-                {/* </TableRow>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Zdjęcie
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Produkt
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Kategorie
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Options
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Cena
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Ilość
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Kod produktu
+                  </TableHead>
+                  <TableHead className="py-10 px-3 pb-6 min-w-min whitespace-nowrap">
+                    Akcje
+                  </TableHead>
+                </TableRow>
               </TableHeader>
               <TableBody>
                 {products

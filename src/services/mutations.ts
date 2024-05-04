@@ -15,6 +15,7 @@ import {
   removeFromCart,
   deleteCartItem,
   uploadProducts,
+  searchProducts,
 } from "./controllers";
 import { queryClient } from "../context/QueryProvider";
 import { useNavigate } from "react-router-dom";
@@ -136,5 +137,12 @@ export const useProductUpload = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
+  });
+};
+
+export const useGetSearchedProducts = () => {
+  return useMutation({
+    mutationFn: (searchPhrase: string) => searchProducts(searchPhrase),
+    onError: (error) => error.message,
   });
 };
