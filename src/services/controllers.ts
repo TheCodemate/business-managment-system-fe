@@ -14,6 +14,8 @@ import {
   RequestRequestType,
   TechnicalRequestResponseType,
   TechnicalResponseRequestType,
+  UploadedProductRequestType,
+  UploadedProductResponseType,
 } from "../types";
 
 export const addToCart = async (cartItem: CartItemType) => {
@@ -252,12 +254,38 @@ export const deleteCartItem = async (cartItemId: string) => {
     throw new Error("Could not reset password. Try again later.");
   }
 };
+
 export const postNewRequest = async (request: RequestRequestType) => {
   try {
     const { data } = await axiosRequests.post<{ message: string }>(
       `/`,
       {
         ...request,
+
+      },
+      { withCredentials: true }
+    );
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+
+export const uploadProducts = async (
+  products: UploadedProductRequestType[]
+) => {
+  try {
+    const { data } = await axiosProducts.post<{ message: string }>(
+      `/upload`,
+      {
+        products,
       },
       { withCredentials: true }
     );
@@ -381,6 +409,27 @@ export const fetchUsers = async () => {
     throw new Error("Could not reset password. Try again later.");
   }
 };
+export const getUploadedProducts = async () => {
+  try {
+    const { data } = await axiosProducts.get<UploadedProductResponseType[]>(
+      `/upload`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
 
 export const authenticationHandler = async () => {
   try {
@@ -408,11 +457,33 @@ export const authenticationHandler = async () => {
 
 export const postResponse = async (response: TechnicalResponseRequestType) => {
   try {
-    console.log("postResponse - response: ", response);
     const { data } = await axiosRequests.post<{ message: string }>(
       "/response",
       { ...response },
-      { withCredentials: true }
+      { withCredentials: true })
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(
+      "Could not fetch data. The reason is unknown. Try again later."
+    );
+  }
+};
+
+export const searchProducts = async (searchPhrase: string) => {
+  try {
+    const { data } = await axiosProducts.get<UploadedProductResponseType[]>(
+      `/searched`,
+      {
+        params: {
+          searchPhrase,
+        },
+        withCredentials: true,
+      }
     );
 
     return data;

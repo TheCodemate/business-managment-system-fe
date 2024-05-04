@@ -107,6 +107,7 @@ const cartItemResponseSchema = z.object({
   product: productSchema,
 });
 
+<<<<<<< HEAD
 export const requestSchema = z.object({
   requestTypes: z.array(
     z.enum([
@@ -308,6 +309,40 @@ const userAccountSchema = z.object({
   created_at: z.string(), // Assuming it's a string representation of timestamp
   updated_at: z.string(), // Assuming it's a string representation of timestamp
   role: z.enum(["ADMIN"]), // Assuming only 'ADMIN' role is allowed
+  });
+const uploadedProductsResponse = z.object({
+  uploadedProductId: z.string(),
+  collectionName: z.string(),
+  productName: z.string(),
+  eanCode: z.number(),
+  productCode: z.string(),
+  finish: z.string(),
+  format: z.string(),
+  weight: z.number(),
+  M2xPKG: z.number(),
+  PCxPKG: z.number(),
+  M2xPLT: z.number(),
+  unit: z.string(),
+  color: z.string(),
+  producer: z.string(),
+  category: z.string(),
+});
+const uploadProductRequestSchema = z.object({
+  collectionName: z.string(),
+  productName: z.string(),
+  eanCode: z.number().optional(),
+  productCode: z.string().optional(),
+  finish: z.string().optional(),
+  format: z.string(),
+  weight: z.number(),
+  M2xPKG: z.number(),
+  PCxPKG: z.number(),
+  M2xPLT: z.number(),
+  PCxPLT: z.number(),
+  unit: z.string(),
+  color: z.string(),
+  producer: z.string(),
+  category: z.string(),
 });
 
 export type CartItemType = z.infer<typeof cartItemRequestSchema>;
@@ -326,3 +361,9 @@ export type TechnicalResponseRequestType = z.infer<
 
 export type Assignees = z.infer<typeof assigneesSchema>;
 export type UserToBeAssignedType = { email: string; userId: string };
+export type UploadedProductResponseType = z.infer<
+  typeof uploadedProductsResponse
+>;
+export type UploadedProductRequestType = z.infer<
+  typeof uploadProductRequestSchema
+>;

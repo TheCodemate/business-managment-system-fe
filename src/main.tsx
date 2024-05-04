@@ -32,36 +32,42 @@ const router = createBrowserRouter([
         element: <App />,
         children: [
           {
-            index: true,
-            element: <Dashboard />,
-          },
-          {
-            path: "/customers",
-            element: <Customers />,
-          },
-          {
-            path: "/settings",
-            element: <Settings />,
-          },
-          {
-            path: "/products",
-            element: <Products />,
-          },
-          {
-            path: "/products/:id",
-            element: <ProductDetails />,
-          },
-          {
-            path: "/order",
-            element: <Order />,
-          },
-          {
-            path: "/requests",
-            element: <Requests />,
-          },
-          {
-            path: "/support-team-requests",
-            element: <SupportTeamRequests />,
+            path: "/",
+            element: <App />,
+            children: [
+              {
+                index: true,
+                element: <Dashboard />,
+              },
+              {
+                path: "/customers",
+                element: <Customers />,
+              },
+              {
+                path: "/settings",
+                element: <Settings />,
+              },
+              {
+                path: "/products",
+                element: <Products />,
+              },
+              {
+                path: "/products/:id",
+                element: <ProductDetails />,
+              },
+              {
+                path: "/order",
+                element: <Order />,
+              },
+              {
+                path: "/requests",
+                element: <Requests />,
+              },
+              {
+                path: "/support-team-requests",
+                element: <SupportTeamRequests />,
+              },
+            ],
           },
         ],
       },

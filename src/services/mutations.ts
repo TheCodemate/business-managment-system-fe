@@ -4,6 +4,7 @@ import {
   CustomerType,
   RequestRequestType,
   TechnicalResponseRequestType,
+  UploadedProductRequestType,
 } from "../types";
 import {
   addCustomer,
@@ -20,6 +21,8 @@ import {
   unassignUser,
   authenticationHandler,
   postResponse,
+  uploadProducts,
+  searchProducts,
 } from "./controllers";
 import { queryClient } from "../context/QueryProvider";
 import { useNavigate } from "react-router-dom";
@@ -145,6 +148,16 @@ export const usePostNewRequest = () => {
     onError: (error) => error.message,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
+          },
+  });
+};
+export const useProductUpload = () => {
+  return useMutation({
+    mutationFn: (products: UploadedProductRequestType[]) =>
+      uploadProducts(products),
+    onError: (error) => error.message,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
 };
@@ -188,5 +201,12 @@ export const usePostResponse = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
     },
+      });
+};
+
+export const useGetSearchedProducts = () => {
+  return useMutation({
+    mutationFn: (searchPhrase: string) => searchProducts(searchPhrase),
+    onError: (error) => error.message,
   });
 };

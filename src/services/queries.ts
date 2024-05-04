@@ -2,11 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import {
   authenticationHandler,
   fetchUsers,
+  getTechnicalRequests,
+  getTechnicalRequestsById,
   getCartItems,
   getCustomers,
   getProducts,
-  getTechnicalRequests,
-  getTechnicalRequestsById,
+  getUploadedProducts,
 } from "./controllers";
 
 export const useCartItems = () => {
@@ -53,5 +54,12 @@ export const useAuth = () => {
   return useQuery({
     queryKey: ["authenticate"],
     queryFn: authenticationHandler,
+  });
+};
+
+export const useUploadedProducts = () => {
+  return useQuery({
+    queryKey: ["uploadedProducts"],
+    queryFn: getUploadedProducts,
   });
 };

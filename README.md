@@ -1,27 +1,46 @@
-# React + TypeScript + Vite
+# Titles and internal titles
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Custom Business Operation System - Frontend
 
-Currently, two official plugins are available:
+## Introduction - the project's aim
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+By centralizing data management, the software provides multiple business functions with a single view of the truth. This helps a company better manage complex business processes by giving employees of different departments easy access to real-time insights across the enterprise.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Available now:
 
-- Configure the top-level `parserOptions` property like this:
+- Login/Register view
+- Products List View
+- Product Details View
+- B2B Module - Shopping Cart View
+- B2B Module - Order Details View
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+To be implemented:
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Technical Support Request Module - when sales assistant requires more detailed information about product, its features, availability, production date etc. it can place a request using the application.
+
+## Important:
+
+- system is being developed based on real case and solves real existing problems of the company.
+- it is only a frontend part of the fullstack application (Backend part available here: https://github.com/TheCodemate/customers-register-be)
+- live demon has not been deployed yet
+- as it comes with dedicated backend you are not able to run it on your own at the moment
+- no testing account available yet
+
+# Technologies
+
+- TypeScript
+- React
+- TanstackQuery
+- Tailwind CSS
+- Vite
+- Axios
+- ZOD
+
+# What needs to be done?
+
+- Order Confirmation View - the last step in order flow. The user checks the order once again, confirms it and it is being automatically send to the sales assistant
+- Testing account - create testing account to give external developers possibility to test the application
+- Namings - namings must be changed to make it more readable and unified.
+- Tests - tests has to be implemented. react-testing-library will be applied for that purpose
