@@ -26,32 +26,32 @@ export const UsersToBeAssignedList = ({
     <>
       {isPending ? (
         <Loading color="#141414" />
-      ) : (
-        <div className="">
-          <ul className="flex flex-col gap-12 !min-w-[300px] !min-h[600px] !bg-bgPrimary">
-            {users.map((user) => {
-              return (
-                <li
-                  onClick={() =>
-                    assignToRequest(technicalRequestId, user.userId)
-                  }
-                >
-                  <div className="flex items-center gap-4">
-                    <div>
-                      <AssigneeAvatar
-                        assignedTo={"8e3fc3a9-836f-46ad-8216-22d419715fa8"}
-                        requestId={technicalRequestId}
-                      />
-                    </div>
-                    <div className="flex flex-col ">
-                      <p className="text-nowrap">user.email</p>
-                    </div>
+      ) : users.length > 0 ? (
+        <ul className="flex flex-col gap-4">
+          {users.map((user) => {
+            return (
+              <li
+                className="hover:bg-details hover:cursor-pointer px-4 py-2 transition-all"
+                onClick={() => assignToRequest(technicalRequestId, user.userId)}
+              >
+                <div className="flex items-center gap-2">
+                  <div>
+                    <AssigneeAvatar
+                      removable={false}
+                      assignedTo={user.email}
+                      requestId={technicalRequestId}
+                    />
                   </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+                  <div className="flex flex-col ">
+                    <p className="text-nowrap">{user.email}</p>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p className="pxs-4">Brak uytkowników do przypisania</p>
       )}
     </>
   );

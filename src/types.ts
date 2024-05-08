@@ -107,7 +107,6 @@ const cartItemResponseSchema = z.object({
   product: productSchema,
 });
 
-<<<<<<< HEAD
 export const requestSchema = z.object({
   requestTypes: z.array(
     z.enum([
@@ -127,9 +126,7 @@ export const requestSchema = z.object({
     .string()
     .min(1, { message: "Nazwa produktu jest wymagana" })
     .max(50),
-  width: z.string(),
-  height: z.string(),
-  thickness: z.string(),
+  format: z.string(),
   finish: z.string(),
   producer: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
   color: z.string().min(1, { message: "Kolor jest wymagany" }).max(50),
@@ -152,25 +149,20 @@ export const requestRequestSchema = z.object({
   requestTypes: z.array(
     z.enum([
       "price",
-      "priceNet",
+      "purchasePrice",
       "availability",
       "productionDate",
       "substitute",
       "technicalDocumentation",
     ])
   ),
-  productCode: z
-    .string()
-    .min(1, { message: "Kod produktu jest wymagane" })
-    .max(50),
+  productCode: z.string().optional(),
   collectionName: z
     .string()
-    .min(1, { message: "Nazwa produktu jest wymagana" })
+    .min(1, { message: "Nie wybrano produktu" })
     .max(50),
-  width: z.string(),
-  height: z.string(),
-  thickness: z.string(),
-  finish: z.string(),
+  format: z.string(),
+  finish: z.string().optional(),
   producer: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
   color: z.string().min(1, { message: "Kolor jest wymagany" }).max(50),
   productCategory: z.enum([
@@ -180,18 +172,36 @@ export const requestRequestSchema = z.object({
     "furniture",
     "lightning",
   ]),
-  quantity: z.string(),
+  quantity: z
+    .string()
+    .min(1, { message: "Ilość jest wymagana" })
+    .refine((val) => /^\d+(?:[.,]\d{1,2})?$/.test(val), {
+      message:
+        "Wartość niepoprawna. Spróbuj jeden z podanych zapisów: 15,12|15|15.12|15,1|15.1; ",
+    }),
   additionalInfo: z.string(),
-  contactPerson: z.string().optional(),
+  contactPerson: z
+    .string()
+    .max(100, { message: "To pole nie powinno być dłuzsze niz 100 znaków" })
+    .optional(),
   contactPersonEmail: z
     .string()
-    .min(1, { message: "Producent jest wymagany" })
-    .max(50)
-    .optional(),
+    .min(1, { message: "Musisz wprowadzić email kontaktowy" })
+    .max(300)
+    .refine(
+      (val) => {
+        const flags = "gm";
+        const pattern = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}";
+        const regexPattern = new RegExp(pattern, flags);
+
+        return val.match(regexPattern);
+      },
+      { message: "Niewłaściwy email. Sprawdź czy wpisałeś poprawnie" }
+    ),
   contactPersonPhone: z
     .string()
-    .min(1, { message: "Producent jest wymagany" })
-    .max(50)
+    .min(1, { message: "Numer telefonu musi zawierać conajmniej 9 znaków" })
+    .max(12, { message: "Number telefonu nie moze być dłuzszy niz 12 znaków" })
     .optional(),
   files: z.string().optional(),
   unit: z.enum(["szt", "m2", "komplet", "mb"]),
@@ -246,9 +256,7 @@ export const technicalRequestResponseSchema = z.object({
     .string()
     .min(1, { message: "Nazwa produktu jest wymagana" })
     .max(50),
-  width: z.string(),
-  height: z.string(),
-  thickness: z.string(),
+  format: z.string(),
   finish: z.string(),
   producer: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
   color: z.string().min(1, { message: "Kolor jest wymagany" }).max(50),
@@ -265,8 +273,17 @@ export const technicalRequestResponseSchema = z.object({
   contactPerson: z.string(),
   contactPersonEmail: z
     .string()
-    .min(1, { message: "Producent jest wymagany" })
-    .max(50),
+    .optional()
+    .refine(
+      (val) => {
+        const flags = "gm";
+        const pattern = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}";
+        const regexPattern = new RegExp(pattern, flags);
+
+        return val.match(regexPattern);
+      },
+      { message: "Niewłaściwy email. Sprawdź czy wpisałeś poprawnie" }
+    ),
   contactPersonPhone: z
     .string()
     .min(1, { message: "Producent jest wymagany" })
@@ -309,12 +326,12 @@ const userAccountSchema = z.object({
   created_at: z.string(), // Assuming it's a string representation of timestamp
   updated_at: z.string(), // Assuming it's a string representation of timestamp
   role: z.enum(["ADMIN"]), // Assuming only 'ADMIN' role is allowed
-  });
+});
 const uploadedProductsResponse = z.object({
   uploadedProductId: z.string(),
   collectionName: z.string(),
   productName: z.string(),
-  eanCode: z.number(),
+  eanCode: z.string(),
   productCode: z.string(),
   finish: z.string(),
   format: z.string(),
@@ -330,7 +347,7 @@ const uploadedProductsResponse = z.object({
 const uploadProductRequestSchema = z.object({
   collectionName: z.string(),
   productName: z.string(),
-  eanCode: z.number().optional(),
+  eanCode: z.string().optional(),
   productCode: z.string().optional(),
   finish: z.string().optional(),
   format: z.string(),

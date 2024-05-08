@@ -49,7 +49,7 @@ export const SupportTeamRequests = () => {
       <PageHeader
         icon="addRequest"
         content="Lista wszystkich zapytań zgłoszonych przez zespół sprzedazowy."
-        title="Panel zapytań"
+        title="Lista oczekujących zapytań"
         buttonVisible={false}
       />
 
@@ -73,7 +73,10 @@ export const SupportTeamRequests = () => {
             {requests ? (
               requests.map((request) => {
                 return (
-                  <TableRow className="bg-bgPrimary rounded-lg h-[120px]">
+                  <TableRow
+                    key={request.technicalRequestId}
+                    className="bg-bgPrimary rounded-lg h-[120px]"
+                  >
                     <TableCell className="min-w-[120px] max-w-[190px] font-medium">
                       {request.technicalRequestId}
                     </TableCell>
@@ -145,14 +148,19 @@ export const SupportTeamRequests = () => {
         <AddRequestForm closeHandler={closeModal} />
       </Modal>
 
-      <Modal isOpen={isPreviewModalOpen} toggleModal={closePreviewRequestModal}>
-        <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
-          <TechnicalRequestResponseForm
-            request={request}
-            onCloseHandler={closePreviewRequestModal}
-          />
-        </div>
-      </Modal>
+      {
+        <Modal
+          isOpen={isPreviewModalOpen}
+          toggleModal={closePreviewRequestModal}
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+            <TechnicalRequestResponseForm
+              request={request}
+              onCloseHandler={closePreviewRequestModal}
+            />
+          </div>
+        </Modal>
+      }
     </div>
   );
 };

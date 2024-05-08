@@ -22,7 +22,7 @@ export const Dialog = ({
     <DialogContextProvider>
       <div
         onClick={(e) => stopPropagationHandler(e)}
-        className="flex flex-col min-w-[320px] max-w-[600px] bg-bgPrimary p-12 rounded-lg"
+        className="flex flex-col min-w-[320px] max-w-[600px] bg-bgPrimary p-12 rounded-lg shadow-xl"
       >
         {closeButtonVisible ? (
           <CloseDialogButton onClick={onCloseHandler} />

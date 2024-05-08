@@ -261,7 +261,6 @@ export const postNewRequest = async (request: RequestRequestType) => {
       `/`,
       {
         ...request,
-
       },
       { withCredentials: true }
     );
@@ -331,7 +330,6 @@ export const getTechnicalRequestsById = async (requestId: string) => {
       }
     );
 
-    console.log("getTechnicalRequestById - data: ", data);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -460,7 +458,8 @@ export const postResponse = async (response: TechnicalResponseRequestType) => {
     const { data } = await axiosRequests.post<{ message: string }>(
       "/response",
       { ...response },
-      { withCredentials: true })
+      { withCredentials: true }
+    );
 
     return data;
   } catch (error) {

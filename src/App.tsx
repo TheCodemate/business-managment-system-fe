@@ -11,9 +11,9 @@ const Layout = () => {
       <MobileMenu>
         <MobileMenu.Nav>
           <MobileMenu.NavLink to="" text="Dashboard" />
-          <MobileMenu.NavLink to="customers" text="Customers" />
+          {/* <MobileMenu.NavLink to="customers" text="Customers" /> */}
           <MobileMenu.NavLink to="products" text="Products" />
-          <MobileMenu.NavLink to="settings" text="Settings" />
+          {/* <MobileMenu.NavLink to="settings" text="Settings" /> */}
           <MobileMenu.NavLink to="requests" text="Requests" />
           <MobileMenu.NavLink
             to="support-team-requests"
@@ -24,9 +24,9 @@ const Layout = () => {
       <Sidebar>
         <Sidebar.Nav basis={"full"}>
           <Sidebar.NavLink to="" text="Dashboard" />
-          <Sidebar.NavLink to="customers" text="Customers" />
+          {/* <Sidebar.NavLink to="customers" text="Customers" /> */}
           <Sidebar.NavLink to="products" text="Products" />
-          <Sidebar.NavLink to="order" text="Shopping Cart" />
+          {/* <Sidebar.NavLink to="order" text="Shopping Cart" /> */}
           <Sidebar.NavLink to="requests" text="Requests" />
           <Sidebar.NavLink
             to="support-team-requests"

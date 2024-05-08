@@ -7,30 +7,33 @@ import { useTechnicalRequestById } from "@/services/queries";
 const items = [
   {
     id: "price",
-    label: "Cena brutto",
+    label: "Cena detaliczna PLN (brutto)",
   },
   {
     id: "purchasePrice",
-    label: "Cena netto zakupu",
+    label: "Cena zakupu PLN (netto z transportem)",
   },
   {
     id: "availability",
-    label: "Dostępność",
+    label: "Chcę wiedzieć czy produkt jest dostępny w fabryce",
   },
   {
     id: "productionDate",
-    label: "Termin produkcji",
+    label: "Sprawdzam kiedy produkt będzie produkowany",
   },
   {
     id: "substitute",
-    label: "Porzukiwanie zamiennika",
+    label: "Poszukuję zamiennika",
   },
   {
     id: "technicalDocumentation",
-    label: "Karta techniczna",
+    label: "Potrzebuję kartę techniczną",
+  },
+  {
+    id: "technicalResponseText",
+    label: "Odpowiedź",
   },
 ] as const;
-
 type Props = {
   onCloseHandler: () => void;
   timeCount: Date;
@@ -43,8 +46,6 @@ export const RequestPreviewModal = ({ onCloseHandler, requestId }: Props) => {
   if (isPending) {
     return <Loading color={"#141414"} />;
   }
-
-  console.log("response: ", request?.technicalRequestResponse);
 
   return (
     <div
@@ -74,44 +75,46 @@ export const RequestPreviewModal = ({ onCloseHandler, requestId }: Props) => {
                 Informacje o produkcie
               </h2>
               <p className="">
-                <span className="font-bold">Producent</span>
+                <span className="font-bold">Producent:</span>
                 {` ${request.producer}`}
               </p>
               <p>
-                <span className="font-bold">Kod</span>
+                <span className="font-bold">Kod:</span>
                 {` ${request.productCode}`}
               </p>
               <p>
-                <span className="font-bold">Produkt</span>{" "}
-                {`${request.collectionName} ${request.color} ${request.finish}
-          ${request.height}x${request.width}x${request.thickness}`}
+                <span className="font-bold">Produkt:</span>
+                {` ${request.collectionName} ${request.color} ${request.finish}
+          ${request.format}`}
               </p>
               <p>
-                <span className="font-bold">Ilość</span>{" "}
-                {`${request.quantity} ${request.unit}`}
+                <span className="font-bold">Ilość:</span>{" "}
+                {` ${request.quantity} ${request.unit}`}
               </p>
             </section>
             <section className="flex flex-col mb-4">
               <h2 className="font-bold text-lg text-neutral600 mb-2">
                 Typ zapytania
               </h2>
-              <div className="flex flex-col text-sm gap-2 flex-wrap mb-4">
+              <div className="flex flex-col text-sm gap-4 flex-wrap mb-4">
                 {request.requestTypes.map((requestType) => (
                   <div
                     key={requestType.technicalRequestType.typeName}
-                    className="flex gap-1 items-center"
+                    className="flex flex-col gap-1"
                   >
-                    <Checkbox checked={true} disabled />
-                    <label className="text-sm font-normal">
-                      {
-                        items.find(
-                          (item) =>
-                            item.id ===
-                            requestType.technicalRequestType.typeName
-                        )?.label
-                      }
-                    </label>
-                    <div className="text-lime-500 font-bold">
+                    <div className="flex gap-2">
+                      <Checkbox checked={true} disabled />
+                      <label className="text-sm font-normal">
+                        {
+                          items.find(
+                            (item) =>
+                              item.id ===
+                              requestType.technicalRequestType.typeName
+                          )?.label
+                        }
+                      </label>
+                    </div>
+                    <div className="text-confirmAlternate font-bold mb-2">
                       {request.technicalRequestResponse
                         ? request.technicalRequestResponse[
                             requestType.technicalRequestType.typeName
@@ -125,15 +128,19 @@ export const RequestPreviewModal = ({ onCloseHandler, requestId }: Props) => {
 
             <section className="flex flex-col mb-4">
               <h2 className="font-bold text-xl text-neutral600">
-                Additional details
+                Dodatkowe uwagi
               </h2>
               <div>
-                <p>{request.additionalInfo}</p>
+                <p>
+                  {request.additionalInfo
+                    ? request.additionalInfo
+                    : "Brak uwag"}
+                </p>
               </div>
             </section>
             <section className="flex flex-col">
               <h2 className="font-bold text-xl text-neutral600 mb-2">
-                Client contact details
+                Dane kontaktowe
               </h2>
               <div className="flex justify-between w-full items-center">
                 <div className="flex flex-col">

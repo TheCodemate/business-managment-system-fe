@@ -16,31 +16,30 @@ import { Dialog } from "@/components/Dialog/Dialog";
 import { delay } from "@/utils/delay";
 import { AxiosError } from "axios";
 
-//has to be removed when API connected and swaped for real items props
 const items = [
   {
     id: "price",
-    label: "Cena brutto",
+    label: "Cena detaliczna PLN (brutto)",
   },
   {
     id: "purchasePrice",
-    label: "Cena netto zakupu",
+    label: "Cena zakupu PLN (netto z transportem)",
   },
   {
     id: "availability",
-    label: "Dostępność",
+    label: "Chcę wiedzieć czy produkt jest dostępny w fabryce",
   },
   {
     id: "productionDate",
-    label: "Termin produkcji",
+    label: "Sprawdzam kiedy produkt będzie produkowany",
   },
   {
     id: "substitute",
-    label: "Porzukiwanie zamiennika",
+    label: "Poszukuję zamiennika",
   },
   {
     id: "technicalDocumentation",
-    label: "Karta techniczna",
+    label: "Potrzebuję kartę techniczną",
   },
   {
     id: "technicalResponseText",
@@ -56,10 +55,10 @@ type Props = {
 const generateInput = (props: DynamicInputProps) => {
   switch (props.name) {
     case "technicalDocumentation":
-      return <Input type="file" {...props} />;
+      return <Input className="bg-bgPrimary" type="file" {...props} />;
 
     default:
-      return <Input className="bg-transparent" type="text" {...props} />;
+      return <Input className="bg-bgPrimary" type="text" {...props} />;
   }
 };
 
@@ -94,6 +93,7 @@ export const TechnicalRequestResponseForm = ({
   });
 
   const closeConfirmationHandler = () => {
+    onCloseHandler();
     setIsConfirmationOpen(false);
   };
 
@@ -122,6 +122,7 @@ export const TechnicalRequestResponseForm = ({
       postResponse({ ...validData });
       await delay(3000, () => closeConfirmationHandler());
       setIsLoading(false);
+      closeConfirmationHandler();
       reset();
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -168,10 +169,11 @@ export const TechnicalRequestResponseForm = ({
               <p>
                 <span className="font-bold">Produkt</span>{" "}
                 {`${request.collectionName} ${request.color} ${request.finish}
-          ${request.height}x${request.width}x${request.thickness}`}
+          ${request.format}`}
               </p>
               <p>
-                <span className="font-bold">Ilość</span> {`${request.quantity}`}
+                <span className="font-bold">Ilość</span>{" "}
+                {`${request.quantity} ${request.unit}`}
               </p>
             </section>
             <section className="flex flex-col mb-4">
@@ -179,10 +181,13 @@ export const TechnicalRequestResponseForm = ({
                 Typ zapytania
               </h2>
               <form id="responseForm" onSubmit={handleSubmit(onSubmit)}>
-                <div className="flex gap-2 flex-wrap mb-4">
+                <div className="flex flex-col gap-4 flex-wrap mb-4">
                   {request.requestTypes.map((type) => {
                     return (
-                      <div className="flex flex-col gap-1 items-start">
+                      <div
+                        key={type.technicalRequestType.typeId}
+                        className="flex flex-col gap-1 items-start"
+                      >
                         <div className="flex items-center gap-2">
                           <Checkbox checked={true} disabled />
                           <label className="text-sm font-normal">
@@ -207,7 +212,7 @@ export const TechnicalRequestResponseForm = ({
             </section>
             <section className="flex flex-col mb-4">
               <h2 className="font-bold text-xl text-neutral600">
-                Additional details
+                Dodatkowe uwagi
               </h2>
               <div>
                 <p>{request.additionalInfo}</p>
@@ -215,7 +220,7 @@ export const TechnicalRequestResponseForm = ({
             </section>
             <section className="flex flex-col mb-4">
               <h2 className="font-bold text-xl text-neutral600 mb-2">
-                Client contact details
+                Dane kontaktowe
               </h2>
               <div className="flex justify-between w-full items-center">
                 <div className="flex flex-col">
@@ -232,7 +237,7 @@ export const TechnicalRequestResponseForm = ({
                 </div>
               </div>
             </section>
-            <footer className="flex gap-4 justify-end border-t-neutral-200 border-t pt-4">
+            <footer className="flex gap-4 justify-end border-t-neutral-200 border-t border-t-details pt-4">
               <Button
                 className="font-bold  text-neutral600"
                 variant={"outline"}
@@ -254,9 +259,14 @@ export const TechnicalRequestResponseForm = ({
                   onCloseHandler={closeConfirmationHandler}
                   confirmationHandler={confirmationHandler}
                 >
+                  <Dialog.Content>
+                    Zanim prześlesz odpowiedź upewnij się, ze o niczmy nie
+                    zapomniałeś. Jezeli uzupelniles wszystkie pola kliknij
+                    "Akceptuj"
+                  </Dialog.Content>
                   <Dialog.Actions>
+                    <Dialog.RejectButton onClick={closeConfirmationHandler} />
                     <Dialog.AcceptButton onClick={confirmationHandler} />
-                    {/* <Dialog.RejectButton /> */}
                   </Dialog.Actions>
                 </Dialog>
               )}

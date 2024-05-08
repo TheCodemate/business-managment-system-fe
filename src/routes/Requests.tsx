@@ -46,8 +46,8 @@ export const Requests = () => {
     <div className="flex flex-col w-full">
       <PageHeader
         icon="addRequest"
-        content="Tutaj znajduje się strefa pomocy. Składając zapytanie mozesz uzyskać potrzebne informacje dotyczące produktów."
-        title="Panel zapytań"
+        content="Tutaj znajduje się strefa pomocy. Składając zapytanie mozesz uzyskać potrzebne informacje dotyczące produktów. Kliknij przycisk 'Nowe zapytanie' aby dodać"
+        title="Twoje zapytania"
         onClick={openModal}
         buttonContent="Nowe zapytanie"
         buttonVisible={true}
@@ -58,7 +58,7 @@ export const Requests = () => {
           <Loading color="#141414" />
         ) : (
           <Table className="w-[100%] p-10 border-separate border-spacing-y-3 overflow-hidden">
-            <TableCaption>A list of your all requests.</TableCaption>
+            <TableCaption>Lista wszystkich utworzonych zapytań</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead>Id</TableHead>
@@ -137,7 +137,7 @@ export const Requests = () => {
                           onClick={() => {
                             openPreviewRequestModal(request.technicalRequestId);
                           }}
-                          content="Szczegóły"
+                          content="Podgląd"
                         />
                       </TableCell>
                     </TableRow>

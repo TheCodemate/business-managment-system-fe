@@ -38,7 +38,6 @@ const statusBgColor = {
 
 export const Timer = ({
   createdAt,
-  timeCap = 30,
   resolved = false,
   resolvedAt,
   expiredAt,
@@ -78,7 +77,6 @@ export const Timer = ({
     const timer = setInterval(() => {
       if (timerRef.current) {
         const resolvedDate = new Date(resolvedAt).getTime();
-        // const timeCapInMils = timeCap * 60 * 1000;
         const timeCapInMils =
           new Date(expiredAt).getTime() - new Date(createdAt).getTime();
         const oneMilisecToPixel = timerRef.current.clientWidth / timeCapInMils;

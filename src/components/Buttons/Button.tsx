@@ -18,7 +18,7 @@ const icons = {
 export const Button = ({ content, icon, ...props }: Props) => {
   return (
     <button
-      className="flex justify-center items-center font-bold text-nowrap bg-primary text-alternate hover:cursor-pointer w-full px-6 py-2 rounded-lg hover:bg-details transition-all"
+      className="flex justify-center items-center font-bold text-nowrap bg-primary text-alternate hover:cursor-pointer w-full px-6 py-2 rounded-lg hover:bg-details transition-all disabled:bg-details disabled:text-textDetail disabled:border-textDetail disabled:cursor-not-allowed"
       {...props}
     >
       {props.isLoading ? (

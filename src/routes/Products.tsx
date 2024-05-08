@@ -137,7 +137,7 @@ const ExcelMapper = () => {
         category: "",
         collectionName: "",
         productName: "",
-        eanCode: 0,
+        eanCode: "",
         productCode: "",
         finish: "",
         format: "",
@@ -268,7 +268,8 @@ export const Products = () => {
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="flex flex-col gap-5 justify-center p-12 bg-bgPrimary px-12 sm:flex-row sm:justify-between sm:gap-10">
+      <ExcelMapper />
+      {/* <header className="flex flex-col gap-5 justify-center p-12 bg-bgPrimary px-12 sm:flex-row sm:justify-between sm:gap-10">
         <div className="flex flex-col justify-center">
           <div className="flex items-center gap-2 mb-4">
             <GridViewIcon className="text-fontPrimary" />
@@ -291,7 +292,7 @@ export const Products = () => {
             content={"Dodaj nowy produkt"}
           />
         </div>
-      </header>
+      </header> */}
       {/* <main className="flex flex-col h-full w-full p-8 overflow-x-auto">
         <div className="flex flex-col w-full gap-2">
           {isProductPending ? (

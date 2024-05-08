@@ -80,7 +80,7 @@ export const AssigneeAvatar = ({
         height: sizes[size].height,
         fontSize: sizes[size].textSize,
       }}
-      className="relative flex justify-center items-center rounded-[100%] w-14 h-14 p-2 bg-sky-500 font-semibold text-sky-50 border-2 border-sky-50 cursor-pointer text-2xl group -ml-[10px] first:ml-0"
+      className="relative flex justify-center items-center rounded-[100%] w-14 h-14 p-2 bg-sky-300 font-semibold text-sky-50 border-2 border-sky-50 cursor-pointer text-2xl group -ml-[10px] first:ml-0"
     >
       {removable ? (
         <UnassignUser
