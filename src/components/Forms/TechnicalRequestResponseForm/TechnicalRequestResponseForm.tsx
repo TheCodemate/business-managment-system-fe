@@ -15,6 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/Dialog/Dialog";
 import { delay } from "@/utils/delay";
 import { AxiosError } from "axios";
+import { useTechnicalRequestById } from "@/services/queries";
+import { Loading } from "@/components/Loading/Loading";
 
 const items = [
   {
@@ -76,6 +78,15 @@ export const TechnicalRequestResponseForm = ({
   const [validData, setValidData] = useState<TechnicalResponseRequestType>(
     {} as TechnicalResponseRequestType
   );
+
+  const { data: technicalRequestById, isPending: isRequestByIdPending } =
+    useTechnicalRequestById(request.technicalRequestId);
+
+  console.log(
+    "technicalRequestById: ",
+    technicalRequestById?.technicalRequestFiles
+  );
+
   const [isLoading, setIsLoading] = useState(false);
   const { mutate: postResponse, isPending } = usePostResponse();
   const { register, handleSubmit, control, reset } = useForm({
@@ -119,7 +130,7 @@ export const TechnicalRequestResponseForm = ({
   const confirmationHandler = async () => {
     try {
       setIsLoading(true);
-      postResponse({ ...validData });
+      postResponse(validData);
       await delay(3000, () => closeConfirmationHandler());
       setIsLoading(false);
       closeConfirmationHandler();
@@ -131,6 +142,14 @@ export const TechnicalRequestResponseForm = ({
     }
   };
 
+  if (isRequestByIdPending) {
+    return (
+      <div>
+        <Loading color="#141414" />
+      </div>
+    );
+  }
+
   return (
     <div
       className="min-w-[360px] max-w-[1080px] min-h-[300px] xl:min-w-[920px] lg:min-w-[760px] md:min-w-[600px]  bg-alternate rounded-xl"
@@ -138,16 +157,18 @@ export const TechnicalRequestResponseForm = ({
         e.stopPropagation();
       }}
     >
-      {request ? (
+      {technicalRequestById ? (
         <div>
           <header className="flex bg-neutral100 px-6 py-3 justify-between items-center rounded-xl">
             <div className="flex gap-2 items-center justify-center">
               <span className="text-sm font-bold text-neutral600">
-                Zapytanie nr {request.technicalRequestId}
+                Zapytanie nr {technicalRequestById.technicalRequestId}
               </span>
 
               <StatusIndicator
-                status={request.requestStatus.technicalRequestStatusName}
+                status={
+                  technicalRequestById.requestStatus.technicalRequestStatusName
+                }
               />
             </div>
             <CloseButton onClick={onCloseHandler} />
@@ -160,20 +181,20 @@ export const TechnicalRequestResponseForm = ({
               </h2>
               <p className="">
                 <span className="font-bold">Producent</span>
-                {` ${request.producer}`}
+                {` ${technicalRequestById.producer}`}
               </p>
               <p>
                 <span className="font-bold">Kod</span>
-                {` ${request.productCode}`}
+                {` ${technicalRequestById.productCode}`}
               </p>
               <p>
                 <span className="font-bold">Produkt</span>{" "}
-                {`${request.collectionName} ${request.color} ${request.finish}
-          ${request.format}`}
+                {`${technicalRequestById.collectionName} ${technicalRequestById.color} ${technicalRequestById.finish}
+          ${technicalRequestById.format}`}
               </p>
               <p>
                 <span className="font-bold">Ilość</span>{" "}
-                {`${request.quantity} ${request.unit}`}
+                {`${technicalRequestById.quantity} ${technicalRequestById.unit}`}
               </p>
             </section>
             <section className="flex flex-col mb-4">
@@ -182,7 +203,7 @@ export const TechnicalRequestResponseForm = ({
               </h2>
               <form id="responseForm" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-4 flex-wrap mb-4">
-                  {request.requestTypes.map((type) => {
+                  {technicalRequestById.requestTypes.map((type) => {
                     return (
                       <div
                         key={type.technicalRequestType.typeId}
@@ -210,14 +231,38 @@ export const TechnicalRequestResponseForm = ({
                 </div>
               </form>
             </section>
-            <section className="flex flex-col mb-4">
-              <h2 className="font-bold text-xl text-neutral600">
-                Dodatkowe uwagi
-              </h2>
-              <div>
-                <p>{request.additionalInfo}</p>
-              </div>
-            </section>
+            {technicalRequestById.additionalInfo ? (
+              <section className="flex flex-col mb-4">
+                <h2 className="font-bold text-xl text-neutral600">
+                  Dodatkowe uwagi
+                </h2>
+                <div>
+                  <p>{technicalRequestById.additionalInfo}</p>
+                </div>
+              </section>
+            ) : null}
+            {technicalRequestById.technicalRequestFiles.length > 0 ? (
+              <section className="flex flex-col mb-4">
+                <h2 className="font-bold text-xl text-neutral600">
+                  Załączone pliki
+                </h2>
+                <div>
+                  <ul className="flex">
+                    {technicalRequestById.technicalRequestFiles.map((file) => (
+                      <li className="hover:cursor-pointer" key={file.fileUrl}>
+                        <img
+                          height="100px"
+                          width="50px"
+                          src={file.fileUrl}
+                          alt=""
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </section>
+            ) : null}
+
             <section className="flex flex-col mb-4">
               <h2 className="font-bold text-xl text-neutral600 mb-2">
                 Dane kontaktowe
@@ -225,15 +270,18 @@ export const TechnicalRequestResponseForm = ({
               <div className="flex justify-between w-full items-center">
                 <div className="flex flex-col">
                   <span className="font-bold text-sm mb-1">Imię:</span>
-                  <span>{request.contactPerson}</span>
+                  <span>{technicalRequestById.contactPerson}</span>
                 </div>
                 <div className="flex flex-col">
                   <span className="font-bold text-sm mb-1">Telefon:</span>
-                  <span>{request.contactPersonPhone}</span>
+                  <span>{technicalRequestById.contactPersonPhone}</span>
                 </div>
                 <div className="flex flex-col">
                   <span className="font-bold text-sm mb-1">Email</span>
-                  <span>{request.contactPersonEmail}</span>
+                  <span>{technicalRequestById.contactPersonEmail}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-bold text-sm mb-1">Email</span>
                 </div>
               </div>
             </section>

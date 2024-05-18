@@ -4,6 +4,7 @@ import {
   CustomerType,
   RequestRequestType,
   TechnicalResponseRequestType,
+  UploadedFile,
   UploadedProductRequestType,
 } from "../types";
 import {
@@ -23,10 +24,13 @@ import {
   postResponse,
   uploadProducts,
   searchProducts,
+  uploadFile,
+  removeUploadedFile,
 } from "./controllers";
 import { queryClient } from "../context/QueryProvider";
 import { useNavigate } from "react-router-dom";
 import { delay } from "../utils/delay";
+import { OnSuccessHandler } from "@/components/FileUploader/FileUploader";
 
 export const useAuth = () => {
   return useMutation({
@@ -148,7 +152,7 @@ export const usePostNewRequest = () => {
     onError: (error) => error.message,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
-          },
+    },
   });
 };
 export const useProductUpload = () => {
@@ -165,12 +169,12 @@ export const useProductUpload = () => {
 export const useAssignment = () => {
   return useMutation({
     mutationFn: ({
-      assignId,
+      userId,
       requestId,
     }: {
-      assignId: string;
+      userId: string;
       requestId: string;
-    }) => assignUser(assignId, requestId),
+    }) => assignUser(userId, requestId),
     onError: (error) => error.message,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
@@ -180,12 +184,12 @@ export const useAssignment = () => {
 export const useUnassign = () => {
   return useMutation({
     mutationFn: ({
-      assignId,
+      userId,
       requestId,
     }: {
-      assignId: string;
+      userId: string;
       requestId: string;
-    }) => unassignUser(assignId, requestId),
+    }) => unassignUser(userId, requestId),
     onError: (error) => error.message,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
@@ -201,12 +205,41 @@ export const usePostResponse = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
     },
-      });
+  });
 };
 
 export const useGetSearchedProducts = () => {
   return useMutation({
     mutationFn: (searchPhrase: string) => searchProducts(searchPhrase),
     onError: (error) => error.message,
+  });
+};
+
+export const useUploadFile = ({
+  onSuccess,
+  insertFile,
+}: {
+  insertFile: (file: UploadedFile) => void;
+  onSuccess: OnSuccessHandler;
+}) => {
+  return useMutation({
+    mutationFn: (file: FormData) => uploadFile(file),
+    onError: (error) => error.message,
+    onSuccess: (data) => {
+      console.log("uploaded successfully! ", data);
+      insertFile(data);
+      onSuccess(data);
+    },
+  });
+};
+
+export const useRemoveFile = ({ onSuccess }: { onSuccess: () => void }) => {
+  return useMutation({
+    mutationFn: async (fileId: string) => removeUploadedFile(fileId),
+    onError: (error) => error.message,
+    onSuccess: () => {
+      console.log("removed successfully");
+      onSuccess();
+    },
   });
 };

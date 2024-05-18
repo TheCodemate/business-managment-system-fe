@@ -164,7 +164,7 @@ export const requestRequestSchema = z.object({
   format: z.string(),
   finish: z.string().optional(),
   producer: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
-  color: z.string().min(1, { message: "Kolor jest wymagany" }).max(50),
+  color: z.string().max(50).optional(),
   productCategory: z.enum([
     "ceramicTiles",
     "bathroomEquipment",
@@ -203,7 +203,12 @@ export const requestRequestSchema = z.object({
     .min(1, { message: "Numer telefonu musi zawierać conajmniej 9 znaków" })
     .max(12, { message: "Number telefonu nie moze być dłuzszy niz 12 znaków" })
     .optional(),
-  files: z.string().optional(),
+  uploadedFiles: z.array(
+    z.object({
+      fileUrl: z.string(),
+      fileId: z.string(),
+    })
+  ),
   unit: z.enum(["szt", "m2", "komplet", "mb"]),
 });
 
@@ -227,6 +232,9 @@ export const assigneesSchema = z.array(
   z.object({
     userAccount: z.object({
       userId: z.string(),
+      firstName: z.string(),
+      lastName: z.string(),
+      email: z.string(),
     }),
   })
 );
@@ -288,7 +296,12 @@ export const technicalRequestResponseSchema = z.object({
     .string()
     .min(1, { message: "Producent jest wymagany" })
     .max(50),
-  files: z.string().optional(),
+  technicalRequestFiles: z.array(
+    z.object({
+      fileUrl: z.string(),
+      fileId: z.string(),
+    })
+  ),
   requestStatus: z.object({
     technicalRequestStatusName: z.enum([
       "notAssigned",
@@ -307,12 +320,20 @@ export const technicalRequestResponseSchema = z.object({
     z.object({
       userAccount: z.object({
         userId: z.string(),
+        firstName: z.string(),
+        lastName: z.string(),
+        email: z.string(),
       }),
     })
   ),
   technicalRequestResponse: technicalResponseRequestSchema,
   technicalRequestResolvedBy: z.object({
-    userAccountId: z.string(),
+    userAccount: z.object({
+      userAccountId: z.string(),
+      firstName: z.string(),
+      lastName: z.string(),
+      email: z.string(),
+    }),
   }),
   userAccount: z.object({
     email: z.string(),
@@ -368,6 +389,12 @@ const uploadProductRequestSchema = z.object({
   category: z.string(),
 });
 
+const uploadedFileSchema = z.object({
+  fileUrl: z.string(),
+  fileId: z.string(),
+});
+
+export type UploadedFile = z.infer<typeof uploadedFileSchema>;
 export type CartItemType = z.infer<typeof cartItemRequestSchema>;
 export type CartItemResponseType = z.infer<typeof cartItemResponseSchema>;
 export type CustomerType = z.infer<typeof customerSchema>;
@@ -383,7 +410,12 @@ export type TechnicalResponseRequestType = z.infer<
 >;
 
 export type Assignees = z.infer<typeof assigneesSchema>;
-export type UserToBeAssignedType = { email: string; userId: string };
+export type UserToBeAssignedType = {
+  email: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+};
 export type UploadedProductResponseType = z.infer<
   typeof uploadedProductsResponse
 >;

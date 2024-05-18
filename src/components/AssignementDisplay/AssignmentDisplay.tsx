@@ -16,7 +16,9 @@ export const AssignmentDisplay = ({ technicalRequestId, assignees }: Props) => {
             <AssigneeAvatar
               key={assignee.userAccount.userId}
               requestId={technicalRequestId}
-              assignedTo={assignee.userAccount.userId}
+              userFirstName={assignee.userAccount.firstName}
+              userLastName={assignee.userAccount.lastName}
+              userId={assignee.userAccount.userId}
               removable={false}
             />
           );

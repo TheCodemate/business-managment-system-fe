@@ -125,6 +125,27 @@ export const RequestPreviewModal = ({ onCloseHandler, requestId }: Props) => {
                 ))}
               </div>
             </section>
+            {request.technicalRequestFiles.length > 0 ? (
+              <section className="flex flex-col mb-4">
+                <h2 className="font-bold text-xl text-neutral600">
+                  Załączone pliki
+                </h2>
+                <div>
+                  <ul className="flex">
+                    {request.technicalRequestFiles.map((file) => (
+                      <li className="hover:cursor-pointer" key={file.fileUrl}>
+                        <img
+                          height="100px"
+                          width="50px"
+                          src={file.fileUrl}
+                          alt=""
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </section>
+            ) : null}
 
             <section className="flex flex-col mb-4">
               <h2 className="font-bold text-xl text-neutral600">

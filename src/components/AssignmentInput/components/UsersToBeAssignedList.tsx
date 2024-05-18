@@ -17,9 +17,9 @@ export const UsersToBeAssignedList = ({
 
   const assignToRequest = async (
     technicalRequestId: string,
-    assigneeId: string
+    userId: string
   ) => {
-    assignUser({ requestId: technicalRequestId, assignId: assigneeId });
+    assignUser({ requestId: technicalRequestId, userId: userId });
   };
 
   return (
@@ -31,6 +31,7 @@ export const UsersToBeAssignedList = ({
           {users.map((user) => {
             return (
               <li
+                key={user.userId}
                 className="hover:bg-details hover:cursor-pointer px-4 py-2 transition-all"
                 onClick={() => assignToRequest(technicalRequestId, user.userId)}
               >
@@ -38,12 +39,16 @@ export const UsersToBeAssignedList = ({
                   <div>
                     <AssigneeAvatar
                       removable={false}
-                      assignedTo={user.email}
+                      userFirstName={user.firstName}
+                      userLastName={user.lastName}
+                      userId={user.userId}
                       requestId={technicalRequestId}
                     />
                   </div>
                   <div className="flex flex-col ">
-                    <p className="text-nowrap">{user.email}</p>
+                    <p className="text-nowrap">
+                      {user.firstName} {user.lastName}
+                    </p>
                   </div>
                 </div>
               </li>
@@ -51,7 +56,7 @@ export const UsersToBeAssignedList = ({
           })}
         </ul>
       ) : (
-        <p className="pxs-4">Brak uytkowników do przypisania</p>
+        <p className="px-4">Brak uytkowników do przypisania</p>
       )}
     </>
   );

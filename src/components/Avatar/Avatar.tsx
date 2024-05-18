@@ -31,22 +31,19 @@ const sizes = {
 };
 
 type UnassignUserProps = {
-  userToUnassignId: string;
-  requestToUnassignFromId: string;
+  userId: string;
+  requestId: string;
 };
 
-const UnassignUser = ({
-  userToUnassignId,
-  requestToUnassignFromId,
-}: UnassignUserProps) => {
+const UnassignUser = ({ userId, requestId }: UnassignUserProps) => {
   const { mutate: unassignUser } = useUnassign();
 
   return (
     <div
       onClick={() =>
         unassignUser({
-          assignId: userToUnassignId,
-          requestId: requestToUnassignFromId,
+          userId: userId,
+          requestId: requestId,
         })
       }
       className="absolute -top-[20%] -right-[15%] hidden group-hover:flex items-center justify-center w-4 h-4 rounded-full border-2 border-bgPrimary bg-slate-500 hover:bg-redPrimary cursor-pointer z-10"
@@ -58,38 +55,45 @@ const UnassignUser = ({
 
 type AssigneeAvatarProps = {
   requestId: string;
-  assignedTo: string;
+  userFirstName: string;
+  userLastName: string;
+  userId: string;
   url?: string;
   size?: "xSmall" | "small" | "medium" | "large" | "xLarge";
   removable?: boolean;
 };
 export const AssigneeAvatar = ({
   requestId,
+  userFirstName,
+  userLastName,
   removable = true,
   size = "medium",
-  assignedTo,
+  userId,
   url,
 }: AssigneeAvatarProps) => {
   return (
-    <div
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-      style={{
-        width: sizes[size].width,
-        height: sizes[size].height,
-        fontSize: sizes[size].textSize,
-      }}
-      className="relative flex justify-center items-center rounded-[100%] w-14 h-14 p-2 bg-sky-300 font-semibold text-sky-50 border-2 border-sky-50 cursor-pointer text-2xl group -ml-[10px] first:ml-0"
-    >
-      {removable ? (
-        <UnassignUser
-          requestToUnassignFromId={requestId}
-          userToUnassignId={assignedTo}
-        />
-      ) : null}
+    <>
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        style={{
+          width: sizes[size].width,
+          height: sizes[size].height,
+          fontSize: sizes[size].textSize,
+        }}
+        className="relative flex justify-center items-center rounded-[100%] w-14 h-14 p-4 bg-sky-300 font-semibold text-sky-50 border-2 border-sky-50 cursor-pointer text-2xl group -ml-[10px] first:ml-0"
+      >
+        {removable ? (
+          <UnassignUser requestId={requestId} userId={userId} />
+        ) : null}
 
-      {url ? url : getInitials(assignedTo)}
-    </div>
+        {url
+          ? url
+          : getInitials(userFirstName, userLastName)
+          ? getInitials(userFirstName, userLastName)
+          : null}
+      </div>
+    </>
   );
 };

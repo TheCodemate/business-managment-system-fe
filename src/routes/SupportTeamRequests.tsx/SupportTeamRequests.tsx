@@ -81,9 +81,9 @@ export const SupportTeamRequests = () => {
                       {request.technicalRequestId}
                     </TableCell>
                     <TableCell>
-                      {request.userId ? (
+                      {request.userAccount.userId ? (
                         <>
-                          <p className="font-bold">{`${request.userId}`}</p>
+                          <p className="font-bold">{`${request.userAccount.firstName} ${request.userAccount.lastName}`}</p>
                         </>
                       ) : (
                         <p>Data not provided</p>
@@ -110,8 +110,17 @@ export const SupportTeamRequests = () => {
                         {request.resolved ? (
                           <AssigneeAvatar
                             requestId={request.technicalRequestId}
-                            assignedTo={
-                              request.technicalRequestResolvedBy.userAccountId
+                            userFirstName={
+                              request.technicalRequestResolvedBy.userAccount
+                                .firstName
+                            }
+                            userLastName={
+                              request.technicalRequestResolvedBy.userAccount
+                                .lastName
+                            }
+                            userId={
+                              request.technicalRequestResolvedBy.userAccount
+                                .userAccountId
                             }
                             removable={false}
                             size={"large"}

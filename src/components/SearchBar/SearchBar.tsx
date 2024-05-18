@@ -83,8 +83,9 @@ export const SearchBar = ({ searchAcceptHandler }: Props) => {
                       className="px-4 py-2 text-primary cursor-pointer hover:bg-details hover:text-alternate transition-all"
                       value={item.uploadedProductId}
                     >
-                      {item.productCode} - {item.collectionName}
-                      {item.productName} {item.color} - {item.format}
+                      {item.producer} - {item.productCode} -{" "}
+                      {item.collectionName} - {item.productName} {item.color}{" "}
+                      {item.format ? `- ${item.format}` : null}
                     </li>
                   ))
                 ) : (

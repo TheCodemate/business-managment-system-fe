@@ -15,7 +15,9 @@ export const AssigneesList = ({
   return assigneesList.length > 0 ? (
     assigneesList.map((assignee) => (
       <AssigneeAvatar
-        assignedTo={assignee.userAccount.userId}
+        userFirstName={assignee.userAccount.firstName}
+        userLastName={assignee.userAccount.lastName}
+        userId={assignee.userAccount.userId}
         requestId={technicalRequestId}
       />
     ))

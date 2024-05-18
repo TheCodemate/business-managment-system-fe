@@ -36,7 +36,9 @@ export const AssignmentInput = ({ technicalRequestId, assignees }: Props) => {
               (user) =>
                 !assignees.find(
                   (assignee) => assignee.userAccount.userId === user.userId
-                )
+                ) &&
+                user.firstName &&
+                user.lastName
             )}
           />
         ) : (

@@ -118,8 +118,17 @@ export const Requests = () => {
                           {request.resolved ? (
                             <AssigneeAvatar
                               requestId={request.technicalRequestId}
-                              assignedTo={
-                                request.technicalRequestResolvedBy.userAccountId
+                              userFirstName={
+                                request.technicalRequestResolvedBy.userAccount
+                                  .firstName
+                              }
+                              userLastName={
+                                request.technicalRequestResolvedBy.userAccount
+                                  .lastName
+                              }
+                              userId={
+                                request.technicalRequestResolvedBy.userAccount
+                                  .userAccountId
                               }
                               removable={false}
                               size={"large"}
