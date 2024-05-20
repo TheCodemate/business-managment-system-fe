@@ -21,6 +21,7 @@ import { useTechnicalRequests } from "@/services/queries";
 import { Loading } from "@/components/Loading/Loading";
 import { AssignmentInput } from "@/components/AssignmentInput/AssignmentInput";
 import { AssigneeAvatar } from "@/components/Avatar/Avatar";
+import { RequestPreviewModal } from "@/components/RequestPreviewModal/RequestPreviewModal";
 
 export const SupportTeamRequests = () => {
   const [isAddRequestFormOpen, setIsAddRequestFormOpen] = useState(false);
@@ -134,15 +135,19 @@ export const SupportTeamRequests = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Button
-                        disabled={
-                          request.requestStatus.technicalRequestStatusName ===
-                          "resolved"
-                        }
-                        isLoading={isPending}
-                        onClick={() => openPreviewRequestModal(request)}
-                        content="Rozwiąż"
-                      />
+                      {request.resolved ? (
+                        <Button
+                          isLoading={isPending}
+                          onClick={() => openPreviewRequestModal(request)}
+                          content="Podgląd"
+                        />
+                      ) : (
+                        <Button
+                          isLoading={isPending}
+                          onClick={() => openPreviewRequestModal(request)}
+                          content="Rozwiąż"
+                        />
+                      )}
                     </TableCell>
                   </TableRow>
                 );
@@ -163,10 +168,17 @@ export const SupportTeamRequests = () => {
           toggleModal={closePreviewRequestModal}
         >
           <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
-            <TechnicalRequestResponseForm
-              request={request}
-              onCloseHandler={closePreviewRequestModal}
-            />
+            {request && request.resolved ? (
+              <RequestPreviewModal
+                requestId={request.technicalRequestId}
+                onCloseHandler={closePreviewRequestModal}
+              />
+            ) : (
+              <TechnicalRequestResponseForm
+                request={request}
+                onCloseHandler={closePreviewRequestModal}
+              />
+            )}
           </div>
         </Modal>
       }

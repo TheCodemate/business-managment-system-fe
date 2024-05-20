@@ -8,6 +8,7 @@ import {
   getCustomers,
   getProducts,
   getUploadedProducts,
+  getRequestFiles,
 } from "./controllers";
 
 export const useCartItems = () => {
@@ -61,5 +62,12 @@ export const useUploadedProducts = () => {
   return useQuery({
     queryKey: ["uploadedProducts"],
     queryFn: getUploadedProducts,
+  });
+};
+
+export const useFiles = (requestId: string) => {
+  return useQuery({
+    queryKey: ["requestFiles"],
+    queryFn: () => getRequestFiles(requestId),
   });
 };

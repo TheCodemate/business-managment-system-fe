@@ -118,7 +118,6 @@ export const SearchRequestForm = ({ closeFormHandler }: Props) => {
   };
 
   const onSubmit = (values: RequestRequestType) => {
-    console.log("onSubmit - values: ", values);
     try {
       setValidData((prev) => {
         prev = values;
@@ -126,8 +125,6 @@ export const SearchRequestForm = ({ closeFormHandler }: Props) => {
       });
       openConfirmationHandler();
     } catch (error) {
-      //@ts-expect-error the error is thrown
-      console.log("error: ", error.message);
       if (error instanceof Error) {
         throw new Error(error.message);
       }

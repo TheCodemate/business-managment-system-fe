@@ -1,4 +1,5 @@
 import { CloseButton } from "../Buttons/CloseButton";
+import { FilePreview } from "../FilePreview/FilePreview";
 import { Loading } from "../Loading/Loading";
 import { StatusIndicator } from "../StatusIndicator/StatusIndicator";
 import { Checkbox } from "../ui/checkbox";
@@ -36,7 +37,6 @@ const items = [
 ] as const;
 type Props = {
   onCloseHandler: () => void;
-  timeCount: Date;
   requestId: string;
 };
 
@@ -131,34 +131,21 @@ export const RequestPreviewModal = ({ onCloseHandler, requestId }: Props) => {
                   Załączone pliki
                 </h2>
                 <div>
-                  <ul className="flex">
-                    {request.technicalRequestFiles.map((file) => (
-                      <li className="hover:cursor-pointer" key={file.fileUrl}>
-                        <img
-                          height="100px"
-                          width="50px"
-                          src={file.fileUrl}
-                          alt=""
-                        />
-                      </li>
-                    ))}
-                  </ul>
+                  <FilePreview files={request.technicalRequestFiles} />
                 </div>
               </section>
             ) : null}
 
-            <section className="flex flex-col mb-4">
-              <h2 className="font-bold text-xl text-neutral600">
-                Dodatkowe uwagi
-              </h2>
-              <div>
-                <p>
-                  {request.additionalInfo
-                    ? request.additionalInfo
-                    : "Brak uwag"}
-                </p>
-              </div>
-            </section>
+            {request.additionalInfo && (
+              <section className="flex flex-col mb-4">
+                <h2 className="font-bold text-xl text-neutral600">
+                  Dodatkowe uwagi
+                </h2>
+                <div>
+                  <p>{request.additionalInfo}</p>
+                </div>
+              </section>
+            )}
             <section className="flex flex-col">
               <h2 className="font-bold text-xl text-neutral600 mb-2">
                 Dane kontaktowe

@@ -1,8 +1,3 @@
-import {
-  TechnicalRequestResponseType,
-  TechnicalResponseRequestType,
-  technicalResponseRequestSchema,
-} from "@/types";
 import { CloseButton } from "@/components/Buttons/CloseButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -13,10 +8,17 @@ import { InputHTMLAttributes, useState } from "react";
 import { usePostResponse } from "@/services/mutations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/Dialog/Dialog";
-import { delay } from "@/utils/delay";
 import { AxiosError } from "axios";
 import { useTechnicalRequestById } from "@/services/queries";
 import { Loading } from "@/components/Loading/Loading";
+import { FilePreview } from "@/components/FilePreview/FilePreview";
+import { Modal } from "@/components/Modal/Modal";
+
+import {
+  TechnicalRequestResponseType,
+  TechnicalResponseRequestType,
+  technicalResponseRequestSchema,
+} from "@/types";
 
 const items = [
   {
@@ -57,10 +59,10 @@ type Props = {
 const generateInput = (props: DynamicInputProps) => {
   switch (props.name) {
     case "technicalDocumentation":
-      return <Input className="bg-bgPrimary" type="file" {...props} />;
+      return <Input className="bg-bgPrimary" type="file" required {...props} />;
 
     default:
-      return <Input className="bg-bgPrimary" type="text" {...props} />;
+      return <Input className="bg-bgPrimary" type="text" required {...props} />;
   }
 };
 
@@ -82,14 +84,9 @@ export const TechnicalRequestResponseForm = ({
   const { data: technicalRequestById, isPending: isRequestByIdPending } =
     useTechnicalRequestById(request.technicalRequestId);
 
-  console.log(
-    "technicalRequestById: ",
-    technicalRequestById?.technicalRequestFiles
-  );
-
   const [isLoading, setIsLoading] = useState(false);
-  const { mutate: postResponse, isPending } = usePostResponse();
-  const { register, handleSubmit, control, reset } = useForm({
+  const { mutate: postResponse } = usePostResponse();
+  const { handleSubmit, control, reset } = useForm({
     defaultValues: {
       technicalRequestId: request.technicalRequestId,
       price: "",
@@ -106,6 +103,10 @@ export const TechnicalRequestResponseForm = ({
   const closeConfirmationHandler = () => {
     onCloseHandler();
     setIsConfirmationOpen(false);
+  };
+
+  const toggleConfirmationHandler = () => {
+    setIsConfirmationOpen((prev) => !prev);
   };
 
   const openConfirmationHandler = () => {
@@ -131,7 +132,6 @@ export const TechnicalRequestResponseForm = ({
     try {
       setIsLoading(true);
       postResponse(validData);
-      await delay(3000, () => closeConfirmationHandler());
       setIsLoading(false);
       closeConfirmationHandler();
       reset();
@@ -247,18 +247,9 @@ export const TechnicalRequestResponseForm = ({
                   Załączone pliki
                 </h2>
                 <div>
-                  <ul className="flex">
-                    {technicalRequestById.technicalRequestFiles.map((file) => (
-                      <li className="hover:cursor-pointer" key={file.fileUrl}>
-                        <img
-                          height="100px"
-                          width="50px"
-                          src={file.fileUrl}
-                          alt=""
-                        />
-                      </li>
-                    ))}
-                  </ul>
+                  <FilePreview
+                    files={technicalRequestById.technicalRequestFiles}
+                  />
                 </div>
               </section>
             ) : null}
@@ -301,24 +292,20 @@ export const TechnicalRequestResponseForm = ({
                 Wyślij
               </Button>
             </footer>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              {isConfirmationOpen && (
-                <Dialog
-                  onCloseHandler={closeConfirmationHandler}
-                  confirmationHandler={confirmationHandler}
-                >
-                  <Dialog.Content>
-                    Zanim prześlesz odpowiedź upewnij się, ze o niczmy nie
-                    zapomniałeś. Jezeli uzupelniles wszystkie pola kliknij
-                    "Akceptuj"
-                  </Dialog.Content>
-                  <Dialog.Actions>
-                    <Dialog.RejectButton onClick={closeConfirmationHandler} />
-                    <Dialog.AcceptButton onClick={confirmationHandler} />
-                  </Dialog.Actions>
-                </Dialog>
-              )}
-            </div>
+            <Modal
+              isOpen={isConfirmationOpen}
+              toggleModal={toggleConfirmationHandler}
+            >
+              <Dialog
+                isLoading={isLoading}
+                acceptHandler={confirmationHandler}
+                rejectHandler={toggleConfirmationHandler}
+                acceptButtonText="Wyślij"
+                rejectButtonText="Sprawdź"
+                bodyText="Czy na pewno zawarłeś wszystkie odpowiedzi?"
+                headerText="Zatwierdź odpowiedź"
+              />
+            </Modal>
           </div>
         </div>
       ) : (

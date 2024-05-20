@@ -371,8 +371,6 @@ export const assignUser = async (userId: string, requestId: string) => {
 
 export const unassignUser = async (userId: string, requestId: string) => {
   try {
-    console.log("unassignUser - userId: ", userId);
-    console.log("unassignUser - requestId: ", requestId);
     const { data } = await axiosRequests.delete(`/unassign-user`, {
       data: { userId: userId, requestId: requestId },
       withCredentials: true,
@@ -539,7 +537,7 @@ export const removeUploadedFile = async (fileId: string) => {
   }
 };
 
-export const getUploadedFiles = async () => {
+export const getRequestFiles = async (requestId: string) => {
   try {
     const { data } = await axiosRequests.get<
       {
@@ -548,6 +546,7 @@ export const getUploadedFiles = async () => {
       }[]
     >("/upload-file", {
       withCredentials: true,
+      params: { requestId },
     });
 
     return data;

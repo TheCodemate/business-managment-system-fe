@@ -30,7 +30,7 @@ import {
 import { queryClient } from "../context/QueryProvider";
 import { useNavigate } from "react-router-dom";
 import { delay } from "../utils/delay";
-import { OnSuccessHandler } from "@/components/FileUploader/FileUploader";
+import { OnSuccessHandler } from "@/components/FileUploader/types";
 
 export const useAuth = () => {
   return useMutation({
@@ -226,20 +226,20 @@ export const useUploadFile = ({
     mutationFn: (file: FormData) => uploadFile(file),
     onError: (error) => error.message,
     onSuccess: (data) => {
-      console.log("uploaded successfully! ", data);
       insertFile(data);
       onSuccess(data);
     },
   });
 };
 
-export const useRemoveFile = ({ onSuccess }: { onSuccess: () => void }) => {
+export const useRemoveFile = ({ onSuccess }: { onSuccess?: () => void }) => {
   return useMutation({
     mutationFn: async (fileId: string) => removeUploadedFile(fileId),
     onError: (error) => error.message,
     onSuccess: () => {
-      console.log("removed successfully");
-      onSuccess();
+      if (onSuccess) {
+        onSuccess();
+      }
     },
   });
 };
