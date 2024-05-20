@@ -314,6 +314,12 @@ export const technicalRequestResponseSchema = z.object({
   technicalRequestResolvedBy: z.object({
     userAccountId: z.string(),
   }),
+  userAccount: z.object({
+    email: z.string(),
+    userId: z.string(),
+    firstName: z.string(),
+    lastName: z.string(),
+  }),
 });
 
 const userAccountSchema = z.object({

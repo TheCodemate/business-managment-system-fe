@@ -308,6 +308,8 @@ export const getTechnicalRequests = async () => {
       { withCredentials: true }
     );
 
+    console.log('getTechnicalRequests" ', data);
+
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
