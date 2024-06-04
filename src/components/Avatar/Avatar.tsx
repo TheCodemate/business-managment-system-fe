@@ -71,7 +71,6 @@ export const AssigneeAvatar = ({
   userId,
   url,
 }: AssigneeAvatarProps) => {
-  console.log("AssigneeAvatar - assignedTo: ", assignedTo);
   return (
     <>
       <div

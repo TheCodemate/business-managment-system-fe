@@ -2,9 +2,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import NoteAddOutlinedIcon from "@mui/icons-material/NoteAddOutlined";
-
-import { Loading } from "../../Loading/Loading";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -28,7 +25,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { RequestRequestType, requestRequestSchema } from "@/types";
+import {
+  RequestRequestType,
+  UploadedFile,
+  requestRequestSchema,
+} from "@/types";
+import { FileUploader } from "@/components/FileUploader/FileUploader";
+import { Modal } from "@/components/Modal/Modal";
+import { Dialog } from "@/components/Dialog/Dialog";
 
 const items = [
   {
@@ -82,7 +86,7 @@ export const CustomRequestForm = ({ closeFormHandler }: Props) => {
       contactPerson: "",
       contactPersonPhone: "",
       contactPersonEmail: "",
-      files: "",
+      uploadedFiles: [],
       unit: "szt",
     },
   });
@@ -93,6 +97,14 @@ export const CustomRequestForm = ({ closeFormHandler }: Props) => {
 
   const openConfirmationHandler = () => {
     setIsConfirmationOpen(true);
+  };
+
+  const onUploadHandler = (file: UploadedFile) => {
+    form.setValue("uploadedFiles", [...form.getValues("uploadedFiles"), file]);
+  };
+
+  const confirmationToggler = () => {
+    setIsConfirmationOpen((prev) => !prev);
   };
 
   const onSubmit = (values: RequestRequestType) => {
@@ -411,32 +423,8 @@ export const CustomRequestForm = ({ closeFormHandler }: Props) => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="files"
-            render={({ field }) => (
-              <FormItem className="text-alternate">
-                <FormLabel className="flex gap-2 w-fit items-center text-sm py-2 px-4 rounded-lg font-bold text-alternate bg-primary text-primary-foreground hover:bg-primary/90">
-                  <NoteAddOutlinedIcon />
-                  Załącz plik
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    hidden
-                    className="text-neutral600 opacity-0 w-0 h-0 p-0"
-                    placeholder="Załącz pliki"
-                    multiple
-                    type="file"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs font-bold text-red-500" />
-                <div className="text-neutral600">
-                  {field.value ? field.value : null}
-                </div>
-              </FormItem>
-            )}
-          />
+
+          <FileUploader onUploadHandler={onUploadHandler} />
           <fieldset className="grid grid-cols-6 gap-4 w-full flex-wrap border-t border-t-details py-2">
             <FormField
               control={form.control}
@@ -515,56 +503,19 @@ export const CustomRequestForm = ({ closeFormHandler }: Props) => {
           Wyślij
         </Button>
       </footer>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        {isConfirmationOpen && (
-          <Dialog
-            closeHandler={closeConfirmationHandler}
-            confirmationHandler={confirmationHandler}
-            isLoading={isLoading}
-          />
-        )}
-      </div>
-    </>
-  );
-};
-
-type DialogProps = {
-  closeHandler: () => void;
-  confirmationHandler: () => void;
-  isLoading?: boolean;
-};
-
-const Dialog = ({
-  closeHandler,
-  confirmationHandler,
-  isLoading,
-}: DialogProps) => {
-  return (
-    <div className="flex flex-col gap-6 top-1/2 left-1/2 min-w-[360px] max-w-[800px] bg-alternate p-6 rounded-xl shadow-xl">
-      <div className="flex flex-col gap-4">
-        <h3 className="font-bold text-xl">Potwierdzenie zapytania</h3>
-        <p>
-          To ostatni moment w którym mozesz sprawdzi czy wprowadzone dane na
+      <Modal isOpen={isConfirmationOpen} toggleModal={confirmationToggler}>
+        <Dialog
+          headerText="Potwierdzenie zapytania"
+          bodyText={`To ostatni moment w którym mozesz sprawdzi czy wprowadzone dane na
           pewno są poprawne. Kliknij "Wróć", zeby sprawdzić zapytanie ponownie
-          lub "Potwierdź", zeby przesłać zapytanie do logistyki
-        </p>
-      </div>
-      <div className="flex justify-end gap-6">
-        <Button
-          className=" font-bold  text-neutral600 min-w-[120px]"
-          variant={"outline"}
-          onClick={closeHandler}
-        >
-          Lepiej sprawdzę
-        </Button>
-        <Button
-          disabled={isLoading}
-          className="text-alternate font-bold min-w-[120px]"
-          onClick={confirmationHandler}
-        >
-          {isLoading ? <Loading size={20} color="#FFFFFF" /> : "Potwierdzam"}
-        </Button>
-      </div>
-    </div>
+          lub "Potwierdź", zeby przesłać zapytanie do logistyki`}
+          acceptButtonText="Wyślij"
+          rejectButtonText="Cofnij"
+          rejectHandler={closeConfirmationHandler}
+          acceptHandler={confirmationHandler}
+          isLoading={isLoading}
+        />
+      </Modal>
+    </>
   );
 };
