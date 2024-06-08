@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { GlobalProvider } from "./context/GlobalProvider.tsx";
+import { GlobalProvider } from "./modules/global_provider/global_provider.tsx";
 import { PrivateRoutes } from "./components/PrivateRoutes/PrivateRoutes.tsx";
 import { Login } from "./routes/Login.tsx";
 import { Dashboard } from "./routes/Dashboard.tsx";
@@ -12,14 +12,14 @@ import { Register } from "./routes/Register.tsx";
 import { ResetPassword } from "./routes/ResetPassword.tsx";
 import { ResetPasswordRequest } from "./routes/ResetPasswordRequest.tsx";
 
-import "./index.css";
-
 import App from "./App.tsx";
 import { Products } from "./routes/Products.tsx";
 import { ProductDetails } from "./routes/ProductDetails.tsx";
 import { Order } from "./routes/Order.tsx";
-import { Requests } from "./routes/Requests.tsx";
+import { RequestsRoute } from "./routes/RequestsRoute.tsx";
 import { SupportTeamRequests } from "./routes/SupportTeamRequests.tsx/SupportTeamRequests.tsx";
+
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
           // },
           {
             path: "/requests",
-            element: <Requests />,
+            element: <RequestsRoute />,
           },
           {
             path: "/support-team-requests",
