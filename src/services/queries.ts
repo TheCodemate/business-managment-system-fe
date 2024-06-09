@@ -2,8 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   authenticationHandler,
   fetchUsers,
-  getTechnicalRequests,
-  getTechnicalRequestsById,
   getCartItems,
   getCustomers,
   getProducts,
@@ -32,18 +30,6 @@ export const useProducts = () => {
   });
 };
 
-export const useTechnicalRequests = () => {
-  return useQuery({
-    queryKey: ["technicalRequests"],
-    queryFn: getTechnicalRequests,
-  });
-};
-export const useTechnicalRequestById = (requestId: string) => {
-  return useQuery({
-    queryKey: ["technicalRequest", requestId],
-    queryFn: () => getTechnicalRequestsById(requestId),
-  });
-};
 export const useUsers = () => {
   return useQuery({
     queryKey: ["users"],

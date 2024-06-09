@@ -8,13 +8,13 @@ type Props = {
 };
 
 export const Modal = ({ children, isOpen, toggleModal }: Props) => {
-  if (!isOpen) {
-    return null;
-  }
-
   const handleToggler = (e: MouseEvent<HTMLDivElement>) => {
     toggleModal(e);
   };
+
+  if (!isOpen) {
+    return null;
+  }
 
   return createPortal(
     <div
@@ -24,7 +24,9 @@ export const Modal = ({ children, isOpen, toggleModal }: Props) => {
         handleToggler(event);
       }}
     >
-      {children}
+      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+        {children}
+      </div>
     </div>,
     document.body
   );

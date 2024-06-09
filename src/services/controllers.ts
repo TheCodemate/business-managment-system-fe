@@ -12,11 +12,11 @@ import {
   CustomerType,
   ProductType,
   RequestRequestType,
-  TechnicalRequestResponseType,
   TechnicalResponseRequestType,
   UploadedProductRequestType,
   UploadedProductResponseType,
 } from "../types";
+import { throwError } from "@/utils/throwError";
 
 export const addToCart = async (cartItem: CartItemType) => {
   try {
@@ -304,49 +304,6 @@ export const uploadProducts = async (
   }
 };
 
-export const getTechnicalRequests = async () => {
-  try {
-    const { data } = await axiosRequests.get<TechnicalRequestResponseType[]>(
-      `/`,
-      { withCredentials: true }
-    );
-
-    console.log('getTechnicalRequests" ', data);
-
-    return data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      throw new Error(error.response?.data.message);
-    }
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    throw new Error("Could not reset password. Try again later.");
-  }
-};
-export const getTechnicalRequestsById = async (requestId: string) => {
-  try {
-    const { data } = await axiosRequests.get<TechnicalRequestResponseType>(
-      `/request-by-id`,
-      {
-        params: { requestId: requestId },
-        withCredentials: true,
-      }
-    );
-
-    return data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      throw new Error(error.response?.data.message);
-    }
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    throw new Error("Could not reset password. Try again later.");
-  }
-};
 export const assignUser = async (userId: string, requestId: string) => {
   try {
     const { data } = await axiosRequests.post(
@@ -465,13 +422,11 @@ export const postResponse = async (response: TechnicalResponseRequestType) => {
 
     return data;
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    throw new Error(
-      "Could not fetch data. The reason is unknown. Try again later."
-    );
+    throwError({
+      error,
+      message:
+        "Could not post response. The reason is unknown. Try again later.",
+    });
   }
 };
 

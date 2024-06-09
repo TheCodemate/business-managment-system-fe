@@ -3,7 +3,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useAddCustomer } from "@/services/mutations";
 import { useCustomer } from "@/hooks/useCustomer";
 
-import { delay } from "@/utils/delay";
 import { Button } from "../Buttons/Button";
 import { CloseButton } from "../Buttons/CloseButton";
 import { Input } from "../Input/Input";
@@ -53,7 +52,6 @@ export const AddCustomerForm = ({ onCloseHandler }: AddCustomerFromProps) => {
   });
 
   const onSuccessHandler = (data: CustomerType) => {
-    delay(5000, () => onCloseHandler());
     reset();
     return data;
   };

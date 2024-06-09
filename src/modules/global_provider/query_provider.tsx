@@ -5,7 +5,7 @@ type Props = {
   children: ReactElement | ReactElement[];
 };
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,

@@ -27,10 +27,10 @@ import {
   uploadFile,
   removeUploadedFile,
 } from "./controllers";
-import { queryClient } from "../context/QueryProvider";
 import { useNavigate } from "react-router-dom";
 import { delay } from "../utils/delay";
 import { OnSuccessHandler } from "@/components/FileUploader/types";
+import { queryClient } from "@/modules/global_provider/query_provider";
 
 export const useAuth = () => {
   return useMutation({

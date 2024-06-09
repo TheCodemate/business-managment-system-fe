@@ -422,3 +422,7 @@ export type UploadedProductResponseType = z.infer<
 export type UploadedProductRequestType = z.infer<
   typeof uploadProductRequestSchema
 >;
+
+export type TechnicalRequestTypeTypes = z.infer<
+  typeof technicalRequestTypeSchema
+>;

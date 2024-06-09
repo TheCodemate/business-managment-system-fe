@@ -4,7 +4,7 @@ type Props = {
   headersList: string[];
 };
 
-export const RequestsTableHeader = ({ headersList }: Props) => {
+export const CustomTableHeader = ({ headersList }: Props) => {
   return (
     <TableHeader>
       <TableRow>

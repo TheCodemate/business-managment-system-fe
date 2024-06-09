@@ -1,16 +1,16 @@
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { TechnicalRequestResponseType } from "@/types";
-import { useDisclosure } from "../../hooks/useDisclosure";
+import { useDisclosure } from "../../../hooks/useDisclosure";
 import { CustomerField } from "./customer_field";
 import { useState } from "react";
 import { Modal } from "@/components/Modal/Modal";
-import { RequestPreviewModal } from "@/components/RequestPreviewModal/RequestPreviewModal";
 import { Button } from "@/components/Buttons/Button";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { Timer } from "@/components/Timer/Timer";
 import { AssignmentField } from "./assignment_field";
+import { RequestPreview } from "../../components/request_preview/request_preview";
 
-export const RequestsTableBody = ({
+export const CustomTableBody = ({
   requests,
 }: {
   requests?: TechnicalRequestResponseType[];
@@ -82,12 +82,10 @@ export const RequestsTableBody = ({
         })}
       </TableBody>
       <Modal isOpen={isPreviewModalOpen} toggleModal={closePreviewRequestModal}>
-        <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
-          <RequestPreviewModal
-            requestId={requestId}
-            onCloseHandler={closePreviewRequestModal}
-          />
-        </div>
+        <RequestPreview
+          requestId={requestId}
+          onCloseHandler={closePreviewRequestModal}
+        />
       </Modal>
     </>
   );
