@@ -10,8 +10,6 @@ const getTechnicalRequests = async () => {
       { withCredentials: true }
     );
 
-    console.log('getTechnicalRequests" ', data);
-
     return data;
   } catch (error) {
     throwError({

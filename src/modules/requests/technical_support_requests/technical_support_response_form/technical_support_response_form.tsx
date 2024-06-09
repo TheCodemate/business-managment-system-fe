@@ -1,15 +1,8 @@
 import { useState } from "react";
-import {
-  Controller,
-  useForm,
-  Form,
-  Control,
-  FieldValues,
-} from "react-hook-form";
+import { useForm, Form } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { usePostResponse } from "@/services/mutations";
-import { Checkbox } from "@/components/ui/checkbox";
 import { CloseButton } from "@/components/Buttons/CloseButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { Dialog } from "@/components/Dialog/Dialog";
@@ -81,7 +74,7 @@ export const TechnicalSupportResponseForm = ({
     setIsConfirmationOpen(true);
   };
 
-  const onSubmit = (values: FieldValues) => {
+  const onSubmit = (values: DefaultValuesType) => {
     try {
       setValidData(values);
       openConfirmationHandler();

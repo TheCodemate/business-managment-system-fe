@@ -11,7 +11,6 @@ export const AssigneesList = ({
   assigneesList,
   technicalRequestId,
 }: AssignmentListProps) => {
-  console.log("assigneeList: ", assigneesList);
   return assigneesList.length > 0 ? (
     assigneesList.map((assignee) => (
       <AssigneeAvatar
