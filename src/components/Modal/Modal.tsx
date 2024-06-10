@@ -24,7 +24,7 @@ export const Modal = ({ children, isOpen, toggleModal }: Props) => {
         handleToggler(event);
       }}
     >
-      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+      <div className="absolute top-0 lg:top-[5%] left-1/2 -translate-x-1/2 max-w-[1020px]">
         {children}
       </div>
     </div>,

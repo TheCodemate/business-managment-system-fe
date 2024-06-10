@@ -5,17 +5,15 @@ type Props = {
 };
 
 export const FilePreview = ({ files }: Props) => {
+  if (!files || files.length <= 0) {
+    return null;
+  }
+
   return (
-    <>
-      {files ? (
-        <div className="flex gap-2 overflow-x-auto py-4">
-          {files &&
-            files.length > 0 &&
-            files.map((file) => (
-              <FileThumbnail key={file.fileUrl} fileUrl={file.fileUrl} />
-            ))}
-        </div>
-      ) : null}
-    </>
+    <div className="flex gap-2 overflow-x-auto py-4">
+      {files.map((file) => (
+        <FileThumbnail key={file.fileUrl} fileUrl={file.fileUrl} />
+      ))}
+    </div>
   );
 };

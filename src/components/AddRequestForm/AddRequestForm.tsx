@@ -17,7 +17,7 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className="absolute top-0 lg:top-[5%] left-1/2 -translate-x-1/2 max-w-[1020px] min-w-[360px] bg-alternate rounded-xl overflow-y-scroll"
+      className="max-w-full min-w-[360px] bg-alternate rounded-xl overflow-y-scroll"
     >
       <header className="flex bg-neutral100 px-6 py-3 justify-between items-center bg-bgSecondary">
         <span className="text-sm font-bold text-primary">Nowe zapytanie</span>
