@@ -1,6 +1,6 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { useAuth } from "@/services/queries";
 import { Loading } from "../Loading/Loading";
+import { useAuth } from "@/modules/auth/use_auth";
 
 export const PrivateRoutes = () => {
   const { data, isPending } = useAuth();

@@ -1,8 +1,13 @@
 import { isValidPassword } from "@/utils/isValidPassword";
 import { z } from "zod";
 
-export const resetPasswordFormSchema = z
+export const registerFormSchema = z
   .object({
+    email: z
+      .string({ required_error: "Email is required" })
+      .refine((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), {
+        message: "Invalid email format",
+      }),
     password: z
       .string({ required_error: "Password is required" })
       .refine((password) => password.length >= 8, {
@@ -21,19 +26,5 @@ export const resetPasswordFormSchema = z
     path: ["confirmPassword"],
   });
 
-export const resetPasswordRequestFormSchema = z.object({
-  email: z
-    .string({ required_error: "Email is required" })
-    .refine((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), {
-      message: "Invalid email format",
-    }),
-});
-
-export type ResetPasswordFormInputType = z.infer<
-  typeof resetPasswordFormSchema
->;
-export type ResetPasswordRequestFormInputType = z.infer<
-  typeof resetPasswordRequestFormSchema
->;
-
-export type InputNames = string;
+export type RegisterFromInputsType = z.infer<typeof registerFormSchema>;
+export type FormInputsType = RegisterFromInputsType;

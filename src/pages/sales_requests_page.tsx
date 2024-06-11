@@ -1,4 +1,4 @@
-import { AddRequestForm } from "@/components/AddRequestForm/AddRequestForm";
+import { AddRequestForm } from "@/modules/requests/sales_requests/add_request_form/add_request_form";
 import { Modal } from "@/components/Modal/Modal";
 import { PageHeader } from "@/components/PageHeader/PageHeader";
 import { useDisclosure } from "@/modules/hooks/useDisclosure";

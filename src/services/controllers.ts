@@ -49,27 +49,6 @@ export const getCartItems = async () => {
   return data;
 };
 
-export const loginUser = async (userCredentials: {
-  email: string;
-  password: string;
-}) => {
-  try {
-    const { data } = await axiosUser.post(`/login`, userCredentials, {
-      withCredentials: true,
-    });
-    return data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      throw new Error(error.response?.data.message);
-    }
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    throw new Error("Could not login. The reason is unknown. Try again later.");
-  }
-};
-
 export const logoutUser = async () => {
   try {
     const { data } = await axiosUser.get("/logoutMember");
@@ -80,28 +59,6 @@ export const logoutUser = async () => {
     }
     throw new Error(
       "Could not logout. The reason is unknown. Try again later."
-    );
-  }
-};
-
-export const registerUser = async (userCredentials: {
-  email: string;
-  password: string;
-}) => {
-  try {
-    const { data } = await axiosUser.post<{ message: string }>(
-      "/",
-      userCredentials
-    );
-
-    return data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    throw new Error(
-      "Could not register user. The reason is unknown. Try again later."
     );
   }
 };
@@ -385,30 +342,6 @@ export const getUploadedProducts = async () => {
     }
 
     throw new Error("Could not reset password. Try again later.");
-  }
-};
-
-export const authenticationHandler = async () => {
-  try {
-    const { data } = await axiosUser.get<{
-      isAuth: boolean;
-      user: {
-        id: number | null;
-        email: string;
-      } | null;
-    }>("/authenticateMember", {
-      withCredentials: true,
-    });
-
-    return data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    throw new Error(
-      "Could not fetch data. The reason is unknown. Try again later."
-    );
   }
 };
 

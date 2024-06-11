@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-  authenticationHandler,
   fetchUsers,
   getCartItems,
   getCustomers,
@@ -34,13 +33,6 @@ export const useUsers = () => {
   return useQuery({
     queryKey: ["users"],
     queryFn: fetchUsers,
-  });
-};
-
-export const useAuth = () => {
-  return useQuery({
-    queryKey: ["authenticate"],
-    queryFn: authenticationHandler,
   });
 };
 

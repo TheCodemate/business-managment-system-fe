@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SearchBar } from "../../SearchBar/SearchBar";
+import { SearchBar } from "../../../../components/SearchBar/SearchBar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";

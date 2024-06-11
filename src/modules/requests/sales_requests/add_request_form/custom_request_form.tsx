@@ -109,6 +109,7 @@ export const CustomRequestForm = ({ closeFormHandler }: Props) => {
 
   const onSubmit = (values: RequestRequestType) => {
     try {
+      // czy tutaj powinienem validować??
       setValidData(values);
       openConfirmationHandler();
     } catch (error) {

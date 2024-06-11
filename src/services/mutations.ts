@@ -20,7 +20,6 @@ import {
   postNewRequest,
   assignUser,
   unassignUser,
-  authenticationHandler,
   postResponse,
   uploadProducts,
   searchProducts,
@@ -31,23 +30,11 @@ import { useNavigate } from "react-router-dom";
 import { delay } from "../utils/delay";
 import { OnSuccessHandler } from "@/components/FileUploader/types";
 import { queryClient } from "@/modules/global_provider/query_provider";
+import { authenticationHandler } from "@/modules/auth/use_auth";
 
 export const useAuth = () => {
   return useMutation({
     mutationFn: authenticationHandler,
-    onError: (error) => error.message,
-  });
-};
-
-export const useLogin = () => {
-  const navigate = useNavigate();
-  return useMutation({
-    mutationFn: (values: { email: string; password: string }) =>
-      loginUser(values),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["authenticate"] });
-      navigate("/");
-    },
     onError: (error) => error.message,
   });
 };
@@ -61,19 +48,6 @@ export const useLogout = () => {
     onSuccess: (data) => {
       authHandler(data);
       navigate("/");
-    },
-    onError: (error) => error.message,
-  });
-};
-
-export const useRegister = () => {
-  const navigate = useNavigate();
-
-  return useMutation({
-    mutationFn: (values: { email: string; password: string }) =>
-      registerUser(values),
-    onSuccess: () => {
-      delay(5000, () => navigate("/login"));
     },
     onError: (error) => error.message,
   });

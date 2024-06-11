@@ -1,17 +1,10 @@
-import { useState } from "react";
 import { createPortal } from "react-dom";
 
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
+import { useDisclosure } from "@/modules/hooks/useDisclosure";
 
 export const FileThumbnail = ({ fileUrl }: { fileUrl: string }) => {
-  const [showModal, setShowModal] = useState(false);
-
-  const openPreviewHand = () => {
-    setShowModal(true);
-  };
-  const closePreviewHandler = () => {
-    setShowModal(false);
-  };
+  const { isOpen, closeHandler, openHandler } = useDisclosure();
 
   return (
     <>
@@ -22,7 +15,7 @@ export const FileThumbnail = ({ fileUrl }: { fileUrl: string }) => {
         <div className="absolute flex justify-center items-center gap-2 h-full w-full bg-opacity-40 invisible group-hover:visible transition-all">
           <div className="hover:cursor-pointer">
             <ZoomOutMapIcon
-              onClick={() => openPreviewHand()}
+              onClick={openHandler}
               className="text-black-500 bg-white rounded-md"
             />
           </div>
@@ -30,11 +23,11 @@ export const FileThumbnail = ({ fileUrl }: { fileUrl: string }) => {
         <img className=" w-full h-full object-cover" src={fileUrl} />
       </div>
 
-      {showModal &&
+      {isOpen &&
         createPortal(
           <div
             className="fixed top-0 left-0 flex items-center justify-center bg-opacity-90 bg-textPrimary w-screen h-screen overflow-y-auto"
-            onClick={() => closePreviewHandler()}
+            onClick={closeHandler}
           >
             <img className="max-w-[70%] max-h-[70%]" src={fileUrl} />
           </div>,

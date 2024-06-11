@@ -1,4 +1,4 @@
-import { FileThumbnail } from "./FileThumbnail/FileThumbnail";
+import { FileThumbnail } from "./file_thumbnail/file_thumbnail";
 
 type Props = {
   files: { fileUrl: string }[];

@@ -1,16 +1,16 @@
-import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 
-import { CloseButton } from "../Buttons/CloseButton";
-import { CustomRequestForm } from "./CustomRequestForm/CustomRequestForm";
-import { SearchRequestForm } from "./SearchRequestForm/SearchRequstForm";
+import { CloseButton } from "../../../../components/Buttons/CloseButton";
+import { CustomRequestForm } from "./custom_request_form";
+import { SearchRequestForm } from "./search_request_form";
+import { useDisclosure } from "@/modules/hooks/useDisclosure";
 
 type Props = {
   closeHandler: () => void;
 };
 
 export const AddRequestForm = ({ closeHandler }: Props) => {
-  const [isCustomRequestFormOpen, setIsCustomRequestFormOpen] = useState(true);
+  const { isOpen, toggleHandler } = useDisclosure(true);
 
   return (
     <div
@@ -28,18 +28,16 @@ export const AddRequestForm = ({ closeHandler }: Props) => {
           <Switch
             name="formTypeSwitch"
             className="mb-6"
-            onCheckedChange={() => {
-              setIsCustomRequestFormOpen((prev) => !prev);
-            }}
+            onCheckedChange={toggleHandler}
           />
           <label htmlFor="formTypeSwitch">
-            {isCustomRequestFormOpen
+            {isOpen
               ? "Przełącz aby uzupełnić formularz ręcznie"
               : "Przełącz aby wybrać produkt z systemu"}
           </label>
         </div>
 
-        {isCustomRequestFormOpen ? (
+        {isOpen ? (
           <SearchRequestForm closeFormHandler={closeHandler} />
         ) : (
           <CustomRequestForm closeFormHandler={closeHandler} />

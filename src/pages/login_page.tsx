@@ -1,6 +1,5 @@
-import { LoginForm } from "../components/Forms/LoginForm/LoginForm";
-
-export const Login = () => {
+import { LoginForm } from "@/modules/auth/login/login_form";
+export const LoginPage = () => {
   return (
     <div className="flex justify-center items-center h-screen w-screen">
       <LoginForm />

@@ -1,12 +1,11 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { NavLink } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLogin } from "../../../services/mutations";
-
-import { Input } from "../../Input/Input";
-import { Button } from "../../Buttons/Button";
-
-import { LoginFormInputsType, loginFormSchema } from "../types";
+import { useLogin } from "./use_login";
+import { LoginFormInputsType, loginFormSchema } from "./types";
+import { Input } from "@/components/Input/Input";
+import { Button } from "@/components/Buttons/Button";
+import { ErrorDisplay } from "@/components/error_display/error_display";
 
 export const LoginForm = () => {
   const { error, mutate: login } = useLogin();
@@ -19,6 +18,7 @@ export const LoginForm = () => {
     defaultValues: { email: "", password: "" },
     resolver: zodResolver(loginFormSchema),
   });
+
   const submit: SubmitHandler<LoginFormInputsType> = async (data) => {
     login({
       email: data.email,
@@ -31,14 +31,7 @@ export const LoginForm = () => {
     <div className="flex flex-col justify-center mx-auto my-0 max-w-md p-12 shadow-lg rounded-lg mt-0 bg-bgPrimary">
       <p className="text-3xl mb-0 text-left font-bold">Welcome!</p>
       <h1 className="text-xl mb-6 font-medium">Login to your account</h1>
-      {error ? (
-        <div
-          role="alert"
-          className="w-full bg-redPrimary border-redSecondary text-redSecondary p-2 mb-4 border rounded-lg"
-        >
-          {error.message}
-        </div>
-      ) : null}
+      <ErrorDisplay error={error} />
       <div hidden id="login-form">
         Formularz logowania
       </div>
@@ -69,7 +62,7 @@ export const LoginForm = () => {
         <span className="my-2 text-center font-bold">or</span>
         <NavLink
           className={
-            "block text-white font-bold bg-alternate text-primary border-primary border hover:cursor-pointer w-full p-2 rounded-lg text-center"
+            "block font-bold bg-alternate text-primary border-primary border hover:cursor-pointer w-full p-2 rounded-lg text-center"
           }
           to={"/register"}
         >

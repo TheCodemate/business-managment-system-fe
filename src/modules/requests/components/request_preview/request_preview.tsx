@@ -1,7 +1,7 @@
 import { useTechnicalRequestById } from "../../use_technical_request_by_id";
 
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
-import { FilePreview } from "@/components/FilePreview/FilePreview";
+import { FilePreview } from "@/components/file_preview/file_preview";
 import { Loading } from "@/components/Loading/Loading";
 import { CloseButton } from "@/components/Buttons/CloseButton";
 import { ProductInfo } from "../product_info";

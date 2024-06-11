@@ -7,7 +7,7 @@ import { CloseButton } from "@/components/Buttons/CloseButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { Dialog } from "@/components/Dialog/Dialog";
 import { Loading } from "@/components/Loading/Loading";
-import { FilePreview } from "@/components/FilePreview/FilePreview";
+import { FilePreview } from "@/components/file_preview/file_preview";
 import { Modal } from "@/components/Modal/Modal";
 
 import { technicalResponseRequestSchema } from "@/types";
