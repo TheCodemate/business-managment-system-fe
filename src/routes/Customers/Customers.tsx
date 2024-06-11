@@ -33,8 +33,12 @@ export const Customers = () => {
   const closeCustomerDetailsModal = () => {
     setIsCustomerDetailsOpen(false);
   };
-  const toggleModal = () => {
-    setIsAddCustomerOpen((prevState) => !prevState);
+
+  const closeAddCustomerModal = () => {
+    setIsAddCustomerOpen(true);
+  };
+  const openAddCustomerModal = () => {
+    setIsAddCustomerOpen(true);
   };
 
   if (isPending) return "Loading...";
@@ -55,7 +59,11 @@ export const Customers = () => {
           </p>
         </div>
         <div className="flex items-center">
-          <Button onClick={toggleModal} content={"Dodaj klienta"} />
+          <Button
+            onClick={openAddCustomerModal}
+            content={"Dodaj klienta"}
+            variant="default"
+          />
         </div>
       </header>
       <main className="flex flex-col h-full w-full p-8 overflow-x-auto">
@@ -91,8 +99,8 @@ export const Customers = () => {
           </Table>
         </div>
       </main>
-      <Modal isOpen={isAddCustomerOpen} toggleModal={toggleModal}>
-        <AddCustomerForm onCloseHandler={toggleModal} />
+      <Modal isOpen={isAddCustomerOpen} toggleModal={closeAddCustomerModal}>
+        <AddCustomerForm onCloseHandler={closeAddCustomerModal} />
       </Modal>
       <Modal
         isOpen={isCustomerDetailsOpen}

@@ -5,17 +5,19 @@ import { IconTypes } from "../../types";
 type Props = {
   title: string;
   content: string;
-  buttonContent: string;
+  buttonContent?: string;
   icon?: IconTypes;
-  onClick: () => void;
+  onClick?: () => void;
+  buttonVisible: boolean;
 };
 
 export const PageHeader = ({
   content,
   title,
-  buttonContent,
+  buttonContent = "",
   icon,
   onClick,
+  buttonVisible = false,
 }: Props) => {
   return (
     <header className="flex flex-col gap-5 justify-center bg-bgPrimary p-12 sm:flex-row sm:justify-between sm:gap-10">
@@ -27,12 +29,14 @@ export const PageHeader = ({
         <p className="text-fontPrimary text-sm">{content}</p>
       </div>
       <div className="flex items-center">
-        <Button
-          variant="basic"
-          onClick={onClick}
-          icon={icon}
-          content={buttonContent}
-        />
+        {buttonVisible ? (
+          <Button
+            variant="basic"
+            onClick={onClick}
+            icon={icon}
+            content={buttonContent}
+          />
+        ) : null}
       </div>
     </header>
   );

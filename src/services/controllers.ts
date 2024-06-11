@@ -4,15 +4,19 @@ import {
   axiosShoppingCart,
   axiosCustomer,
   axiosProducts,
+  axiosRequests,
 } from "../api/axios";
 import {
   CartItemResponseType,
   CartItemType,
   CustomerType,
   ProductType,
+  RequestRequestType,
+  TechnicalResponseRequestType,
   UploadedProductRequestType,
   UploadedProductResponseType,
 } from "../types";
+import { throwError } from "@/utils/throwError";
 
 export const addToCart = async (cartItem: CartItemType) => {
   try {
@@ -45,27 +49,6 @@ export const getCartItems = async () => {
   return data;
 };
 
-export const loginUser = async (userCredentials: {
-  email: string;
-  password: string;
-}) => {
-  try {
-    const { data } = await axiosUser.post(`/login`, userCredentials, {
-      withCredentials: true,
-    });
-    return data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      throw new Error(error.response?.data.message);
-    }
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    throw new Error("Could not login. The reason is unknown. Try again later.");
-  }
-};
-
 export const logoutUser = async () => {
   try {
     const { data } = await axiosUser.get("/logoutMember");
@@ -76,25 +59,6 @@ export const logoutUser = async () => {
     }
     throw new Error(
       "Could not logout. The reason is unknown. Try again later."
-    );
-  }
-};
-
-export const registerUser = async (userCredentials: {
-  email: string;
-  password: string;
-}) => {
-  try {
-    const { data } = await axiosUser.post("", userCredentials);
-
-    return data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    throw new Error(
-      "Could not register user. The reason is unknown. Try again later."
     );
   }
 };
@@ -247,6 +211,32 @@ export const deleteCartItem = async (cartItemId: string) => {
     throw new Error("Could not reset password. Try again later.");
   }
 };
+
+export const postNewRequest = async (request: RequestRequestType) => {
+  try {
+    const { data } = await axiosRequests.post<{ message: string }>(
+      `/`,
+      request,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not post request. Try again later.");
+  }
+};
+
 export const uploadProducts = async (
   products: UploadedProductRequestType[]
 ) => {
@@ -271,6 +261,68 @@ export const uploadProducts = async (
   }
 };
 
+export const assignUser = async (userId: string, requestId: string) => {
+  try {
+    const { data } = await axiosRequests.post(
+      `/assign-user`,
+      { assignedToId: userId, requestId: requestId },
+      {
+        withCredentials: true,
+      }
+    );
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+
+export const unassignUser = async (userId: string, requestId: string) => {
+  try {
+    const { data } = await axiosRequests.delete(`/unassign-user`, {
+      data: { userId: userId, requestId: requestId },
+      withCredentials: true,
+    });
+
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
+
+export const fetchUsers = async () => {
+  try {
+    const { data } = await axiosUser.get<
+      { email: string; userId: string; firstName: string; lastName: string }[]
+    >(`/`, {
+      withCredentials: true,
+    });
+
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Could not reset password. Try again later.");
+  }
+};
 export const getUploadedProducts = async () => {
   try {
     const { data } = await axiosProducts.get<UploadedProductResponseType[]>(
@@ -293,6 +345,24 @@ export const getUploadedProducts = async () => {
   }
 };
 
+export const postResponse = async (response: TechnicalResponseRequestType) => {
+  try {
+    const { data } = await axiosRequests.post<{ message: string }>(
+      "/response",
+      { ...response },
+      { withCredentials: true }
+    );
+
+    return data;
+  } catch (error) {
+    throwError({
+      error,
+      message:
+        "Could not post response. The reason is unknown. Try again later.",
+    });
+  }
+};
+
 export const searchProducts = async (searchPhrase: string) => {
   try {
     const { data } = await axiosProducts.get<UploadedProductResponseType[]>(
@@ -307,13 +377,74 @@ export const searchProducts = async (searchPhrase: string) => {
 
     return data;
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw new Error(error.response?.data.message);
-    }
     if (error instanceof Error) {
       throw new Error(error.message);
     }
 
-    throw new Error("Could not get products. Try again later.");
+    throw new Error(
+      "Could not fetch data. The reason is unknown. Try again later."
+    );
+  }
+};
+
+export const uploadFile = async (file: FormData) => {
+  try {
+    const { data } = await axiosRequests.post<{
+      fileUrl: string;
+      fileId: string;
+    }>("/upload-file", file, { withCredentials: true });
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(
+      "Could not fetch data. The reason is unknown. Try again later."
+    );
+  }
+};
+
+export const removeUploadedFile = async (fileId: string) => {
+  try {
+    const { data } = await axiosRequests.delete<{
+      fileUrl: string;
+      fileId: string;
+    }>("/upload-file", { withCredentials: true, params: { fileId: fileId } });
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(
+      "Could not fetch data. The reason is unknown. Try again later."
+    );
+  }
+};
+
+export const getRequestFiles = async (requestId: string) => {
+  try {
+    const { data } = await axiosRequests.get<
+      {
+        fileUrl: string;
+        fileId: string;
+      }[]
+    >("/upload-file", {
+      withCredentials: true,
+      params: { requestId },
+    });
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(
+      "Could not fetch data. The reason is unknown. Try again later."
+    );
   }
 };

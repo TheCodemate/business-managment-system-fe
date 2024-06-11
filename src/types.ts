@@ -1,6 +1,6 @@
 import { ZodString, ZodTypeAny, ZodUnion, z } from "zod";
 
-export type IconTypes = "add" | "null";
+export type IconTypes = "add" | "null" | "addRequest";
 
 const doesStringContainNumbersOnly = (
   stringToCheck: ZodString | ZodUnion<[ZodTypeAny, ...ZodTypeAny[]]>
@@ -107,11 +107,258 @@ const cartItemResponseSchema = z.object({
   product: productSchema,
 });
 
+export const requestSchema = z.object({
+  requestTypes: z.array(
+    z.enum([
+      "price",
+      "priceNet",
+      "availability",
+      "productionDate",
+      "substitute",
+      "technicalDocumentation",
+    ])
+  ),
+  productCode: z
+    .string()
+    .min(1, { message: "Kod produktu jest wymagane" })
+    .max(50),
+  collectionName: z
+    .string()
+    .min(1, { message: "Nazwa produktu jest wymagana" })
+    .max(50),
+  format: z.string(),
+  finish: z.string(),
+  producer: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
+  color: z.string().min(1, { message: "Kolor jest wymagany" }).max(50),
+  productCategory: z.enum([
+    "ceramicTiles",
+    "bathroomEquipment",
+    "accessories",
+    "furniture",
+    "lightning",
+  ]),
+  quantity: z.string(),
+  additionalInfo: z.string(),
+  contactPerson: z.string(),
+  email: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
+  phone: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
+  files: z.string().optional(),
+});
+
+export const requestRequestSchema = z.object({
+  requestTypes: z.array(
+    z.enum([
+      "price",
+      "purchasePrice",
+      "availability",
+      "productionDate",
+      "substitute",
+      "technicalDocumentation",
+    ])
+  ),
+  productCode: z.string().optional(),
+  collectionName: z
+    .string()
+    .min(1, { message: "Nie wybrano produktu" })
+    .max(50),
+  format: z.string(),
+  finish: z.string().optional(),
+  producer: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
+  color: z.string().max(50).optional(),
+  productCategory: z.enum([
+    "ceramicTiles",
+    "bathroomEquipment",
+    "accessories",
+    "furniture",
+    "lightning",
+  ]),
+  quantity: z
+    .string()
+    .min(1, { message: "Ilość jest wymagana" })
+    .refine((val) => /^\d+(?:[.,]\d{1,2})?$/.test(val), {
+      message:
+        "Wartość niepoprawna. Spróbuj jeden z podanych zapisów: 15,12|15|15.12|15,1|15.1; ",
+    }),
+  additionalInfo: z.string(),
+  contactPerson: z
+    .string()
+    .max(100, { message: "To pole nie powinno być dłuzsze niz 100 znaków" })
+    .optional(),
+  contactPersonEmail: z
+    .string()
+    .min(1, { message: "Musisz wprowadzić email kontaktowy" })
+    .max(300)
+    .refine(
+      (val) => {
+        const flags = "gm";
+        const pattern = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}";
+        const regexPattern = new RegExp(pattern, flags);
+
+        return val.match(regexPattern);
+      },
+      { message: "Niewłaściwy email. Sprawdź czy wpisałeś poprawnie" }
+    ),
+  contactPersonPhone: z
+    .string()
+    .min(1, { message: "Numer telefonu musi zawierać conajmniej 9 znaków" })
+    .max(12, { message: "Number telefonu nie moze być dłuzszy niz 12 znaków" })
+    .optional(),
+  uploadedFiles: z.array(
+    z.object({
+      fileUrl: z.string(),
+      fileId: z.string(),
+    })
+  ),
+  unit: z.enum(["szt", "m2", "komplet", "mb"]),
+});
+
+export const technicalRequestTypeSchema = z.array(
+  z.object({
+    technicalRequestType: z.object({
+      typeId: z.number(),
+      typeName: z.enum([
+        "price",
+        "purchasePrice",
+        "availability",
+        "productionDate",
+        "substitute",
+        "technicalDocumentation",
+      ]),
+    }),
+  })
+);
+
+export const assigneesSchema = z.array(
+  z.object({
+    userAccount: z.object({
+      userId: z.string(),
+      firstName: z.string(),
+      lastName: z.string(),
+      email: z.string(),
+    }),
+  })
+);
+
+export const technicalResponseRequestSchema = z.object({
+  technicalRequestId: z.string(),
+  technicalResponseText: z.string(),
+  availability: z.string().nullable(),
+  technicalDocumentation: z.string().nullable(),
+  purchasePrice: z.string().nullable(),
+  price: z.string().nullable(),
+  substitute: z.string().nullable(),
+  productionDate: z.string().nullable(),
+});
+
+export const technicalRequestResponseSchema = z.object({
+  technicalRequestId: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  userId: z.string(),
+  requestTypes: technicalRequestTypeSchema,
+  productCode: z
+    .string()
+    .min(1, { message: "Kod produktu jest wymagane" })
+    .max(50),
+  collectionName: z
+    .string()
+    .min(1, { message: "Nazwa produktu jest wymagana" })
+    .max(50),
+  format: z.string(),
+  finish: z.string(),
+  producer: z.string().min(1, { message: "Producent jest wymagany" }).max(50),
+  color: z.string().min(1, { message: "Kolor jest wymagany" }).max(50),
+  productCategory: z.enum([
+    "ceramicTiles",
+    "bathroomEquipment",
+    "accessories",
+    "furniture",
+    "lightning",
+  ]),
+  quantity: z.string(),
+  unit: z.enum(["m2", "szt", "mb", "komplet"]),
+  additionalInfo: z.string(),
+  contactPerson: z.string(),
+  contactPersonEmail: z
+    .string()
+    .optional()
+    .refine(
+      (val) => {
+        const flags = "gm";
+        const pattern = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}";
+        const regexPattern = new RegExp(pattern, flags);
+
+        return val.match(regexPattern);
+      },
+      { message: "Niewłaściwy email. Sprawdź czy wpisałeś poprawnie" }
+    ),
+  contactPersonPhone: z
+    .string()
+    .min(1, { message: "Producent jest wymagany" })
+    .max(50),
+  technicalRequestFiles: z.array(
+    z.object({
+      fileUrl: z.string(),
+      fileId: z.string(),
+    })
+  ),
+  requestStatus: z.object({
+    technicalRequestStatusName: z.enum([
+      "notAssigned",
+      "inProgress",
+      "expired",
+      "resolved",
+      "canceled",
+      "forwarded",
+      "assigned",
+    ]),
+  }),
+  resolvedAt: z.string(),
+  expiresAt: z.string(),
+  resolved: z.boolean(),
+  assignees: z.array(
+    z.object({
+      userAccount: z.object({
+        userId: z.string(),
+        firstName: z.string(),
+        lastName: z.string(),
+        email: z.string(),
+      }),
+    })
+  ),
+  technicalRequestResponse: technicalResponseRequestSchema,
+  technicalRequestResolvedBy: z.object({
+    userAccount: z.object({
+      userAccountId: z.string(),
+      firstName: z.string(),
+      lastName: z.string(),
+      email: z.string(),
+    }),
+  }),
+  userAccount: z.object({
+    email: z.string(),
+    userId: z.string(),
+    firstName: z.string(),
+    lastName: z.string(),
+  }),
+});
+
+const userAccountSchema = z.object({
+  user_id: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+  active: z.boolean(),
+  activate_token: z.string(),
+  activate_token_expire_date: z.number().positive(),
+  created_at: z.string(), // Assuming it's a string representation of timestamp
+  updated_at: z.string(), // Assuming it's a string representation of timestamp
+  role: z.enum(["ADMIN"]), // Assuming only 'ADMIN' role is allowed
+});
 const uploadedProductsResponse = z.object({
   uploadedProductId: z.string(),
   collectionName: z.string(),
   productName: z.string(),
-  eanCode: z.number(),
+  eanCode: z.string(),
   productCode: z.string(),
   finish: z.string(),
   format: z.string(),
@@ -127,7 +374,7 @@ const uploadedProductsResponse = z.object({
 const uploadProductRequestSchema = z.object({
   collectionName: z.string(),
   productName: z.string(),
-  eanCode: z.number().optional(),
+  eanCode: z.string().optional(),
   productCode: z.string().optional(),
   finish: z.string().optional(),
   format: z.string(),
@@ -142,13 +389,40 @@ const uploadProductRequestSchema = z.object({
   category: z.string(),
 });
 
+const uploadedFileSchema = z.object({
+  fileUrl: z.string(),
+  fileId: z.string(),
+});
+
+export type UploadedFile = z.infer<typeof uploadedFileSchema>;
 export type CartItemType = z.infer<typeof cartItemRequestSchema>;
 export type CartItemResponseType = z.infer<typeof cartItemResponseSchema>;
 export type CustomerType = z.infer<typeof customerSchema>;
 export type ProductType = z.infer<typeof productSchema>;
+export type RequestType = z.infer<typeof requestSchema>;
+export type RequestRequestType = z.infer<typeof requestRequestSchema>;
+export type TechnicalRequestResponseType = z.infer<
+  typeof technicalRequestResponseSchema
+>;
+export type UserAccountType = z.infer<typeof userAccountSchema>;
+export type TechnicalResponseRequestType = z.infer<
+  typeof technicalResponseRequestSchema
+>;
+
+export type Assignees = z.infer<typeof assigneesSchema>;
+export type UserToBeAssignedType = {
+  email: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+};
 export type UploadedProductResponseType = z.infer<
   typeof uploadedProductsResponse
 >;
 export type UploadedProductRequestType = z.infer<
   typeof uploadProductRequestSchema
+>;
+
+export type TechnicalRequestTypeTypes = z.infer<
+  typeof technicalRequestTypeSchema
 >;

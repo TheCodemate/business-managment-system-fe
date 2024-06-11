@@ -1,17 +1,18 @@
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import { SidebarContext } from "./context";
 
 import { Logo } from "../Logo/Logo";
-import { ExpandArrow } from "../ExpandArrow/ExpandArrow";
+import { ExpandArrow } from "../expand_arrow/expand_arrow";
 import { SidebarNavLink } from "./SidebarMenuItem/SidebarMenuItem";
 import { SidebarNav } from "./SidebarNav/SidebarNav";
+import { useDisclosure } from "@/modules/hooks/useDisclosure";
 
 type Props = {
   children: ReactElement | ReactElement[];
 };
 
 export const Sidebar = ({ children }: Props) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const { isOpen: isExpanded, toggleHandler } = useDisclosure();
   return (
     <SidebarContext.Provider value={{ isExpanded }}>
       <aside
@@ -21,10 +22,7 @@ export const Sidebar = ({ children }: Props) => {
       >
         <div className={`flex basis-2/12 justify-center`}>
           <Logo />
-          <ExpandArrow
-            left={isExpanded}
-            onClick={() => setIsExpanded((prev) => !prev)}
-          />
+          <ExpandArrow left={isExpanded} onClick={toggleHandler} />
         </div>
         {children}
       </aside>
