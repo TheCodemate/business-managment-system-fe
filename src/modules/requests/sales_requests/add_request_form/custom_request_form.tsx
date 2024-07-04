@@ -32,7 +32,7 @@ import {
 } from "@/types";
 import { FileUploader } from "@/components/FileUploader/FileUploader";
 import { Modal } from "@/components/Modal/Modal";
-import { Dialog } from "@/components/Dialog/Dialog";
+import { Dialog } from "@/components/dialog/dialog";
 
 const items = [
   {

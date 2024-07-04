@@ -1,4 +1,8 @@
-export const ErrorDisplay = ({ error }: { error: Error | null }) => {
+export const ErrorDisplay = ({
+  error,
+}: {
+  error: Error | undefined | null;
+}) => {
   if (!error) {
     return null;
   }

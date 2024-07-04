@@ -1,7 +1,7 @@
 import { Loading } from "../Loading/Loading";
 import { Button } from "../ui/button";
 
-type DialogProps = {
+export type Props = {
   rejectHandler: () => void;
   acceptHandler: () => void;
   isLoading?: boolean;
@@ -19,17 +19,18 @@ export const Dialog = ({
   isLoading,
   headerText,
   bodyText,
-}: DialogProps) => {
+}: Props) => {
   return (
     <div
+      data-testid="dialog-container"
       onClick={(e) => {
         e.stopPropagation();
       }}
       className="flex flex-col gap-6 min-w-[360px] max-w-[800px] bg-alternate p-6 rounded-xl shadow-xl"
     >
       <div className="flex flex-col gap-4">
-        <h3 className="font-bold text-xl">{headerText}</h3>
-        <p>{bodyText}</p>
+        {headerText && <h3 className="font-bold text-xl">{headerText}</h3>}
+        {bodyText && <p>{bodyText}</p>}
       </div>
       <div className="flex justify-end gap-6">
         <Button
@@ -40,11 +41,15 @@ export const Dialog = ({
           {rejectButtonText}
         </Button>
         <Button
+          data-testid="accept-button"
           disabled={isLoading}
           className="text-alternate font-bold min-w-[120px]"
           onClick={acceptHandler}
         >
-          {isLoading ? <Loading size={20} color="#FFFFFF" /> : acceptButtonText}
+          {isLoading && (
+            <Loading data-testid="loader" size={20} color="#FFFFFF" />
+          )}
+          {acceptButtonText}
         </Button>
       </div>
     </div>

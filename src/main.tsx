@@ -9,7 +9,10 @@ import { Dashboard } from "./routes/Dashboard.tsx";
 import { Customers } from "./routes/Customers/Customers.tsx";
 import { Settings } from "./routes/Settings.tsx";
 import { Register } from "./routes/Register.tsx";
-import { ResetPassword } from "./routes/ResetPassword.tsx";
+import {
+  ResetPassword,
+  ResetPasswordRoute,
+} from "./routes/reset_password_route.tsx";
 import { ResetPasswordRequest } from "./routes/ResetPasswordRequest.tsx";
 
 import App from "./App.tsx";
@@ -22,7 +25,7 @@ import { TechnicalSupportRequestsRoute } from "./routes/technical_support_reques
 
 import "./index.css";
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     element: <PrivateRoutes />,
@@ -82,7 +85,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/reset-password/:resetToken",
-    element: <ResetPassword />,
+    element: <ResetPasswordRoute />,
   },
   {
     path: "/reset-password-request/",

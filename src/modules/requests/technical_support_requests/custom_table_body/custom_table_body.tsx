@@ -22,22 +22,6 @@ export const CustomTableBody = ({
   requests?: TechnicalRequestResponseType[];
   isLoading: boolean;
 }) => {
-  const {
-    isOpen: isPreviewModalOpen,
-    openHandler: openPreviewModal,
-    closeHandler: closePreviewModal,
-  } = useDisclosure();
-  const [requestId, setRequestId] = useState("");
-
-  const closePreviewRequestModal = () => {
-    closePreviewModal();
-  };
-
-  const openPreviewRequestModal = (requestId: string) => {
-    setRequestId(requestId);
-    openPreviewModal();
-  };
-
   if (!requests || requests.length <= 0) {
     return <p>W tej chwili nie ma zadnych zapytań</p>;
   }
@@ -77,44 +61,68 @@ export const CustomTableBody = ({
               <TableCell className="min-w-[200px] gorw-1">
                 <AssignmentField request={request} />
               </TableCell>
-              <TableCell>
-                <ActionsField
-                  clickHandler={() =>
-                    openPreviewRequestModal(request.technicalRequestId)
-                  }
-                  isLoading={isLoading}
-                  isResolved={request.resolved}
-                />
-              </TableCell>
-
-              {/* Warunek nie powoduje dynamicznego renderowani kompnentu. Pomimo ze request.resolved w 3 przypadkach jest false, i tak wyświetla się RequestPreviewModal. W przypadku dodania ! przed request.resolved dla wszystkich kejsow renderuje sie TechnicalRequestResponseForm */}
-              {request.resolved ? (
-                <Modal
-                  key={request.technicalRequestId}
-                  isOpen={isPreviewModalOpen}
-                  toggleModal={closePreviewRequestModal}
-                >
-                  <RequestPreview
-                    requestId={requestId}
-                    onCloseHandler={closePreviewRequestModal}
-                  />
-                </Modal>
-              ) : (
-                <Modal
-                  key={request.technicalRequestId}
-                  isOpen={isPreviewModalOpen}
-                  toggleModal={closePreviewRequestModal}
-                >
-                  <TechnicalSupportResponseForm
-                    requestId={requestId}
-                    onCloseHandler={closePreviewRequestModal}
-                  />
-                </Modal>
-              )}
+              <TechnicalRequestModal
+                technicalRequestId={request.technicalRequestId}
+                resolved={request.resolved}
+                isLoading={isLoading}
+              />
             </TableRow>
           );
         })}
       </TableBody>
+    </>
+  );
+};
+
+type TechnicalRequestModalProps = {
+  technicalRequestId: string;
+  resolved: boolean;
+  isLoading: boolean;
+};
+
+const TechnicalRequestModal = ({
+  technicalRequestId,
+  resolved,
+  isLoading,
+}: TechnicalRequestModalProps) => {
+  const {
+    isOpen: isPreviewModalOpen,
+    openHandler: openPreviewModal,
+    closeHandler: closePreviewModal,
+  } = useDisclosure();
+
+  const [requestId, setRequestId] = useState("");
+
+  const closePreviewRequestModal = () => {
+    closePreviewModal();
+  };
+
+  const openPreviewRequestModal = (requestId: string) => {
+    setRequestId(requestId);
+    openPreviewModal();
+  };
+  return (
+    <>
+      <TableCell>
+        <ActionsField
+          clickHandler={() => openPreviewRequestModal(technicalRequestId)}
+          isLoading={isLoading}
+          isResolved={resolved}
+        />
+      </TableCell>
+      <Modal isOpen={isPreviewModalOpen} toggleModal={closePreviewRequestModal}>
+        {resolved ? (
+          <RequestPreview
+            requestId={requestId}
+            onCloseHandler={closePreviewRequestModal}
+          />
+        ) : (
+          <TechnicalSupportResponseForm
+            requestId={requestId}
+            onCloseHandler={closePreviewRequestModal}
+          />
+        )}
+      </Modal>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { FileThumbnail } from "./file_thumbnail/file_thumbnail";
 
-type Props = {
+export type Props = {
   files: { fileUrl: string }[];
 };
 
@@ -10,7 +10,10 @@ export const FilePreview = ({ files }: Props) => {
   }
 
   return (
-    <div className="flex gap-2 overflow-x-auto py-4">
+    <div
+      data-testid="file-preview-container"
+      className="flex gap-2 overflow-x-auto py-4"
+    >
       {files.map((file) => (
         <FileThumbnail key={file.fileUrl} fileUrl={file.fileUrl} />
       ))}

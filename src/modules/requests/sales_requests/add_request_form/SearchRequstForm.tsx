@@ -33,7 +33,7 @@ import {
 import { FileUploader } from "@/components/FileUploader/FileUploader";
 import { useState } from "react";
 import { Modal } from "@/components/Modal/Modal";
-import { Dialog } from "@/components/Dialog/Dialog";
+import { Dialog } from "@/components/dialog/dialog";
 
 const items = [
   {

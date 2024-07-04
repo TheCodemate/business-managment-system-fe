@@ -13,12 +13,13 @@ export const FileThumbnail = ({ fileUrl }: { fileUrl: string }) => {
         className="group relative flex items-center h-40 w-24 overflow-hidden rounded-lg transition-all shadow-sm"
       >
         <div className="absolute flex justify-center items-center gap-2 h-full w-full bg-opacity-40 invisible group-hover:visible transition-all">
-          <div className="hover:cursor-pointer">
-            <ZoomOutMapIcon
-              onClick={openHandler}
-              className="text-black-500 bg-white rounded-md"
-            />
-          </div>
+          <button
+            data-testid="zoom-out-map-modal-open-button"
+            onClick={openHandler}
+            className="bg-transparent hover:cursor-pointer"
+          >
+            <ZoomOutMapIcon className="text-black-500 bg-white rounded-md" />
+          </button>
         </div>
         <img className=" w-full h-full object-cover" src={fileUrl} />
       </div>
@@ -26,6 +27,7 @@ export const FileThumbnail = ({ fileUrl }: { fileUrl: string }) => {
       {isOpen &&
         createPortal(
           <div
+            data-testid="file-thumbnail-modal"
             className="fixed top-0 left-0 flex items-center justify-center bg-opacity-90 bg-textPrimary w-screen h-screen overflow-y-auto"
             onClick={closeHandler}
           >

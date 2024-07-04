@@ -36,6 +36,10 @@ const statusBgColor = {
   },
 };
 
+const NUMBER_OF_SECONDS_IN_MIN = 60;
+const NUMBER_OF_MINS_IN_HOUR = 60;
+const NUMBER_OF_MILISECS_IN_SEC = 1000;
+
 export const Timer = ({
   createdAt,
   resolved = false,
@@ -89,12 +93,18 @@ export const Timer = ({
           timerRef.current.clientWidth;
 
         const hoursLeft = Math.floor(
-          (timeCapInMils / 60 / 1000 - timePassedInMilis / 1000 / 60) / 60
+          (timeCapInMils /
+            NUMBER_OF_SECONDS_IN_MIN /
+            NUMBER_OF_MILISECS_IN_SEC -
+            timePassedInMilis /
+              NUMBER_OF_MILISECS_IN_SEC /
+              NUMBER_OF_SECONDS_IN_MIN) /
+            NUMBER_OF_MINS_IN_HOUR
         );
 
         const minsLeft = Math.floor(
-          timeCapInMils / 60 / 1000 -
-            timePassedInMilis / 1000 / 60 -
+          timeCapInMils / NUMBER_OF_SECONDS_IN_MIN / NUMBER_OF_MILISECS_IN_SEC -
+            timePassedInMilis / NUMBER_OF_MILISECS_IN_SEC / 60 -
             hoursLeft * 60
         );
 
@@ -112,7 +122,7 @@ export const Timer = ({
         setHoursLeft(hoursLeft);
         setMinsLeft(minsLeft);
         setProgressBarLength((prev) => {
-          return prev + oneMilisecToPixel * 1000;
+          return prev + oneMilisecToPixel * NUMBER_OF_MILISECS_IN_SEC;
         });
 
         if (resolved) {

@@ -5,6 +5,12 @@ type Props = {
   size?: number;
 };
 
-export const Loading = ({ color, size = 20 }: Props) => {
-  return <CircularProgress size={size} sx={{ color, aspectRatio: "1/1" }} />;
+export const Loading = ({ color, size = 20, ...props }: Props) => {
+  return (
+    <CircularProgress
+      size={size}
+      sx={{ color, aspectRatio: "1/1" }}
+      {...props}
+    />
+  );
 };

@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { usePostResponse } from "@/services/mutations";
 import { CloseButton } from "@/components/Buttons/CloseButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
-import { Dialog } from "@/components/Dialog/Dialog";
+import { Dialog } from "@/components/dialog/dialog";
 import { Loading } from "@/components/Loading/Loading";
 import { FilePreview } from "@/components/file_preview/file_preview";
 import { Modal } from "@/components/Modal/Modal";
@@ -204,7 +204,7 @@ export const TechnicalSupportResponseForm = ({
               acceptHandler={confirmationHandler}
               rejectHandler={toggleConfirmationHandler}
               acceptButtonText="Wyślij"
-              rejectButtonText="Sprawdź"
+              rejectButtonText="Cofnij"
               bodyText="Czy na pewno zawarłeś wszystkie odpowiedzi?"
               headerText="Zatwierdź odpowiedź"
             />
