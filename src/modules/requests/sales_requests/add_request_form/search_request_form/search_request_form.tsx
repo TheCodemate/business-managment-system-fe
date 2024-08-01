@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SearchBar } from "../../../../components/SearchBar/SearchBar";
+import { SearchBar } from "../../../../../components/SearchBar/SearchBar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -93,6 +93,9 @@ export const SearchRequestForm = ({ closeFormHandler }: Props) => {
     },
   });
 
+  console.log("SearchRequestForm - formValues: ");
+  console.log(form.getValues());
+
   const setProductValues = (product: any) => {
     form.setValue(
       "productCode",
@@ -167,15 +170,21 @@ export const SearchRequestForm = ({ closeFormHandler }: Props) => {
     <>
       <Form {...form}>
         <form
+          aria-label="form"
           id="searchRequestForm"
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-6"
         >
           <div className="w-full flex flex-col">
             <SearchBar searchAcceptHandler={acceptSearchHandler()} />
-            <p className="font-bold text-redSecondary text-sm">
-              {form.formState.errors.collectionName?.message}
-            </p>
+            {form.formState.errors.collectionName?.message && (
+              <p
+                data-testid="product-search-alert"
+                className="font-bold text-redSecondary text-sm"
+              >
+                {form.formState.errors.collectionName.message}
+              </p>
+            )}
           </div>
           <fieldset className="flex gap-4">
             <FormField
@@ -183,17 +192,25 @@ export const SearchRequestForm = ({ closeFormHandler }: Props) => {
               name="quantity"
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-sm font-bold text-neutral600">
+                  <FormLabel
+                    htmlFor="quantity"
+                    className="text-sm font-bold text-neutral600"
+                  >
                     Ilość
                   </FormLabel>
                   <FormControl>
                     <Input
+                      id="quantity"
                       className="bg-bgPrimary border-details"
                       placeholder="np.: 1,44; 10; 12.8"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-xs font-bold text-redSecondary" />
+                  <FormMessage
+                    role="alert"
+                    data-testid="quantity-alert"
+                    className="text-xs font-bold text-redSecondary"
+                  />
                 </FormItem>
               )}
             />
@@ -203,27 +220,35 @@ export const SearchRequestForm = ({ closeFormHandler }: Props) => {
               name="unit"
               render={({ field }) => (
                 <FormItem className="col-span-2 grow-2 h-full">
-                  <FormLabel className="text-sm font-bold text-neutral600">
+                  <FormLabel
+                    htmlFor="unit"
+                    className="text-sm font-bold text-neutral600"
+                  >
                     Jednostka
                   </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="border-details">
-                        <SelectValue placeholder="Wybierz" />
+                  <FormControl>
+                    <Select onValueChange={field.onChange} {...field}>
+                      <SelectTrigger
+                        defaultValue={"m2"}
+                        aria-label="unit"
+                        id="unit"
+                        className="border-details"
+                      >
+                        <SelectValue
+                          data-testid="select-display"
+                          placeholder="Wybierz"
+                        />
                       </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className={"bg-bgPrimary"}>
-                      <SelectItem className={"flex bg-bgPrimary"} value="m2">
-                        m2
-                      </SelectItem>
-                      <SelectItem value="szt">szt</SelectItem>
-                      <SelectItem value="mb">mb</SelectItem>
-                      <SelectItem value="komplet">komplet</SelectItem>
-                    </SelectContent>
-                  </Select>
+                      <SelectContent className={"bg-bgPrimary"}>
+                        <SelectItem className={"flex bg-bgPrimary"} value="m2">
+                          m2
+                        </SelectItem>
+                        <SelectItem value="szt">szt</SelectItem>
+                        <SelectItem value="mb">mb</SelectItem>
+                        <SelectItem value="komplet">komplet</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
                   <FormMessage className="text-xs font-bold text-redSecondary" />
                 </FormItem>
               )}
@@ -283,11 +308,15 @@ export const SearchRequestForm = ({ closeFormHandler }: Props) => {
             name="additionalInfo"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-bold text-neutral600">
+                <FormLabel
+                  htmlFor="additionalInfo"
+                  className="text-sm font-bold text-neutral600"
+                >
                   Dodatkowe informacje
                 </FormLabel>
                 <FormControl>
                   <Textarea
+                    id="additionalInfo"
                     placeholder="Umieść tu wszystkie dodatkowe szczegóły dotyczące zapytania, które mogą przyspieszyć odpowiedź"
                     className="bg-bgPrimary border-details resize-none"
                     {...field}
@@ -306,11 +335,15 @@ export const SearchRequestForm = ({ closeFormHandler }: Props) => {
               name="contactPerson"
               render={({ field }) => (
                 <FormItem className="w-full col-span-6 xl:col-span-2">
-                  <FormLabel className="text-sm font-bold text-neutral600">
+                  <FormLabel
+                    htmlFor="contactPerson"
+                    className="text-sm font-bold text-neutral600"
+                  >
                     Osoba kontaktowa
                   </FormLabel>
                   <FormControl>
                     <Input
+                      id="contactPerson"
                       placeholder=""
                       className="bg-bgPrimary border-details w-full "
                       {...field}
@@ -331,12 +364,15 @@ export const SearchRequestForm = ({ closeFormHandler }: Props) => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder=""
+                      placeholder="example@example.pl"
                       className="bg-bgPrimary border-details w-full "
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-xs font-bold text-redSecondary" />
+                  <FormMessage
+                    data-testid="contact-email-alert"
+                    className="text-xs font-bold text-redSecondary"
+                  />
                 </FormItem>
               )}
             />
@@ -350,12 +386,15 @@ export const SearchRequestForm = ({ closeFormHandler }: Props) => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder=""
+                      placeholder="500500500"
                       className="bg-bgPrimary border-details w-full "
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-xs font-bold text-redSecondary" />
+                  <FormMessage
+                    data-testid="contact-phone-alert"
+                    className="text-xs font-bold text-redSecondary"
+                  />
                 </FormItem>
               )}
             />
@@ -385,7 +424,7 @@ export const SearchRequestForm = ({ closeFormHandler }: Props) => {
           bodyText={`To ostatni moment w którym mozesz sprawdzi czy wprowadzone dane na
           pewno są poprawne. Kliknij "Wróć", zeby sprawdzić zapytanie ponownie
           lub "Potwierdź", zeby przesłać zapytanie do logistyki`}
-          acceptButtonText="Wyślij"
+          acceptButtonText="Zatwierdź"
           rejectButtonText="Cofnij"
           rejectHandler={closeConfirmationHandler}
           acceptHandler={confirmationHandler}

@@ -1,11 +1,11 @@
 import { ReactElement } from "react";
 
-import { MobileMenuNav } from "./MobileMenuNav/MobileMenuNav";
-import { MobileMenuNavLink } from "./MobileMenuNavLink/MobileMenuNavLink";
-import { Logo } from "../Logo/Logo";
+import { MobileMenuNav } from "./mobile_menu_nav/mobile_menu_nav";
+import { MobileMenuNavLink } from "./mobile_menu_navlink/mobile_menu_navlink";
+import { Logo } from "../logo/logo";
 
 import { MobileMenuContextProvider } from "./context";
-import { HamburgerMenuButton } from "./HamburgerMenuButton/HamburgerMenuButton";
+import { HamburgerMenuButton } from "./hamburger_menu_button/hamburger_menu_button";
 
 type Props = {
   children?: ReactElement | ReactElement[];

@@ -6,9 +6,10 @@ import { Loading } from "../Loading/Loading";
 
 type Props = {
   searchAcceptHandler: (product: any) => void;
+  autoFocus?: boolean;
 };
 
-export const SearchBar = ({ searchAcceptHandler }: Props) => {
+export const SearchBar = ({ searchAcceptHandler, autoFocus = true }: Props) => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [isSearchResultOpen, setIsSearchResultOpen] = useState<boolean>(false);
   const [isAccepted, setIsAccepted] = useState(false);
@@ -43,26 +44,23 @@ export const SearchBar = ({ searchAcceptHandler }: Props) => {
     // setSelectedProduct(product);
   };
 
-  // const onSearchAccept = (cb: (product: any) => void) => {
-  //   setSearchPhrase("");
-
-  //   // return cb;
-  // };
-
   return (
     <div className="max-w-[900px]">
       <div
-        className={`relative  flex items-center min-w-[200px] w-max-[900px] border border-details bg-bgPrimary px-4 py-2 rounded-lg ${
+        className={`relative  flex items-center min-w-[200px] w-max-[900px] border border-details bg-bgPrimary rounded-lg ${
           selectedProduct ? "bg-redPrimary" : "bg-blue"
         }`}
       >
-        <SearchIcon />
+        <SearchIcon
+          sx={{ position: "absolute", left: 10, color: "rgb(182 182 182)" }}
+        />
         <input
+          autoFocus={autoFocus}
           placeholder="Wyszukaj produkt..."
-          className={`w-full h-full px-4 py-2 bg-bgPrimary`}
+          className={`w-full h-full py-4 bg-bgPrimary pl-10 rounded-lg`}
           onChange={onChangeHandler}
           value={searchPhrase}
-        />
+        ></input>
         {isAccepted ? (
           <AddCircleIcon
             className="cursor-pointer"

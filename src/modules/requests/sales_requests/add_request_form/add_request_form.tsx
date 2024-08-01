@@ -2,7 +2,7 @@ import { Switch } from "@/components/ui/switch";
 
 import { CloseButton } from "../../../../components/Buttons/CloseButton";
 import { CustomRequestForm } from "./custom_request_form";
-import { SearchRequestForm } from "./SearchRequstForm";
+import { SearchRequestForm } from "./search_request_form/search_request_form";
 import { useDisclosure } from "@/modules/hooks/useDisclosure";
 
 type Props = {

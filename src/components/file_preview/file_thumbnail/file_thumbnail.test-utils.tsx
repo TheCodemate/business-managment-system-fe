@@ -1,7 +1,6 @@
-import { render, renderHook, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { FileThumbnail } from "./file_thumbnail";
 import userEvent from "@testing-library/user-event";
-import { useDisclosure } from "@/modules/hooks/useDisclosure";
 
 export const user = userEvent.setup();
 
@@ -11,6 +10,10 @@ export const renderFileThumbnail = () => {
 
 export const getZoomButton = () => {
   return screen.getByRole("button");
+};
+
+export const getFileThumbnailModal = () => {
+  return screen.queryByTestId("file-thumbnail-modal");
 };
 
 export const getRootElement = () => {
@@ -28,4 +31,19 @@ export const expectZoomInButtonToBeInTheDocument = () => {
 
 export const expectImageToBeInTheDocument = () => {
   expect(getImage()).toBeInTheDocument();
+};
+
+export const clickZoomButton = async () => {
+  await user.click(getZoomButton());
+};
+
+export const clickFileThumbnailModal = async () => {
+  await user.click(getFileThumbnailModal());
+};
+
+export const expectModalToBeInTheDocument = () => {
+  expect(getFileThumbnailModal()).toBeInTheDocument();
+};
+export const expectModalNotToBeInTheDocument = () => {
+  expect(getFileThumbnailModal()).not.toBeInTheDocument();
 };

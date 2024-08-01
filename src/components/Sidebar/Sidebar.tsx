@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { SidebarContext } from "./context";
 
-import { Logo } from "../Logo/Logo";
+import { Logo } from "../logo/logo";
 import { ExpandArrow } from "../expand_arrow/expand_arrow";
 import { SidebarNavLink } from "./SidebarMenuItem/SidebarMenuItem";
 import { SidebarNav } from "./SidebarNav/SidebarNav";

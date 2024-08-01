@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useMobileMenuContext } from "../context";
 
-type Props = {
+export type Props = {
   to:
     | ""
     | "customers"

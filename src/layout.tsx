@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 import { Sidebar } from "./components/Sidebar/Sidebar";
-import { MobileMenu } from "./components/MobileMenu/MobileMenu";
+import { MobileMenu } from "./components/mobile_menu/mobile_menu";
 
 export const Layout = () => {
   return (

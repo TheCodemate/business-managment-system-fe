@@ -26,13 +26,13 @@ export const FileThumbnail = ({ fileUrl }: { fileUrl: string }) => {
 
       {isOpen &&
         createPortal(
-          <div
+          <button
             data-testid="file-thumbnail-modal"
             className="fixed top-0 left-0 flex items-center justify-center bg-opacity-90 bg-textPrimary w-screen h-screen overflow-y-auto"
             onClick={closeHandler}
           >
             <img className="max-w-[70%] max-h-[70%]" src={fileUrl} />
-          </div>,
+          </button>,
           document.body
         )}
     </>

@@ -187,12 +187,13 @@ export const requestRequestSchema = z.object({
   contactPersonEmail: z
     .string()
     .min(1, { message: "Musisz wprowadzić email kontaktowy" })
-    .max(300)
+    .max(100, { message: "Email jest za długi" })
     .refine(
       (val) => {
-        const flags = "gm";
-        const pattern = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}";
-        const regexPattern = new RegExp(pattern, flags);
+        const regexPattern = new RegExp(
+          /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+          "gm"
+        );
 
         return val.match(regexPattern);
       },
@@ -200,8 +201,19 @@ export const requestRequestSchema = z.object({
     ),
   contactPersonPhone: z
     .string()
-    .min(1, { message: "Numer telefonu musi zawierać conajmniej 9 znaków" })
+    .min(9, { message: "Numer telefonu musi zawierać conajmniej 9 znaków" })
     .max(12, { message: "Number telefonu nie moze być dłuzszy niz 12 znaków" })
+    .refine(
+      (val) => {
+        const regexPattern = new RegExp(
+          /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{3,6}$/,
+          "i"
+        );
+
+        return val.match(regexPattern);
+      },
+      { message: "Niewłaściwy numer telefonu. Sprawdź czy wpisałeś same cyfry" }
+    )
     .optional(),
   uploadedFiles: z.array(
     z.object({
