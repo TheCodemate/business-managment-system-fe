@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { TableRow, TableCell } from "../../components/Table/Table";
 import { ProductType } from "../../types";
 import { useAddToCart } from "../../services/mutations";
-import { Loading } from "../Loading/Loading";
+import { Loading } from "../loading/loading";
 
 type ProductCardProps = {
   product: ProductType;

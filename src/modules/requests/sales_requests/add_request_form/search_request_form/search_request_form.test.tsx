@@ -80,7 +80,7 @@ describe("SearchRequestForm", () => {
     {
       scenario: "email is too long",
       email:
-        "piotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrp@piotr.pl",
+        "piotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrppiotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrpiotrp@piotr.pl",
     },
   ])("should display error if $scenario", async ({ email }) => {
     SearchRequestFormUtils.renderSearchRequestForm();
@@ -117,7 +117,7 @@ describe("SearchRequestForm", () => {
     SearchRequestFormUtils.expectContactPhoneErrorToBeInTheDocument();
   });
 
-  it.only("displays confirmation modal when submit is clicked", async () => {
+  it("displays confirmation modal when submit is clicked", async () => {
     SearchRequestFormUtils.renderSearchRequestForm();
     await SearchRequestFormUtils.fillSearchBarInputWithText();
     await SearchRequestFormUtils.clickSearchBarFirstListItem();

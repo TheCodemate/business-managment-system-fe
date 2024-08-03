@@ -1,5 +1,5 @@
 import { AddRequestForm } from "@/modules/requests/sales_requests/add_request_form/add_request_form";
-import { Modal } from "@/components/Modal/Modal";
+import { Modal } from "@/components/modal/modal";
 import { PageHeader } from "@/components/PageHeader/PageHeader";
 import { useDisclosure } from "@/modules/hooks/useDisclosure";
 import { SalesRequests } from "@/modules/requests/sales_requests/sales_requests";

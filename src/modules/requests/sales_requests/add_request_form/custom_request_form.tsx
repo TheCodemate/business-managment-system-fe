@@ -31,7 +31,7 @@ import {
   requestRequestSchema,
 } from "@/types";
 import { FileUploader } from "@/components/FileUploader/FileUploader";
-import { Modal } from "@/components/Modal/Modal";
+import { Modal } from "@/components/modal/modal";
 import { Dialog } from "@/components/dialog/dialog";
 
 const items = [

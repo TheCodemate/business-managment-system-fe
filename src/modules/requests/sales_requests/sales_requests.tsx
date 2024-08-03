@@ -1,4 +1,4 @@
-import { Loading } from "@/components/Loading/Loading";
+import { Loading } from "@/components/loading/loading";
 import { Table, TableCaption } from "@/components/ui/table";
 
 import { useTechnicalRequests } from "../use_technical_requests";

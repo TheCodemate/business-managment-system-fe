@@ -1,6 +1,6 @@
-import { Loading } from "../../Loading/Loading";
+import { Loading } from "../../loading/loading";
 
-import { AssigneeAvatar } from "../../Avatar/Avatar";
+import { AssigneeAvatar } from "../../avatar/avatar";
 import { useAssignment } from "@/services/mutations";
 import { UserToBeAssignedType } from "@/types";
 

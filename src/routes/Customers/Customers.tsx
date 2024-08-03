@@ -3,7 +3,7 @@ import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { useCustomers } from "../../services/queries";
 
 import { Button } from "../../components/Buttons/Button";
-import { Modal } from "../../components/Modal/Modal";
+import { Modal } from "../../components/modal/modal";
 import { CustomerDetails } from "./components/CustomerDetails/CustomerDetails";
 import { AddCustomerForm } from "../../components/Forms/AddCustomerFrom";
 import {

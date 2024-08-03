@@ -6,9 +6,9 @@ import { usePostResponse } from "@/services/mutations";
 import { CloseButton } from "@/components/Buttons/CloseButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { Dialog } from "@/components/dialog/dialog";
-import { Loading } from "@/components/Loading/Loading";
+import { Loading } from "@/components/loading/loading";
 import { FilePreview } from "@/components/file_preview/file_preview";
-import { Modal } from "@/components/Modal/Modal";
+import { Modal } from "@/components/modal/modal";
 
 import { technicalResponseRequestSchema } from "@/types";
 import { throwError } from "@/utils/throwError";

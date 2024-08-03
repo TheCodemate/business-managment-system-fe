@@ -1,6 +1,5 @@
-import { useUnassign } from "@/services/mutations";
 import { getInitials } from "@/utils/getInitials";
-import ClearIcon from "@mui/icons-material/Clear";
+import { RemoveUserButton } from "./remove_user_button";
 
 const sizes = {
   xSmall: {
@@ -30,29 +29,6 @@ const sizes = {
   },
 };
 
-type UnassignUserProps = {
-  userId: string;
-  requestId: string;
-};
-
-const UnassignUser = ({ userId, requestId }: UnassignUserProps) => {
-  const { mutate: unassignUser } = useUnassign();
-
-  return (
-    <div
-      onClick={() =>
-        unassignUser({
-          userId: userId,
-          requestId: requestId,
-        })
-      }
-      className="absolute -top-[20%] -right-[15%] hidden group-hover:flex items-center justify-center w-4 h-4 rounded-full border-2 border-bgPrimary bg-slate-500 hover:bg-redPrimary cursor-pointer z-10"
-    >
-      <ClearIcon sx={{ width: "100%", height: "100%" }} />
-    </div>
-  );
-};
-
 type AssigneeAvatarProps = {
   requestId: string;
   userFirstName: string;
@@ -72,26 +48,24 @@ export const AssigneeAvatar = ({
   url,
 }: AssigneeAvatarProps) => {
   return (
-    <>
-      <div
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-        style={{
-          width: sizes[size].width,
-          height: sizes[size].height,
-          fontSize: sizes[size].textSize,
-        }}
-        className="relative flex justify-center items-center rounded-[100%] w-14 h-14 p-4 bg-sky-300 font-semibold text-sky-50 border-2 border-sky-50 cursor-pointer text-2xl group -ml-[10px] first:ml-0"
-      >
-        {removable && <UnassignUser requestId={requestId} userId={userId} />}
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+      style={{
+        width: sizes[size].width,
+        height: sizes[size].height,
+        fontSize: sizes[size].textSize,
+      }}
+      className="relative flex justify-center items-center rounded-[100%] w-14 h-14 p-4 bg-sky-300 font-semibold text-sky-50 border-2 border-sky-50 cursor-pointer text-2xl group -ml-[10px] first:ml-0"
+    >
+      {removable && <RemoveUserButton requestId={requestId} userId={userId} />}
 
-        {url
-          ? url
-          : getInitials(userFirstName, userLastName)
-          ? getInitials(userFirstName, userLastName)
-          : null}
-      </div>
-    </>
+      {url
+        ? url
+        : getInitials(userFirstName, userLastName)
+        ? getInitials(userFirstName, userLastName)
+        : null}
+    </button>
   );
 };

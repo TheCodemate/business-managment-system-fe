@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useCartItems } from "../services/queries";
-import { Loading } from "../components/Loading/Loading";
+import { Loading } from "../components/loading/loading";
 import { OrderItemCard } from "../components/OrderItemCard/OrderItemCard";
 import { PageHeader } from "../components/PageHeader/PageHeader";
 

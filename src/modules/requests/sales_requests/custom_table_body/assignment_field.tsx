@@ -1,5 +1,5 @@
 import { AssignmentDisplay } from "@/components/AssignementDisplay/AssignmentDisplay";
-import { AssigneeAvatar } from "@/components/Avatar/Avatar";
+import { AssigneeAvatar } from "@/components/avatar/avatar";
 import { TechnicalRequestResponseType } from "@/types";
 
 export const AssignmentField = ({

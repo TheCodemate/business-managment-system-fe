@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes } from "react";
-import { Loading } from "../Loading/Loading";
+import { Loading } from "../loading/loading";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { IconTypes } from "@/types";
 

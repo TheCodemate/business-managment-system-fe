@@ -1,4 +1,4 @@
-import { AssigneeAvatar } from "@/components/Avatar/Avatar";
+import { AssigneeAvatar } from "@/components/avatar/avatar";
 import { Assignees } from "@/types";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 

@@ -1,6 +1,6 @@
 import { Assignees } from "@/types";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import { AssigneeAvatar } from "../Avatar/Avatar";
+import { AssigneeAvatar } from "../avatar/avatar";
 
 type Props = {
   assignees: Assignees;

@@ -3,7 +3,7 @@ import { TechnicalRequestResponseType } from "@/types";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import { CustomerField } from "./customer_field";
 import { useState } from "react";
-import { Modal } from "@/components/Modal/Modal";
+import { Modal } from "@/components/modal/modal";
 import { Button } from "@/components/Buttons/Button";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { Timer } from "@/components/Timer/Timer";

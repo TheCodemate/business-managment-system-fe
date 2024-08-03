@@ -3,7 +3,7 @@ import { useState } from "react";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { Timer } from "@/components/Timer/Timer";
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { Modal } from "@/components/Modal/Modal";
+import { Modal } from "@/components/modal/modal";
 
 import { useDisclosure } from "@/modules/hooks/useDisclosure";
 

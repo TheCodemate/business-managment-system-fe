@@ -1,6 +1,6 @@
 import React from "react";
 import { AssignmentInput } from "@/components/AssignmentInput/AssignmentInput";
-import { AssigneeAvatar } from "@/components/Avatar/Avatar";
+import { AssigneeAvatar } from "@/components/avatar/avatar";
 import { TechnicalRequestResponseType } from "@/types";
 
 type Props = {

@@ -1,4 +1,4 @@
-import { Loading } from "../Loading/Loading";
+import { Loading } from "../loading/loading";
 import { Button } from "../ui/button";
 
 export type Props = {

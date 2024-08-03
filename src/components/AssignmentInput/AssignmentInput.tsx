@@ -6,7 +6,7 @@ import {
 import { useUsers } from "@/services/queries";
 import { Assignees } from "@/types";
 import { AssigneesList } from "./components/AssignmentList";
-import { Loading } from "../Loading/Loading";
+import { Loading } from "../loading/loading";
 import { UsersToBeAssignedList } from "./components/UsersToBeAssignedList";
 
 type Props = {
