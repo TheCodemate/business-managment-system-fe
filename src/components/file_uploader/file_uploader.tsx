@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { UploadedFile } from "@/types";
-import { FileUploadInput } from "./FIleUploadInput/FileUploadInput";
-import { UploadedFiles } from "./UploadedFiles/UploadedFiles";
+import { FileUploadInput } from "./file_upload_input/file_upload_input";
+import { UploadedFiles } from "./uploaded_files/uploaded_files";
 
 type Props = {
   onUploadHandler: (file: UploadedFile) => void;

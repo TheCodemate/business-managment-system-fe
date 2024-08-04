@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ProductSearchBar } from "../../../../../components/product_search_bar/product_search_bar";
+import { ProductSearchBar } from "@/components/product_search_bar/product_search_bar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,7 +30,7 @@ import {
   UploadedFile,
   requestRequestSchema,
 } from "@/types";
-import { FileUploader } from "@/components/FileUploader/FileUploader";
+import { FileUploader } from "@/components/file_uploader/file_uploader";
 import { useState } from "react";
 import { Modal } from "@/components/modal/modal";
 import { Dialog } from "@/components/dialog/dialog";

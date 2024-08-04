@@ -30,7 +30,7 @@ import {
   UploadedFile,
   requestRequestSchema,
 } from "@/types";
-import { FileUploader } from "@/components/FileUploader/FileUploader";
+import { FileUploader } from "@/components/file_uploader/file_uploader";
 import { Modal } from "@/components/modal/modal";
 import { Dialog } from "@/components/dialog/dialog";
 
