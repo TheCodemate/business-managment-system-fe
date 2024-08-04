@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import { useSidebarContext } from "../context";
 
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import SettingsIcon from "@mui/icons-material/Settings";
 import GroupsIcon from "@mui/icons-material/Groups";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
@@ -9,7 +11,14 @@ import { ShoppingCartIcon } from "../../Icons/ShoppingCartIcon";
 
 type SidebarMenuItemProps = {
   text: string;
-  to: "" | "settings" | "customers" | "products" | "order";
+  to:
+    | ""
+    | "settings"
+    | "customers"
+    | "products"
+    | "order"
+    | "requests"
+    | "support-team-requests";
 };
 
 const sidebarIcons = {
@@ -22,6 +31,12 @@ const sidebarIcons = {
     <BusinessCenterIcon sx={{ color: "#141414", width: 36, height: 36 }} />
   ),
   ["order"]: <ShoppingCartIcon />,
+  ["requests"]: (
+    <SupportAgentIcon sx={{ color: "#141414", width: 36, height: 36 }} />
+  ),
+  ["support-team-requests"]: (
+    <AssignmentIcon sx={{ color: "#141414", width: 36, height: 36 }} />
+  ),
 };
 
 export const SidebarNavLink = ({ text, to }: SidebarMenuItemProps) => {

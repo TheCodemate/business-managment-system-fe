@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { Loading } from "../Loading/Loading";
+import { Loading } from "../loading/loading";
 import { ShoppingCartItem } from "./components/ShoppingCartItem/ShoppingCartItem";
 import { Header } from "./components/Header/Header";
 import { useCartItems } from "../../services/queries";

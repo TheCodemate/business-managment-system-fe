@@ -2,6 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 import {
   CartItemType,
   CustomerType,
+  RequestRequestType,
+  TechnicalResponseRequestType,
+  UploadedFile,
   UploadedProductRequestType,
 } from "../types";
 import {
@@ -14,50 +17,37 @@ import {
   resetUserPassword,
   removeFromCart,
   deleteCartItem,
+  postNewRequest,
+  assignUser,
+  unassignUser,
+  postResponse,
   uploadProducts,
   searchProducts,
+  uploadFile,
+  removeUploadedFile,
 } from "./controllers";
-import { queryClient } from "../context/QueryProvider";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthProvider";
 import { delay } from "../utils/delay";
+import { OnSuccessHandler } from "@/components/FileUploader/types";
+import { queryClient } from "@/modules/global_provider/query_provider";
+import { authenticationHandler } from "@/modules/auth/use_auth";
 
-export const useLogin = () => {
-  const navigate = useNavigate();
-  const { authHandler } = useAuth();
+export const useAuth = () => {
   return useMutation({
-    mutationFn: (values: { email: string; password: string }) =>
-      loginUser(values),
-    onSuccess: (data) => {
-      authHandler(data);
-      navigate("/");
-    },
+    mutationFn: authenticationHandler,
     onError: (error) => error.message,
   });
 };
 
 export const useLogout = () => {
   const navigate = useNavigate();
-  const { authHandler } = useAuth();
+  const { mutate: authHandler } = useAuth();
 
   useMutation({
     mutationFn: () => logoutUser(),
     onSuccess: (data) => {
       authHandler(data);
-      navigate("/login");
-    },
-    onError: (error) => error.message,
-  });
-};
-
-export const useRegister = () => {
-  const navigate = useNavigate();
-
-  return useMutation({
-    mutationFn: (values: { email: string; password: string }) =>
-      registerUser(values),
-    onSuccess: () => {
-      delay(5000, () => navigate("/login"));
+      navigate("/");
     },
     onError: (error) => error.message,
   });
@@ -129,6 +119,16 @@ export const useDeleteCartItem = () => {
     },
   });
 };
+
+export const usePostNewRequest = () => {
+  return useMutation({
+    mutationFn: (request: RequestRequestType) => postNewRequest(request),
+    onError: (error) => error.message,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
+    },
+  });
+};
 export const useProductUpload = () => {
   return useMutation({
     mutationFn: (products: UploadedProductRequestType[]) =>
@@ -140,9 +140,80 @@ export const useProductUpload = () => {
   });
 };
 
+export const useAssignment = () => {
+  return useMutation({
+    mutationFn: ({
+      userId,
+      requestId,
+    }: {
+      userId: string;
+      requestId: string;
+    }) => assignUser(userId, requestId),
+    onError: (error) => error.message,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
+    },
+  });
+};
+export const useUnassign = () => {
+  return useMutation({
+    mutationFn: ({
+      userId,
+      requestId,
+    }: {
+      userId: string;
+      requestId: string;
+    }) => unassignUser(userId, requestId),
+    onError: (error) => error.message,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
+    },
+  });
+};
+
+export const usePostResponse = () => {
+  return useMutation({
+    mutationFn: (response: TechnicalResponseRequestType) =>
+      postResponse(response),
+    onError: (error) => error.message,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["technicalRequests"] });
+    },
+  });
+};
+
 export const useGetSearchedProducts = () => {
   return useMutation({
     mutationFn: (searchPhrase: string) => searchProducts(searchPhrase),
     onError: (error) => error.message,
+  });
+};
+
+export const useUploadFile = ({
+  onSuccess,
+  insertFile,
+}: {
+  insertFile: (file: UploadedFile) => void;
+  onSuccess: OnSuccessHandler;
+}) => {
+  return useMutation({
+    mutationFn: (file: FormData) => uploadFile(file),
+    onError: (error) => error.message,
+    onSuccess: (data) => {
+      insertFile(data);
+      onSuccess(data);
+    },
+  });
+};
+
+export const useRemoveFile = ({ onSuccess }: { onSuccess?: () => void }) => {
+  return useMutation({
+    mutationFn: async (fileId: string) => removeUploadedFile(fileId),
+    onError: (error) => error.message,
+    onSuccess: () => {
+      if (onSuccess) {
+        onSuccess();
+      }
+    },
   });
 };

@@ -1,15 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useAddCustomer } from "../../services/mutations";
-import { useCustomer } from "../../hooks/useCustomer";
+import { useAddCustomer } from "@/services/mutations";
+import { useCustomer } from "@/hooks/useCustomer";
 
-import { delay } from "../../utils/delay";
 import { Button } from "../Buttons/Button";
 import { CloseButton } from "../Buttons/CloseButton";
 import { Input } from "../Input/Input";
 import { Select } from "../Select/Select";
 import { CheckboxButton } from "../Buttons/CheckboxButton";
-import { CustomerType, customerSchema } from "../../types";
+import { CustomerType, customerSchema } from "@/types";
 
 type AddCustomerFromProps = {
   onCloseHandler: () => void;
@@ -53,7 +52,6 @@ export const AddCustomerForm = ({ onCloseHandler }: AddCustomerFromProps) => {
   });
 
   const onSuccessHandler = (data: CustomerType) => {
-    delay(5000, () => onCloseHandler());
     reset();
     return data;
   };
